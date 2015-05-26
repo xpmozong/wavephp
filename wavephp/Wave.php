@@ -56,13 +56,6 @@ class Wave
         $Route = new Route(self::$app, $this->Core);
         spl_autoload_register(array('WaveBase', 'loader'));
         $Route->route();
-
-        //关闭数据库连接
-        // if(!empty(self::$app->database)) {
-        //     foreach (self::$app->database as $key => $value) {
-        //         self::$app->database->$key->close();
-        //     }
-        // }
         
         $this->Core->clear();
     }
