@@ -83,8 +83,8 @@ class Mysql extends Abstarct
     /**
      * 插入数据
      *
-     * @param string $table         : 表名
-     * @param array  $array         : 数据数组
+     * @param string $table         表名
+     * @param array  $array         数据数组
      *
      * @return boolean 
      *
@@ -106,9 +106,9 @@ class Mysql extends Abstarct
     /**
      * 更新数据
      *
-     * @param string $table         : 表名
-     * @param array  $array         : 数据数组
-     * @param string $conditions    : 条件
+     * @param string $table         表名
+     * @param array  $array         数据数组
+     * @param string $conditions    条件
      *
      * @return boolean
      *
@@ -157,8 +157,8 @@ class Mysql extends Abstarct
     /**
      * 删除数据
      *
-     * @param string $table         : 表名
-     * @param string $fields        : 条件
+     * @param string $table         表名
+     * @param string $fields        条件
      *
      * @return boolean
      *

@@ -45,7 +45,7 @@ class Model
     /**
      * 查询字段
      *
-     * @param string $field     : 字段
+     * @param string $field 字段
      *
      * @return $this 
      *
@@ -66,7 +66,7 @@ class Model
     /**
      * 查询某表
      *
-     * @param string $tableName     : 表名
+     * @param string $tableName 表名
      *
      * @return $this 
      *
@@ -86,8 +86,8 @@ class Model
     /**
      * 连表查询
      *
-     * @param string $table         : 表
-     * @param string $conditions    : 条件
+     * @param string $table         表
+     * @param string $conditions    条件
      *
      * @return $this 
      *
@@ -116,7 +116,7 @@ class Model
     /**
      * IN
      *
-     * @param string $conditions    : 条件
+     * @param string $conditions 条件
      *
      * @return $this
      *
@@ -131,7 +131,7 @@ class Model
     /**
      * 条件查询
      *
-     * @param string $conditions    : 条件 
+     * @param string $conditions 条件 
      *
      * @return $this
      *
@@ -146,10 +146,10 @@ class Model
     /**
      * 模糊查询
      *
-     * @param array $where      : 条件数组
-     * @param bool $not         : 是否NOT
-     * @param string $type      : AND或OR
-     * @param string $like      : 相似范围  
+     * @param array $where      条件数组
+     * @param bool $not         是否NOT
+     * @param string $type      AND或OR
+     * @param string $like      相似范围  
      *
      * @return $this
      *
@@ -183,8 +183,8 @@ class Model
      * 返回字符串在某一个字段的内容中的位置,
      * 没有找到字符串返回0，否则返回位置（从1开始）
      *
-     * @param array $where      : 条件数组
-     * @param string $type      : AND或OR
+     * @param array $where      条件数组
+     * @param string $type      AND或OR
      *
      * @return $this
      *
@@ -209,8 +209,8 @@ class Model
     /**
      * 查询条数
      *
-     * @param int $offset   : 第几条
-     * @param int $limit    : 多少条数据
+     * @param int $offset       第几条
+     * @param int $limit        多少条数据
      * 
      * @return $this
      *
@@ -226,7 +226,7 @@ class Model
     /**
      * GROUP BY
      *
-     * @param string $field     : 字段
+     * @param string $field     字段
      * 
      * @return $this
      *
@@ -246,7 +246,7 @@ class Model
     /**
      * 排序
      *
-     * @param string $field     : 字段
+     * @param string $field     字段
      *
      * @return $this
      *
@@ -351,7 +351,7 @@ class Model
     /**
      * sql语句执行
      *
-     * @param string $sql   : sql语句
+     * @param string $sql       sql语句
      *
      * @return bool 
      *
@@ -364,7 +364,7 @@ class Model
     /**
      * 根据sql获得全部数据
      *
-     * @param string $sql   : sql语句
+     * @param string $sql       sql语句
      *
      * @return array 
      *
@@ -382,7 +382,7 @@ class Model
     /**
      * 根据sql获得单条数据
      *
-     * @param string $sql   : sql语句
+     * @param string $sql       sql语句
      *
      * @return array 
      *
@@ -401,8 +401,8 @@ class Model
     /**
      * 插入数据
      *
-     * @param string $tableName     : 表名
-     * @param array $data           : 数据
+     * @param string $tableName     表名
+     * @param array $data           数据
      *
      * @return bool
      *
@@ -415,9 +415,9 @@ class Model
     /**
      * 更新数据
      *
-     * @param string $tableName     : 表名
-     * @param array $data           : 数据
-     * @param string $conditions    : 条件
+     * @param string $tableName     表名
+     * @param array $data           数据
+     * @param string $conditions    条件
      *
      * @return bool
      *

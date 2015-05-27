@@ -25,7 +25,7 @@ abstract class Abstarct{
     /**
      * 解析过滤
      *
-     * @param string $str   : 条件数组
+     * @param string $str       条件数组
      *
      * @return bool
      *
@@ -42,8 +42,8 @@ abstract class Abstarct{
     /**
      * 查询条数
      *
-     * @param int $offset   : 第几条
-     * @param int $limit    : 多少条数据
+     * @param int $offset       第几条
+     * @param int $limit        多少条数据
      * 
      * @return $this
      *
@@ -55,7 +55,7 @@ abstract class Abstarct{
     /**
      * 字符串转义
      *
-     * @param string $str   : 字符串
+     * @param string $str       字符串
      *
      */
     public function escape($str) {

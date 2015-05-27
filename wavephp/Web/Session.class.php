@@ -40,8 +40,8 @@ class Session extends Model
     /**
      * 设置SESSION
      *  
-     * @param string $key   session关键字
-     * @param string $val   session值
+     * @param string $key       session关键字
+     * @param string $val       session值
      *
      */
     public function setState($key, $val, $timeout = null)
@@ -59,9 +59,9 @@ class Session extends Model
     /**
      * 得到SESSION
      * 
-     * @param string $key   session关键字
+     * @param string $key       session关键字
      *
-     * @return string       session值
+     * @return string
      *
      */
     public function getState($key)
