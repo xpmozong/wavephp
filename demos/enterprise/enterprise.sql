@@ -67,9 +67,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`cid`, `c_name`) VALUES
 (1, '行业资讯'),
 (2, '企业动态'),
-(3, '技术文章'),
-(4, '测试测试update'),
-(5, '测试测试update2');
+(3, '技术文章');
 
 -- --------------------------------------------------------
 
@@ -78,7 +76,7 @@ INSERT INTO `category` (`cid`, `c_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
-  `lid` int(11) NOT NULL,
+  `lid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `url` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`lid`)
@@ -89,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `links` (
 --
 
 INSERT INTO `links` (`lid`, `url`, `title`) VALUES
-(0, 'http://www.baidu.com', '百度');
+(1, 'http://www.baidu.com', '百度');
 
 -- --------------------------------------------------------
 

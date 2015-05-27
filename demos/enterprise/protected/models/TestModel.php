@@ -35,9 +35,9 @@ class TestModel extends Model {
                         ->from('category')
                         ->getAll();
 
-        $data = array('c_name'=>'测试测试update');
-        var_dump($this->insert('category', $data));die;
-        var_dump($this->update('category', $data, "cid=4"));die;
+        // $data = array('c_name'=>'测试测试update');
+        // var_dump($this->insert('category', $data));die;
+        // var_dump($this->update('category', $data, "cid=4"));die;
 
         return $array;
     }
