@@ -73,17 +73,17 @@ class SiteController extends Controller
     
     public function actionLogin()
     {
-        Wave::app()->user->setState('username', 'Ellen Xu');
+        Wave::app()->session->setState('username', 'Ellen Xu');
     }
 
     public function actionLogout()
     {
-        Wave::app()->user->logout();
+        Wave::app()->session->logout();
     }
 
     public function actionExportCode()
     {
-        echo Wave::app()->user->getState('verifycode');
+        echo Wave::app()->session->getState('verifycode');
     }
 
 }

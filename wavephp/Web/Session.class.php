@@ -33,7 +33,9 @@ class Session extends Model
         $this->lifeTime = $timeout;
         $this->tableName = 'w_sessions';
         if (empty(self::$db)) {
-            self::$db = Wave::app()->database->db;
+            if (Wave::app()->database) {
+                self::$db = Wave::app()->database->db;
+            }
         }
     }
 
@@ -97,20 +99,26 @@ class Session extends Model
     }
 
     function open($savePath, $sessName) {
-        $row = $this->select('table_name')
-                    ->from('information_schema.TABLES')
-                    ->where('table_name="'.$this->tableName.'"')
-                    ->getOne();
-        if (empty($row)) {
-            $sql = "CREATE TABLE `w_sessions` (
-                  `session_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-                  `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
-                  `session_data` text,
-                  PRIMARY KEY (`session_id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->sqlQuery($sql);
-        }
+        if (empty(self::$db)){
+            die('未配置数据库连接');
 
+        }else{
+            $row = $this->select('table_name')
+                        ->from('information_schema.TABLES')
+                        ->where('table_name="'.$this->tableName.'"')
+                        ->getOne();
+            if (empty($row)) {
+                $sql = "CREATE TABLE `w_sessions` (
+                    `session_id` varchar(255) CHARACTER 
+                    SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+                    `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
+                    `session_data` text,
+                    PRIMARY KEY (`session_id`)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+                $this->sqlQuery($sql);
+            }
+        }
+        
         return true; 
     }
 
