@@ -1,24 +1,33 @@
 <?php $homeUrl = Wave::app()->homeUrl;?>
-<form  id="form-modify" class="form-horizontal" action="<?php echo $homeUrl.'categories/modified';?>" method="POST" onsubmit="return checkForm()">
-    <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">
-            <button type="button" class="btn btn-default" onclick="javascript:history.go(-1);">返回</button>
-            <?php if(!empty($data['cid'])){ echo "修改";}else{ echo "添加";}?>分类
-        </h4>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="c_name" class="col-sm-2 control-label">分类名</label>
-            <div class="col-sm-10">
-                <input class="form-control" name="c_name" id="c_name" type="text" value="<?=$data['c_name']?>" placeholder="请输入分类名">
-                <input type="hidden" name="cid" value="<?=$data['cid']?>">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form  id="form-modify" class="form-horizontal" action="<?php echo $homeUrl.'categories/modified';?>" method="POST" onsubmit="return checkForm()">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <?php if(!empty($data['cid'])){ echo "修改";}else{ echo "添加";}?>分类
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="c_name" class="col-sm-2 control-label">分类名</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="c_name" id="c_name" type="text" value="<?=$data['c_name']?>" placeholder="请输入分类名">
+                        <input type="hidden" name="cid" value="<?=$data['cid']?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-default" onclick="javascript:history.go(-1);">
+                                返回
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="save">提交</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" id="save">提交</button>
-    </div>
-</form>
+    </form>
+</div>
 <script type="text/javascript">
 var checkForm = function(){
     var c_name = $("#c_name").val();

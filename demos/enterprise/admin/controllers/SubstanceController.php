@@ -41,7 +41,7 @@ class SubstanceController extends Controller
         if(empty($data['page'])){
             $url .= '?page=1';
         }
-        $pagebar = $Common->getAdminPageBar($url, $count, $pagesize, $page);
+        $pagebar = $Common->getPageBar($url, $count, $pagesize, $page);
 
         $render = array('list'      => $list,
                         'page'      => $page,

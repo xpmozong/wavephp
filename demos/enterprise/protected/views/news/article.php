@@ -1,24 +1,33 @@
 <?php $homeUrl = Wave::app()->homeUrl;?>
 <div class="container marketing content">
     <div class="col-sm-2 blog-sidebar">
-        <ul class="nav nav-sidebar">
-            <li class="<?php if($cid == 1) echo 'active';?>">
+        <ul class="nav nav-sidebar list-group">
+            <li class="list-group-item <?php if($cid == 1) echo 'active';?>">
                 <a href="<?=$homeUrl?>news/index/1">行业资讯</a>
             </li>
-            <li class="<?php if($cid == 2) echo 'active';?>">
+            <li class="list-group-item <?php if($cid == 2) echo 'active';?>">
                 <a href="<?=$homeUrl?>news/index/2">企业动态</a>
             </li>
-            <li class="<?php if($cid == 3) echo 'active';?>">
+            <li class="list-group-item <?php if($cid == 3) echo 'active';?>">
                 <a href="<?=$homeUrl?>news/index/3">技术文章</a>
             </li>
         </ul>
     </div>
-    <div class="col-sm-9 blog-main">
-        <div class="info alert alert-info" role="alert">
-            您当前位置： 主页 > 新闻中心 > <?=$category['c_name']?>
-        </div>
-        <div class="blog-content">
-            <?=$data['content']?>
+    <div class="col-sm-10 blog-main">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                您当前位置：
+                <a href="<?=$homeUrl?>">首页</a> &gt;
+                <a href="<?=$homeUrl?>news/index/0">新闻中心</a> &gt;
+                <?=$category['c_name']?>
+            </div>
+            <div class="panel-body">
+                <div class="content-title">
+                    <h3><?=$data['title']?></h3>
+                    <div class="time"><?=$data['add_date']?></div>
+                </div>
+                <?=$data['content']?>
+            </div>
         </div>
     </div>
 </div>

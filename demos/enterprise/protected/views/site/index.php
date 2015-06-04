@@ -49,43 +49,49 @@
     </a>
 </div>
 <div class="container marketing index-menu">
-    <div class="col-lg-4 blog-sidebar">
-        <div class="sidebar-module menues">
-            <h4>服务项目</h4>
-            <ol class="list-unstyled">
-                <li><a href="<?=$homeUrl?>service/index/6">桌面服务</a></li>
-                <li><a href="<?=$homeUrl?>service/index/7">网络服务</a></li>
-                <li><a href="<?=$homeUrl?>service/index/8">系统服务</a></li>
-                <li><a href="<?=$homeUrl?>service/index/9">办公设备服务</a></li>
-                <li><a href="<?=$homeUrl?>service/index/10">数据安全</a></li>
-                <li><a href="<?=$homeUrl?>service/index/11">IT设备迁移</a></li>
-            </ol>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">服务项目</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/6">桌面服务</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/7">网络服务</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/8">系统服务</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/9">办公设备服务</a></li class="list-group-item">
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/10">数据安全</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>service/index/11">IT设备迁移</a></li>
+            </ul>
         </div>
     </div>
-    <div class="col-lg-4 blog-sidebar">
-        <div class="sidebar-module menues">
-            <h4>服务模式</h4>
-            <ol class="list-unstyled">
-                <li><a href="<?=$homeUrl?>pattern/index/12">紧急服务</a></li>
-                <li><a href="<?=$homeUrl?>pattern/index/13">例行巡检</a></li>
-                <li><a href="<?=$homeUrl?>pattern/index/14">场地驻场</a></li>
-                <li><a href="<?=$homeUrl?>pattern/index/15">远程服务</a></li>
-                <li><a href="<?=$homeUrl?>pattern/index/16">咨询服务</a></li>
-            </ol>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">服务模式</h3>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="<?=$homeUrl?>pattern/index/12">紧急服务</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>pattern/index/13">例行巡检</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>pattern/index/14">场地驻场</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>pattern/index/15">远程服务</a></li>
+                <li class="list-group-item"><a href="<?=$homeUrl?>pattern/index/16">咨询服务</a></li>
+            </ul>
         </div>
     </div>
 
-    <div class="col-lg-4 blog-sidebar">
-        <div class="sidebar-module menues">
-            <h4>新闻中心</h4>
-            <ol class="list-unstyled">
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">新闻中心</h3>
+            </div>
+            <ul class="list-group">
                  <?php foreach ($list as $key => $value):?>
-                    <li>
+                    <li class="list-group-item">
                         【<?=$value['c_name']?>】
                         <a href="<?=$homeUrl?>news/article/<?=$value['aid']?>"><?=$value['title']?></a>
                     </li>
                 <?php endforeach;?>
-            </ol>
+            </ul>
         </div>
     </div>
 </div>

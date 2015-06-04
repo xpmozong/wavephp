@@ -1,9 +1,11 @@
 <div class="container marketing content">
-    <div class="col-sm-12 blog-main">
-        <div class="info alert alert-info" role="alert">
-            您当前位置： 主页 > <?=$data['title']?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            您当前位置：
+            <a href="<?=$homeUrl?>">首页</a> &gt;
+            <?=$data['title']?>
         </div>
-        <div class="blog-content">
+        <div class="panel-body">
             <?=$data['content']?>
         </div>
     </div>

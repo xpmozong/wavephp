@@ -4,6 +4,7 @@
   right: 0;
   left: 0;
   z-index: 20;
+  font-size: 16px;
 }
 
 /* Flip around the padding for proper display in narrow viewports */
@@ -153,8 +154,8 @@ p{ line-height: 25px;}
 .menues{ border: 1px solid #ccc; border-radius: 4px;padding-left: 10px;
   padding-right: 10px; }
 .sidebar-module ol li{ line-height: 22px;}
-.blog-sidebar{padding-left: 0;} 
-.nav-sidebar{ border: 1px solid #ccc;}
+.blog-sidebar,.index-menu .col-lg-4{padding-left: 0;}
+.blog-sidebar .list-group-item { padding: 0;}
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
@@ -165,8 +166,9 @@ p{ line-height: 25px;}
 .up-space,.qq,.share{ margin-left: 10px;}
 .content{ padding: 0;}
 .blog-main{ padding: 0;}
-.blog-main p{ text-indent: 2em;}
 .pagination { margin: 0;}
+.content-title{ text-align: center;}
+.content-title h3{ margin-top: 0;}
 .footer{ margin-top: 40px;}
 .links{ margin-top: 50px;}
 .links ul{ margin-left: 0; padding-left: 0;}

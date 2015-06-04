@@ -36,12 +36,12 @@
   background-color: #f5f5f5;
   border-right: 1px solid #eee;
   width: 200px;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 
 /* Sidebar navigation */
 .nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
+  margin-right: -15px; /* 20px padding + 1px border */
   margin-bottom: 20px;
   margin-left: 0px;
 }
@@ -55,6 +55,8 @@
   color: #fff;
   background-color: #428bca;
 }
+.list-group-item { padding: 0;}
+
 /*
  * Main content
  */
@@ -77,7 +79,7 @@
 
 /* 自定义 */
 .table-responsive{ margin-top: 10px;}
-.info{ margin: 10px 0;}
+.info{ margin: 0 0 10px 0; width: 600px;}
 .select{ margin-top: 7px; width: 170px;}
 .s_select{ margin-top: 4px; width: 150px;}
 
@@ -112,3 +114,4 @@ blockquote p{ text-indent: 0em;}
     position: relative;
     top: 0;
 }
+.form-inline .f-select{ width: 200px;}

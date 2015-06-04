@@ -54,7 +54,7 @@ $(function(){
                     <ul class="nav navbar-nav">
                         <li><a href="<?=$homeUrl?>">首页</a></li>
                         <li class="dropdown">
-                            <a href="javascript:;" id="service-items-id">服务项目</a>
+                            <a href="<?=$homeUrl?>service/index/6" id="service-items-id">服务项目</a>
                             <ul role="menu" class="dropdown-menu" id="service-items">
                                 <li><a href="<?=$homeUrl?>service/index/6">桌面服务</a></li>
                                 <li><a href="<?=$homeUrl?>service/index/7">网络服务</a></li>
@@ -65,7 +65,7 @@ $(function(){
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="javascript:;" id="service-mode-id">服务模式</a>
+                            <a href="<?=$homeUrl?>pattern/index/12" id="service-mode-id">服务模式</a>
                             <ul role="menu" class="dropdown-menu" id="service-mode">
                                 <li><a href="<?=$homeUrl?>pattern/index/12">紧急服务</a></li>
                                 <li><a href="<?=$homeUrl?>pattern/index/13">例行巡检</a></li>
@@ -84,7 +84,7 @@ $(function(){
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a id="about-us-id" href="<?=$homeUrl?>about/index/4">关于我们</a>
+                            <a id="about-us-id" href="<?=$homeUrl?>about/index/1">关于我们</a>
                             <ul role="menu" class="dropdown-menu" id="about-us">
                                 <li><a href="<?=$homeUrl?>about/index/1">公司简介</a></li>
                                 <li><a href="<?=$homeUrl?>about/index/2">加入我们</a></li>
@@ -98,11 +98,17 @@ $(function(){
     </div>
 </div>
 <?php echo $content;?>
-<div class="container links clearfix">
-    <h3>友情链接</h3>
-    <ul id="link-urls">
+<div class="container links">
+    <div class="panel panel-default clearfix">
+        <div class="panel-heading">
+            <h3 class="panel-title">友情链接</h3>
+        </div>
+        <div class="panel-body">
+            <ul id="link-urls">
 
-    </ul>
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="container marketing footer">
     <!-- FOOTER -->

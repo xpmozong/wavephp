@@ -8,11 +8,15 @@ $(function(){
 })
 </script>
 <div class="col-sm-3 col-md-2 sidebar" id="sidebar">
+    <ul class="nav nav-sidebar list-group">
     <?php foreach ($list as $key => $value):?>
-        <ul class="nav nav-sidebar">
-            <?php foreach ($value as $k => $v):?>
-                <li><a href="<?php echo $homeUrl.''.$v['permission_url'];?>" target="right_frame"><?php echo $v['permission_name'];?></a></li>
-            <?php endforeach;?>
-        </ul>
+        <?php foreach ($value as $k => $v):?>
+            <li class="list-group-item">
+                <a href="<?php echo $homeUrl.''.$v['permission_url'];?>" target="right_frame">
+                    <?php echo $v['permission_name'];?>
+                </a>
+            </li>
+        <?php endforeach;?>
     <?php endforeach;?>
+    </ul>
 </div>
