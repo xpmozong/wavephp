@@ -41,58 +41,58 @@ helloworld
 3、入口 index.php
 内容：
 <pre>
-    header('Content-Type:text/html;charset=utf-8');
-    // error_reporting(0);
+header('Content-Type:text/html;charset=utf-8');
+// error_reporting(0);
 
-    require dirname(__FILE__).'/../../wavephp/Wave.php';
-    $config = dirname(__FILE__).'/protected/config/main.php';
+require dirname(__FILE__).'/../../wavephp/Wave.php';
+$config = dirname(__FILE__).'/protected/config/main.php';
 
-    $wave = new Wave($config);
-    $wave->run();
+$wave = new Wave($config);
+$wave->run();
 </pre>
 
 4、配置文件
     config/main.php
 <pre>
-    $config = array(
-        'projectName'=>'protected',
-        'modelName'=>'protected',
+$config = array(
+    'projectName'=>'protected',
+    'modelName'=>'protected',
 
-        'import'=>array(
-            'models.*'
-        ),
+    'import'=>array(
+        'models.*'
+    ),
 
-        'defaultController'=>'site',
-        
-        'database'=>array(
-            'db'=>array(
-                'dbhost'        => 'localhost',
-                'dbuser'        => 'root',
-                'dbpasswd'      => '',
-                'dbname'        => 'wordpress',
-                'dbpconnect'    => 0,
-                'dbchart'       => 'utf8'
-            ),
-            'db2'=>array(
-                'dbhost'        => 'localhost',
-                'dbuser'        => 'root',
-                'dbpasswd'      => '',
-                'dbname'        => 'joke',
-                'dbpconnect'    => 0,
-                'dbchart'       => 'utf8'
-            )
+    'defaultController'=>'site',
+    
+    'database'=>array(
+        'db'=>array(
+            'dbhost'        => 'localhost',
+            'dbuser'        => 'root',
+            'dbpasswd'      => '',
+            'dbname'        => 'wordpress',
+            'dbpconnect'    => 0,
+            'dbchart'       => 'utf8'
         ),
-        'session'=>array(
-            'pre'               => 'blog',
-            'timeout'           => 86400
-        ),
-        'memcache'=>array(
-            'cache1' => array(
-                'host'              => 'localhost',
-                'port'              => '11211'
-            )
+        'db2'=>array(
+            'dbhost'        => 'localhost',
+            'dbuser'        => 'root',
+            'dbpasswd'      => '',
+            'dbname'        => 'joke',
+            'dbpconnect'    => 0,
+            'dbchart'       => 'utf8'
         )
-    );
+    ),
+    'session'=>array(
+        'pre'               => 'blog',
+        'timeout'           => 86400
+    ),
+    'memcache'=>array(
+        'cache1' => array(
+            'host'              => 'localhost',
+            'port'              => '11211'
+        )
+    )
+);
 </pre>
 5、默认控制层文件controllers/SiteController.php
 调用默认方法actionIndex
@@ -162,35 +162,35 @@ $a 就是 aaa， $b 就是 bbb<br>
 
 7、数据库 仅支持mysql数据库，参看demos/enterprise/protected/models/TestModel.php的sql用法，继承Model
 <pre>
-    $like = array();
-    $like['content'] = '是';
-    $array = $this  ->select('*')
-                    ->from('articles')
-                    ->like($like)
-                    ->limit(0, 2)
-                    ->groupBy('aid')
-                    ->orderBy('aid')
-                    ->getAll();
+$like = array();
+$like['content'] = '是';
+$array = $this  ->select('*')
+                ->from('articles')
+                ->like($like)
+                ->limit(0, 2)
+                ->groupBy('aid')
+                ->orderBy('aid')
+                ->getAll();
 
-    $array = $this  ->select('*')
-                    ->from('articles')
-                    ->in("aid IN(2,3,4)")
-                    ->getAll();
+$array = $this  ->select('*')
+                ->from('articles')
+                ->in("aid IN(2,3,4)")
+                ->getAll();
 
-    $array = $this  ->select('*')
-                    ->from('articles a')
-                    ->join('category c', 'a.cid=c.cid')
-                    ->getAll();
+$array = $this  ->select('*')
+                ->from('articles a')
+                ->join('category c', 'a.cid=c.cid')
+                ->getAll();
 
-    $array = $this  ->select('*')
-                    ->from('category')
-                    ->getAll();
+$array = $this  ->select('*')
+                ->from('category')
+                ->getAll();
 
-    $data = array('c_name'=>'测试测试update');
-    var_dump($this->insert('category', $data));die;
-    var_dump($this->update('category', $data, "cid=4"));die;
+$data = array('c_name'=>'测试测试update');
+var_dump($this->insert('category', $data));die;
+var_dump($this->update('category', $data, "cid=4"));die;
 
-    return $array;
+return $array;
 </pre>
 
 8、session
@@ -223,55 +223,55 @@ session 怎么用？
 
 以demos下enterprise为例，nginx配置如下：
 <pre>
-    server {
-        listen       80;
-        server_name  localhost;
-        index index.php index.html index.htm;
-        root D:/xampp/htdocs/wavephp/demos/enterprise;
+server {
+    listen       80;
+    server_name  localhost;
+    index index.php index.html index.htm;
+    root D:/xampp/htdocs/wavephp/demos/enterprise;
 
-        # redirect server error pages to the static page /50x.html
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-             
-        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
-        {
-            expires 30d;
-        }
-
-        location ~ .*\.(js|css)?$
-        {
-            expires 24h;
-        }
-    
-        if ($request_filename !~* (\.xml|\.rar|\.html|\.htm|\.php|\.swf|\.css|\.js|\.gif|\.png|\.jpg|\.jpeg|robots\.txt|index\.php|\.jnlp|\.jar|\.eot|\.woff|\.ttf|\.svg)) {
-            rewrite ^/(.*)$ /index.php/$1 last;
-        }
-
-        location ~ .*\.php {
-            fastcgi_pass   127.0.0.1:9000;
-            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-            fastcgi_index  index.php;
-            fastcgi_split_path_info ^(.+\.php)(.*)$;                                         
-            fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;                 
-            fastcgi_param   PATH_INFO $fastcgi_path_info;                                       
-            fastcgi_param   PATH_TRANSLATED $document_root$fastcgi_path_info;                   
-            include fastcgi_params;  
-        }
+    # redirect server error pages to the static page /50x.html
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
     }
+         
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+        expires 30d;
+    }
+
+    location ~ .*\.(js|css)?$
+    {
+        expires 24h;
+    }
+
+    if ($request_filename !~* (\.xml|\.rar|\.html|\.htm|\.php|\.swf|\.css|\.js|\.gif|\.png|\.jpg|\.jpeg|robots\.txt|index\.php|\.jnlp|\.jar|\.eot|\.woff|\.ttf|\.svg)) {
+        rewrite ^/(.*)$ /index.php/$1 last;
+    }
+
+    location ~ .*\.php {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_index  index.php;
+        fastcgi_split_path_info ^(.+\.php)(.*)$;                                         
+        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;                 
+        fastcgi_param   PATH_INFO $fastcgi_path_info;                                       
+        fastcgi_param   PATH_TRANSLATED $document_root$fastcgi_path_info;                   
+        include fastcgi_params;  
+    }
+}
 </pre>
 
 .htaccess如下：
 <pre>
-    <IfModule mod_rewrite.c>
-      Options +FollowSymlinks
-      RewriteEngine On
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On
 
-      RewriteCond %{REQUEST_FILENAME} !-d
-      RewriteCond %{REQUEST_FILENAME} !-f
-      RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
-    </IfModule>
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
+</IfModule>
 </pre>
 
 网站后台地址：http://127.0.0.1/admin.php 用户名：xuping  密码：123456
