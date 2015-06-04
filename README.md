@@ -221,7 +221,59 @@ session 怎么用？
 存储：Wave::app()->memcache->cache1->set('key', $tmp_object, false, 30)<br>
 获得：Wave::app()->memcache->cache1->get('key')
 
+以demos下enterprise为例，nginx配置如下：
+<pre>
+    server {
+        listen       80;
+        server_name  localhost;
+        index index.php index.html index.htm;
+        root D:/xampp/htdocs/wavephp/demos/enterprise;
 
+        # redirect server error pages to the static page /50x.html
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+             
+        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+        {
+            expires 30d;
+        }
 
+        location ~ .*\.(js|css)?$
+        {
+            expires 24h;
+        }
+    
+        if ($request_filename !~* (\.xml|\.rar|\.html|\.htm|\.php|\.swf|\.css|\.js|\.gif|\.png|\.jpg|\.jpeg|robots\.txt|index\.php|\.jnlp|\.jar|\.eot|\.woff|\.ttf|\.svg)) {
+            rewrite ^/(.*)$ /index.php/$1 last;
+        }
+
+        location ~ .*\.php {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info ^(.+\.php)(.*)$;                                         
+            fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;                 
+            fastcgi_param   PATH_INFO $fastcgi_path_info;                                       
+            fastcgi_param   PATH_TRANSLATED $document_root$fastcgi_path_info;                   
+            include fastcgi_params;  
+        }
+    }
+</pre>
+
+.htaccess如下：
+<pre>
+    <IfModule mod_rewrite.c>
+      Options +FollowSymlinks
+      RewriteEngine On
+
+      RewriteCond %{REQUEST_FILENAME} !-d
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
+    </IfModule>
+</pre>
+
+网站后台地址：http://127.0.0.1/admin.php 用户名：xuping  密码：123456
 
 我用惯了YII框架，所以在很多功能上特像YII，虽然wavephp没有YII的功能全，大，但是一些常用的基本功能还是有的。希望大家多多提意见！QQ群：272919485

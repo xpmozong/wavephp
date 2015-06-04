@@ -13,13 +13,7 @@
             </li>
         </ul>
     </div>
-    <div class="col-sm-9 blog-main">
-        <!-- <div class="info alert alert-info" role="alert">
-            您当前位置： 主页 > 关于我们 > <?=$data['title']?>
-        </div>
-        <div class="blog-content">
-            <?=$data['content']?>
-        </div> -->
+    <div class="col-sm-10 blog-main">
         <div class="panel panel-default">
             <div class="panel-heading">
                 您当前位置：
