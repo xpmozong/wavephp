@@ -16,8 +16,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         if(Wave::app()->session->getState('userid')){
-            $this->layout = 'noindex';
-            $this->render('index');
+            $this->render('site/index');
         }else{
             $this->redirect(Wave::app()->homeUrl.'site/login');
         }
@@ -31,8 +30,9 @@ class SiteController extends Controller
         if(Wave::app()->session->getState('userid')){
             $this->redirect(Wave::app()->homeUrl);
         }else{
-            $this->layout = 'login';
-            $this->render('login');
+            $this->render('layout/header');
+            $this->render('site/login');
+            $this->render('layout/footer');
         }
     }
 
@@ -74,7 +74,9 @@ class SiteController extends Controller
      */
     public function actionHeader()
     {
-        $this->render('header');
+        $this->render('layout/header');
+        $this->render('site/header');
+        $this->render('layout/footer');
     }
 
     /**
@@ -84,7 +86,9 @@ class SiteController extends Controller
     {
         $Common = new Common();
         $render = array('username' => Wave::app()->session->getState('username'));
-        $this->render('right', $render);
+        $this->render('layout/header');
+        $this->render('site/right', $render);
+        $this->render('layout/footer');
     }
 
     /**
@@ -99,7 +103,9 @@ class SiteController extends Controller
         $list[][] = array('permission_name'=>'内容列表', 'permission_url'=>'substance');
         $list[][] = array('permission_name'=>'友情链接', 'permission_url'=>'links');
         $render = array('list' => $list);
-        $this->render('lefttree', $render);
+        $this->render('layout/header');
+        $this->render('site/lefttree', $render);
+        $this->render('layout/footer');
     }
 
 }

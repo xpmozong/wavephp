@@ -19,7 +19,10 @@ class ServiceController extends Controller
         $data = $Common->getOneData('substance', '*', 'sid', $sid);
         $render = array('data' => $data);
 
-        $this->render('index', $render);
+        $links = $Common->getFieldList('links', '*', 'lid desc');
+        $this->render('layout/header');
+        $this->render('service/index', $render);
+        $this->render('layout/footer', array('links'=>$links));
     }
 
 }

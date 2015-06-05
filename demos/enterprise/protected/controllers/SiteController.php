@@ -21,17 +21,10 @@ class SiteController extends Controller
         null, 'a.aid DESC');
         $render = array('list' => $list);
 
-        $this->render('index', $render);
-    }
-
-    /**
-     * 友情链接
-     */
-    public function actionLinks()
-    {
-        $Common = new Common();
-        $list = $Common->getFieldList('links', '*', 'lid desc');
-        echo json_encode($list);
+        $links = $Common->getFieldList('links', '*', 'lid desc');
+        $this->render('layout/header');
+        $this->render('site/index', $render);
+        $this->render('layout/footer', array('links'=>$links));
     }
 
     public function actionTestDb()

@@ -45,8 +45,9 @@ class SiteController extends Controller
 
         // $username = Wave::app()->user->getState('username');
 
-        // // $this->layout='index';
-        // $this->render('index', array('username'=>$username));
+        // $this->render('layout/header');
+        // $this->render('site/index', array('username'=>$username));
+        // $this->render('layout/footer');
 
         // $tmp_object = new stdClass;
         // $tmp_object->str_attr = 'test';

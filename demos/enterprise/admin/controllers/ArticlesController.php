@@ -51,7 +51,10 @@ class ArticlesController extends Controller
                         'category'  => $category,
                         'cid'       => $cid,
                         'pagebar'   => $pagebar);
-        $this->render('index', $render);
+
+        $this->render('layout/header');
+        $this->render('articles/index', $render);
+        $this->render('layout/footer');
     }
 
     /**
@@ -66,7 +69,9 @@ class ArticlesController extends Controller
         
         $render = array('article'   => $data,
                         'category'  => $category);
-        $this->render('modify', $render);
+        $this->render('layout/header');
+        $this->render('articles/modify', $render);
+        $this->render('layout/footer');
     }
 
     /**

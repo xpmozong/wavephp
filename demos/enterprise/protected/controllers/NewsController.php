@@ -45,7 +45,10 @@ class NewsController extends Controller
                         'category'  => $category,
                         'pagebar'   => $pagebar, 
                         'cid'       => $cid);
-        $this->render('index', $render);
+        $links = $Common->getFieldList('links', '*', 'lid desc');
+        $this->render('layout/header');
+        $this->render('news/index', $render);
+        $this->render('layout/footer', array('links'=>$links));
     }
 
     /**

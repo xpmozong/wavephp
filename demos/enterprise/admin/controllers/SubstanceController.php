@@ -43,7 +43,9 @@ class SubstanceController extends Controller
         $render = array('list'      => $list,
                         'page'      => $page,
                         'pagebar'   => $pagebar);
-        $this->render('index', $render);
+        $this->render('layout/header');
+        $this->render('substance/index', $render);
+        $this->render('layout/footer');
     }
 
     /**
@@ -56,7 +58,9 @@ class SubstanceController extends Controller
         $data = $Common->getOneData('substance', '*', 'sid', $id);
         
         $render = array('substance' => $data);
-        $this->render('modify', $render);
+        $this->render('layout/header');
+        $this->render('substance/modify', $render);
+        $this->render('layout/footer');
     }
 
     /**

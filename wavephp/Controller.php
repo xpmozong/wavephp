@@ -24,8 +24,7 @@ class Controller
     private $app            = '';       //项目信息
     private $frameworkPath  = '';       //框架路径
     private $projectPath    = '';       //项目路径
-    private $projectName    = '';       //项目名称
-    public  $layout         = 'main';   //视图层    
+    private $projectName    = '';       //项目名称 
 
     /**
      * 初始化
@@ -47,16 +46,14 @@ class Controller
      */
     public function render($filename, $variables = array())
     {
-        $classname = get_class($this);
-        $folder = strtolower(str_replace('Controller', '', $classname));
         error_reporting(E_ERROR | E_WARNING | E_PARSE);
         //数组变量转换
         extract($variables, EXTR_SKIP);
         ob_start();
-        require $this->projectPath.$this->projectName.'/views/'.$folder.'/'.$filename.'.php';
+        require $this->projectPath.$this->projectName.'/views/'.$filename.'.php';
         $content = ob_get_contents();
         ob_end_clean();
-        require $this->projectPath.$this->projectName.'/views/layout/'.$this->layout.'.php';
+        echo $content;
     }
 
     /**

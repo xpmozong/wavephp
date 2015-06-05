@@ -19,7 +19,10 @@ class ExampleController extends Controller
         $data = $Common->getOneData('substance', '*', 'sid', 5);
         $render = array('data' => $data);
 
-        $this->render('index', $render);
+        $links = $Common->getFieldList('links', '*', 'lid desc');
+        $this->render('layout/header');
+        $this->render('example/index', $render);
+        $this->render('layout/footer', array('links'=>$links));
     }
 
 }

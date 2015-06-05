@@ -9,6 +9,3 @@
 <script type="text/javascript" src="<?=$baseUrl?>/resouce/js/jquery.min.js"></script>
 </head>
 <body>
-<?php echo $content;?>
-</body>
-</html>

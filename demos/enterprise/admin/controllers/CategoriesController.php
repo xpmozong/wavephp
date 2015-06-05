@@ -27,7 +27,9 @@ class CategoriesController extends Controller
         $Common = new Common();
         $list = $Common->getFieldList('category', '*');
         $render = array('list' => $list);
-        $this->render('index', $render);
+        $this->render('layout/header');
+        $this->render('categories/index', $render);
+        $this->render('layout/footer');
     }
 
     /**
@@ -39,7 +41,9 @@ class CategoriesController extends Controller
         $Common = new Common();
         $data = $Common->getOneData('category', '*', 'cid', $cid);
         $render = array('data' => $data);
-        $this->render('modify', $render);
+        $this->render('layout/header');
+        $this->render('categories/modify', $render);
+        $this->render('layout/footer');
     }
 
     /**

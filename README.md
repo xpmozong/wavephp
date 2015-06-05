@@ -133,10 +133,10 @@ class SiteController extends Controller
         echo "User model 加载成功！";
 
         $username = 'Ellen';
-        // 默认是 $this->layout='main';
-        // $this->layout='index';
         // 然后查看 views/site/index.php 文件 输出 <?=$username?>
-        $this->render('index', array('username'=>$username));
+        $this->render('layout/header');
+        $this->render('site/index', array('username'=>$username));
+        $this->render('layout/footer');
 
         // mecache使用
         $tmp_object = new stdClass;
@@ -169,7 +169,7 @@ $array = $this  ->select('*')
                 ->like($like)
                 ->limit(0, 2)
                 ->group('aid')
-                ->order('aid')
+                ->order('aid desc')
                 ->getAll();
 
 $array = $this  ->select('*')

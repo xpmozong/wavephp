@@ -27,7 +27,9 @@ class LinksController extends Controller
         $Common = new Common();
         $list = $Common->getFieldList('links', '*');
         $render = array('list' => $list);
-        $this->render('index', $render);
+        $this->render('layout/header');
+        $this->render('links/index', $render);
+        $this->render('layout/footer');
     }
 
     /**
@@ -40,7 +42,9 @@ class LinksController extends Controller
         $data = $Common->getOneData('links', '*', 'lid', $id);
         
         $render = array('links' => $data);
-        $this->render('modify', $render);
+        $this->render('layout/header');
+        $this->render('links/modify', $render);
+        $this->render('layout/footer');
     }
 
     /**

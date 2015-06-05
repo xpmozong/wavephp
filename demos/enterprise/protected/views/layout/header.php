@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -14,14 +13,6 @@
 $(function(){
     $('.carousel').carousel({
         interval: 2000
-    });
-
-    $.getJSON("<?php echo $homeUrl.'site/links';?>", function(data){
-        var txt = '';
-        for (var i = 0; i < data.length; i++) {
-            txt += '<li><a href="'+data[i].url+'">'+data[i].title+'</a></li>';
-        };
-        $("#link-urls").html(txt);
     });
 })
 </script>
@@ -97,8 +88,8 @@ $(function(){
         </nav>
     </div>
 </div>
-<?php echo $content;?>
-<div class="container links">
+
+<!-- <div class="container links">
     <div class="panel panel-default clearfix">
         <div class="panel-heading">
             <h3 class="panel-title">友情链接</h3>
@@ -111,12 +102,10 @@ $(function(){
     </div>
 </div>
 <div class="container marketing footer">
-    <!-- FOOTER -->
     <footer>
         <p class="pull-right"><a href="#">返回顶部</a></p>
         <p>&copy; 2014 企业网站</p>
     </footer>
 </div>
 </body>
-</html>
-
+</html> -->
