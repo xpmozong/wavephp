@@ -25,8 +25,7 @@ class CategoriesController extends Controller
     public function actionIndex()
     {
         $Common = new Common();
-        $sql = "SELECT * FROM category";
-        $list = $Common->getSqlList($sql);
+        $list = $Common->getFieldList('category', '*');
         $render = array('list' => $list);
         $this->render('index', $render);
     }

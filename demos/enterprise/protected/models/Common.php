@@ -110,6 +110,21 @@ class Common extends Model
     }
 
     /**
+     * 根据字段获得所有数据
+     * @param string $table     表名
+     * @param string $allfield  字段名
+     * @param string $order     排序
+     * @return array            结果数组
+     */
+    public function getFieldList($table, $allfield, $order = null)
+    {
+        return $this->select($allfield)
+                    ->from($table)
+                    ->order($order)
+                    ->getAll();
+    }
+
+    /**
      * 获得单个数据
      * @param string $table     表名
      * @param string $allField  查询字段
@@ -138,20 +153,63 @@ class Common extends Model
      */
     public function getAllData($table, $allField, $field, $id, $in = false)
     {
-        $array = array();
         if ($in) {
-            $array = $this  ->select($allField)
-                            ->from($table)
-                            ->in(array($field=>$id))
-                            ->getAll();
+            return $this->select($allField)
+                        ->from($table)
+                        ->in("$field IN ($id)")
+                        ->getAll();
         }else{
-            $array = $this  ->select($allField)
-                            ->from($table)
-                            ->where("$field='$id'")
-                            ->getAll();
+            return $this->select($allField)
+                        ->from($table)
+                        ->where("$field='$id'")
+                        ->getAll();
         }
-        
-        return $array;
+    }
+
+    /**
+     * 有条件获得分页数据列表
+     * @param string $table     表名
+     * @param string $allfield  字段名
+     * @param string $wherestr  条件
+     * @param int $start        从第几条开始查询
+     * @param int $limit        限制几条
+     * @param string $order     排序
+     * @return array            结果数组
+     */
+    public function getFieldDataList($table, $allfield, $wherestr, 
+                    $start, $limit, $order = null)
+    {
+        return $this->select($allfield)
+                    ->from($table)
+                    ->where($wherestr)
+                    ->order($order)
+                    ->limit($start, $limit)
+                    ->getAll();
+    }
+
+    /**
+     * 获得连接条件查询
+     * @param string $table     表名
+     * @param string $allfield  字段名
+     * @param int $start        从第几条开始查询
+     * @param int $limit        限制几条
+     * @param string $jsonTable 连接表
+     * @param string $joinOn    连接字段
+     * @param string $wherestr  条件
+     * @param string $order     排序
+     * @return array            结果数组
+     */
+    public function getJoinDataList($table, 
+                    $allfield, $start, $limit, $jsonTable, $joinOn, 
+                    $wherestr = null, $order = null)
+    {
+        return $this->select($allfield)
+                    ->from($table)
+                    ->join($jsonTable, $joinOn)
+                    ->where($wherestr)
+                    ->order($order)
+                    ->limit($start, $limit)
+                    ->getAll();
     }
 
     /**
@@ -177,9 +235,28 @@ class Common extends Model
      */
     public function getFieldCount($table, $field, $id)
     {
-        $count = $this  ->select('count(*) count')
-                        ->from($table)
-                        ->where("$field='$id'");
+        $countArr = $this   ->select('count(*) count')
+                            ->from($table)
+                            ->where("$field='$id'")
+                            ->getOne();
+        $count = $countArr['count'];
+
+        return $count;
+    }
+
+    /**
+     * 根据条件字段统计数量
+     * @param string $table     表名
+     * @param string $wherestr  条件
+     * @return int              数量
+     */
+    public function getFieldWhereCount($table, $wherestr)
+    {
+        $countArr = $this   ->select('count(*) count')
+                            ->from($table)
+                            ->where($wherestr)
+                            ->getOne();
+        $count = $countArr['count'];
         
         return $count;
     }
@@ -247,54 +324,9 @@ class Common extends Model
      * @param int $page         当前页
      * @return string           分页
      */
-    public function getAdminPageBar($url, $allcount, $pagesize, $page)
-    {
-        $total = '<li>共'.$allcount.'条</li>';
-        $pagenum = ceil($allcount/$pagesize);
-        $prev = '<li class="cute">
-                    <a href="'.preg_replace('/page\=(\d+)/', 'page=1', $url).'">首页</a>
-                </li>';
-        $prev_page = '<li class="cute">
-                        <a href="'.preg_replace('/page\=(\d+)/', 'page='.($page == 1 ? 1 : $page - 1), $url).'">
-                            上一页
-                        </a>
-                    </li>';
-        $info = '<li class="center">
-                    第 <input type="text" id="jumppage" value="'.$page.'"> 页，共'.$pagenum.'页
-                </li>';
-        $next_page = '<li class="cute">
-                        <a href="'.preg_replace('/page\=(\d+)/', 'page='.($page == $pagenum ? $pagenum : $page + 1), $url).'">
-                            下一页
-                        </a>
-                    </li>';
-        $next = '<li class="cute">
-                    <a href="'.preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url).'">
-                        尾页
-                    </a>
-                </li>';
-        $bar = '<div class="pagebar"><ul class="list-inline">'.$total.$prev.$prev_page.$info.$next_page.$next.'</ul></div>';
-
-        return $bar;
-    }
-
-    /**
-     * 分页
-     * @param string $url       地址
-     * @param int $allcount     总数
-     * @param int $pagesize     页显示数量
-     * @param int $page         当前页
-     * @return string           分页
-     */
     public function getPageBar($url, $allcount, $pagesize, $page)
     {
         $pagenum = ceil($allcount/$pagesize);
-
-        // $list = '共'.$allcount.'条';
-        // if ($allcount == 0) {
-        //     return '<div class="pagebar">共0条</div>';
-        // }
-        // $list .= ' 共'.$pagenum.'页';
-
         $list = '<ul class="pagination">';
         $begin = 1;
         $end = 7;
@@ -310,15 +342,18 @@ class Common extends Model
             $begin = 1;
             $end = $pagenum;
         }
-        $list .= '<li><a href="'.preg_replace('/page\=(\d+)/', 'page=1', $url).'">首页'."</a></li>";
+        $list .= '<li><a href="'.
+                preg_replace('/page\=(\d+)/', 'page=1', $url).'">首页'."</a></li>";
         for ($i = $begin; $i <= $end; $i++) {
             if ($i == $page) {
                 $list .= '<li class="active"><a href="javascript:;">'.$i."</a></li>";
             }else{
-                $list .= '<li><a href="'.preg_replace('/page\=(\d+)/', 'page='.$i, $url).'">'.$i."</a></li>";
+                $list .= '<li><a href="'.
+                preg_replace('/page\=(\d+)/', 'page='.$i, $url).'">'.$i."</a></li>";
             }
         }
-        $list .= '<li><a href="'.preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url).'">尾页'."</a></li>";
+        $list .= '<li><a href="'.
+                preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url).'">尾页'."</a></li>";
         $list .= '</ul>';
         $bar = '<div class="pagebar">'.$list.'</div>';
 

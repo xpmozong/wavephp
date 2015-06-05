@@ -25,7 +25,7 @@ class LinksController extends Controller
     public function actionIndex()
     {
         $Common = new Common();
-        $list = $Common->getSqlList('SELECT * FROM links');
+        $list = $Common->getFieldList('links', '*');
         $render = array('list' => $list);
         $this->render('index', $render);
     }

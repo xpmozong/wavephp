@@ -29,13 +29,10 @@ class SubstanceController extends Controller
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagesize = 15;
         $start = ($page - 1) * $pagesize;
-        $where = '';
 
-        $sql = "SELECT * FROM substance WHERE 1=1 $where ORDER BY sid DESC LIMIT $start,$pagesize";
-        $list = $Common->getSqlList($sql);
-        
-        $countArr = $Common->getSqlOne("SELECT count(*) count FROM substance WHERE 1=1 $where");
-        $count = $countArr['count'];
+        $list = $Common->getFieldDataList('substance', '*', null, 
+                    $start, $pagesize, 'sid DESC');
+        $count = $Common->getCount('substance');
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){

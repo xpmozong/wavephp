@@ -16,12 +16,9 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $Common = new Common();
-        $sql = "SELECT a.aid,a.title,a.add_date,c.c_name FROM articles a 
-                LEFT JOIN category c
-                ON a.cid=c.cid
-                ORDER BY a.aid DESC 
-                LIMIT 0,12";
-        $list = $Common->getSqlList($sql);
+        $list = $Common->getJoinDataList('articles a', 
+        'a.aid,a.title,a.add_date,c.c_name', 0, 12, 'category c', 'a.cid=c.cid', 
+        null, 'a.aid DESC');
         $render = array('list' => $list);
 
         $this->render('index', $render);
@@ -33,8 +30,7 @@ class SiteController extends Controller
     public function actionLinks()
     {
         $Common = new Common();
-        $sql = "SELECT * FROM links";
-        $list = $Common->getSqlList($sql);
+        $list = $Common->getFieldList('links', '*', 'lid desc');
         echo json_encode($list);
     }
 

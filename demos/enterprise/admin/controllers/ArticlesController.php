@@ -30,16 +30,12 @@ class ArticlesController extends Controller
         $cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 1;
         $pagesize = 15;
         $start = ($page - 1) * $pagesize;
-        $where = '';
-        $where .= " AND cid='$cid'";
 
-        $sql = "SELECT aid,title FROM articles a WHERE 1=1 $where ORDER BY aid DESC LIMIT $start,$pagesize";
-        $list = $Common->getSqlList($sql);
-        
-        $countArr = $Common->getSqlOne("SELECT count(*) count FROM articles WHERE 1=1 $where");
-        $count = $countArr['count'];
+        $list = $Common->getFieldDataList('articles', 'aid,title', "cid='$cid'", 
+                    $start, $pagesize, 'aid DESC');
+        $count = $Common->getFieldCount('articles', 'cid', $cid);
 
-        $category = $Common->getSqlList('SELECT * FROM category');
+        $category = $Common->getFieldList('category', '*');
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['cid'])){
@@ -66,7 +62,7 @@ class ArticlesController extends Controller
         $id = (int)$id;
         $Common = new Common();
         $data = $Common->getOneData('articles', '*', 'aid', $id);
-        $category = $Common->getSqlList('SELECT * FROM category');
+        $category = $Common->getFieldList('category', '*');
         
         $render = array('article'   => $data,
                         'category'  => $category);

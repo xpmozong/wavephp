@@ -64,7 +64,7 @@ class Mysql extends Abstarct
      */
     public function query($sql, $die_msg = 1)
     {
-        $result = @mysql_query($sql, $this->dblink); 
+        $result = @mysql_query($sql, $this->dblink);
         // 可以用自定义错误信息的方法，就要压制本身的错误信息
         if($result == true) {
             return $result;
@@ -192,7 +192,8 @@ class Mysql extends Abstarct
      */
     public function getInsertID()
     {
-        return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : $this->result($this->query('SELECT last_insert_id()'), 0);
+        return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
+            $this->result($this->query('SELECT last_insert_id()'), 0);
     }
  
     /**

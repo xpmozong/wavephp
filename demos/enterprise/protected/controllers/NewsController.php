@@ -28,16 +28,11 @@ class NewsController extends Controller
         $pagesize = 15;
         $start = ($page - 1) * $pagesize;
 
-        $sql = "SELECT a.aid,a.title,a.add_date,c.c_name FROM articles a 
-                LEFT JOIN category c
-                ON a.cid=c.cid
-                WHERE 1=1 $where 
-                ORDER BY a.aid DESC 
-                LIMIT $start,$pagesize";
-        $list = $Common->getSqlList($sql);
-        
-        $countArr = $Common->getSqlOne("SELECT count(*) count FROM articles a WHERE 1=1 $where");
-        $count = $countArr['count'];
+        $list = $Common->getJoinDataList('articles a', 
+        'a.aid,a.title,a.add_date,c.c_name', $start, $pagesize, 'category c', 'a.cid=c.cid', 
+        "1=1 $where", 'a.aid DESC');
+    
+        $count = $Common->getFieldWhereCount('articles a', "1=1 $where");
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){

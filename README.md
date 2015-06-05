@@ -168,8 +168,8 @@ $array = $this  ->select('*')
                 ->from('articles')
                 ->like($like)
                 ->limit(0, 2)
-                ->groupBy('aid')
-                ->orderBy('aid')
+                ->group('aid')
+                ->order('aid')
                 ->getAll();
 
 $array = $this  ->select('*')

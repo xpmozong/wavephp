@@ -121,9 +121,11 @@ class Model
      * @return $this
      *
      */
-    public function in($conditions)
+    public function in($conditions = null)
     {
-        $this->_where[] = $conditions;
+        if ($conditions) {
+            $this->_where[] = $conditions;
+        }
 
         return $this;
     }
@@ -136,9 +138,11 @@ class Model
      * @return $this
      *
      */
-    public function where($conditions)
+    public function where($conditions = null)
     {
-        $this->_where[] = $conditions;
+        if ($conditions) {
+            $this->_where[] = $conditions;
+        }
 
         return $this;
     }
@@ -231,7 +235,7 @@ class Model
      * @return $this
      *
      */
-    public function groupBy($field)
+    public function group($field)
     {
         if (is_string($field)) {
             $field = explode(',', $field);
@@ -246,20 +250,16 @@ class Model
     /**
      * 排序
      *
-     * @param string $field     字段
+     * @param string $orderStr  字段排序
      *
      * @return $this
      *
      */
-    public function orderBy($field, $direction = 'desc')
+    public function order($orderStr = null)
     {
-        $direction = strtoupper($direction);
-
-        if ( $direction == "RAND" ) {
-            $direction = "RAND()";
+        if ($orderStr) {
+            $this->_order[] = $orderStr;
         }
-
-        $this->_order[] = $field.' '.$direction;
 
         return $this;
     }

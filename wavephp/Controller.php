@@ -101,14 +101,15 @@ class Controller
      */
     public function jumpBox($msg, $url, $jumpTime = 3)
     {
-        $str = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml">
+        $str = '<html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <title>信息弹窗</title>
                 <style type="text/css">
                 *,body{ padding: 0; margin: 0;}
-                .box{ margin: 0 auto; padding: 30px; border-radius:3px; border: 5px solid #000; width: 400px; margin-top: 15%;}
+                .box{ margin: 0 auto; padding: 30px; 
+                    border-radius:3px; border: 5px solid #000; 
+                    width: 400px; margin-top: 15%;}
                 </style>
                 <script type="text/javascript">
                 var jump = function(){
@@ -123,7 +124,6 @@ class Controller
                 </div>
                 </body>
                 </html>';
-
         exit($str);
     }
 

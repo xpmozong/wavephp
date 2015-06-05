@@ -17,8 +17,8 @@ class TestModel extends Model {
                         ->from('articles')
                         ->like($like)
                         ->limit(0, 2)
-                        ->groupBy('aid')
-                        ->orderBy('aid')
+                        ->group('aid')
+                        ->order('aid desc')
                         ->getAll();
 
         $array = $this  ->select('*')
