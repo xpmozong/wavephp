@@ -105,8 +105,9 @@ class Session extends Model
         }else{
             $tables = $this->getAll('show tables');
             $tablesList = array();
+            $dbName = Wave::app()->config['database']['db']['dbname'];
             foreach ($tables as $key => $value) {
-                $tablesList[] = $value['Tables_in_platform'];
+                $tablesList[] = $value['Tables_in_'.$dbName];
             }
             if (in_array($this->tableName, $tablesList)) {
                 $this->isread = true;
