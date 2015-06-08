@@ -74,7 +74,7 @@ class Controller
         $VerifyCode->width = $width;
         $VerifyCode->height = $height;
         $VerifyCode->doimg();
-        $this->app->user->setState('verifycode', $VerifyCode->getCode(), 300);
+        $this->app->session->setState('verifycode', $VerifyCode->getCode(), 600);
     }
 
     /**

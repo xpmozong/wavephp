@@ -173,3 +173,6 @@ p{ line-height: 25px;}
 .links{ margin-top: 50px;}
 .links ul{ margin-left: 0; padding-left: 0;}
 .links ul li{ list-style: none; float: left; margin-right: 20px;}
+
+.con-login{ margin: 100px auto; width: 300px;}
+.login-info{ text-align: right;}

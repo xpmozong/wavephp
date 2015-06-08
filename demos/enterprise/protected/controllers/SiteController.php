@@ -45,15 +45,80 @@ class SiteController extends Controller
     
     public function actionLogin()
     {
-        // Wave::app()->session->setState('username', 'Ellen Xu');
-        echo Wave::app()->session->getState('username');
+        if(Wave::app()->session->getState('userid')){
+            $this->redirect(Wave::app()->homeUrl);
+        }else{
+            $this->render('site/login');
+        }
+    }
+
+    public function actionLoging()
+    {
+        $Common = new Common();
+        $data = $Common->getFilter($_POST);
+        if(empty($data['user_login']))
+            $Common->exportResult(false, '请输入用户名！');
+
+        if(empty($data['user_pass']))
+            $Common->exportResult(false, '请输入密码！');
+        
+        $array = $Common->getOneData('users', '*', 'user_login', $data['user_login']);
+        if(!empty($array)){
+            if ($array['user_pass'] == md5($data['user_pass'])) {
+                Wave::app()->session->setState('userid', $array['userid']);
+                Wave::app()->session->setState('username', $array['user_login']);
+                $Common->exportResult(true, '登录成功！');
+            }else{
+                $Common->exportResult(false, '用户名或密码错误！');
+            }
+        }else{
+            $Common->exportResult(false, '用户名或密码错误！');
+        }
+    }
+
+    public function actionRegist()
+    {
+        $this->render('site/regist');
+    }
+
+    public function actionRegisting()
+    {
+        $Common = new Common();
+        $data = $Common->getFilter($_POST);
+        if(empty($data['user_login']))
+            $Common->exportResult(false, '请输入用户名！');
+
+        if(empty($data['user_pass']))
+            $Common->exportResult(false, '请输入密码！');
+        
+        $data['user_pass'] = md5($data['user_pass']);
+        if ($Common->getInsert('users', $data)) {
+            $Common->exportResult(true, '注册成功！');
+        }else{
+            $Common->exportResult(false, '注册失败！');
+        }
     }
 
     public function actionLogout()
     {
         Wave::app()->session->logout();
+        $this->jumpBox('退出成功！', Wave::app()->homeUrl.'site', 1);
     }
 
+
+    public function actionUserinfo()
+    {
+        $array = array();
+        if (Wave::app()->session->getState('userid')) {
+            $array['success'] = true;
+            $array['userid'] = Wave::app()->session->getState('userid');
+            $array['username'] = Wave::app()->session->getState('username');
+        }else{
+            $array['success'] = false;
+        }
+        
+        echo json_encode($array);
+    }
 }
 
 ?>

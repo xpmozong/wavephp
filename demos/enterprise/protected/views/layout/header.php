@@ -14,6 +14,21 @@ $(function(){
     $('.carousel').carousel({
         interval: 2000
     });
+    $("#login-exit").hide();
+    $.getJSON("<?=$homeUrl?>site/userinfo", function(json){
+        var txt = '';
+        if (json.success == true) {
+            txt += json.username;
+            txt += ' <a href="<?=$homeUrl?>site/logout" class="btn btn-danger btn-xs">退出</a>';
+            $("#login-in").html(txt);
+            $("#login-in").show();
+            $("#login-exit").hide();
+        }else{
+            $("#login-in").html(txt);
+            $("#login-in").hide();
+            $("#login-exit").show();
+        }
+    });
 })
 </script>
 </head>
@@ -25,16 +40,13 @@ $(function(){
         </a>
     </div>
     <div class="pull-right head-right clearfix">
-        <div class="up-space pull-left">
-            <a href="http://www.it-team.cn/" onclick="window.external.addFavorite(this.href,this.title);return false;" title='IT外包服务公司' rel="sidebar">加入收藏</a>
+        <div class="up-space pull-left" id="login-exit">
+            <a href="<?=$homeUrl?>site/login" class="btn btn-success btn-xs">登录</a>
+            <a href="<?=$homeUrl?>site/regist" class="btn btn-info btn-xs">注册</a>
         </div>
-        <!-- <div class="qq pull-left">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=136626441&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:136626441:41" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+        <div class="up-space pull-left" id="login-in">
+            
         </div>
-        <div class="share pull-left">
-            <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
-        </div> -->
     </div>
 </div>
 <div class="navbar-wrapper">
@@ -88,24 +100,3 @@ $(function(){
         </nav>
     </div>
 </div>
-
-<!-- <div class="container links">
-    <div class="panel panel-default clearfix">
-        <div class="panel-heading">
-            <h3 class="panel-title">友情链接</h3>
-        </div>
-        <div class="panel-body">
-            <ul id="link-urls">
-
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="container marketing footer">
-    <footer>
-        <p class="pull-right"><a href="#">返回顶部</a></p>
-        <p>&copy; 2014 企业网站</p>
-    </footer>
-</div>
-</body>
-</html> -->

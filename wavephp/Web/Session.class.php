@@ -26,6 +26,7 @@ class Session extends Model
     protected $prefix       = '';       // session前缀
     protected $lifeTime     = 86400;    // 生存周期
     protected $tableName    = '';    
+    protected $isread       = false;
     
     public function __construct($pre, $timeout)
     {
@@ -48,7 +49,7 @@ class Session extends Model
      */
     public function setState($key, $val, $timeout = null)
     {
-        if(!isset($_SESSION)) session_start(); 
+        if(!isset($_SESSION)) @session_start(); 
 
         if(!empty($timeout))
             $_SESSION[$this->prefix.$key.'_timeout'] = time()+$timeout;
@@ -68,7 +69,7 @@ class Session extends Model
      */
     public function getState($key)
     {
-        if(!isset($_SESSION)) session_start();
+        if(!isset($_SESSION)) @session_start();
 
         if(isset($_SESSION[$this->prefix.$key])){
             if(time() > $_SESSION[$this->prefix.$key.'_timeout']){
@@ -89,7 +90,7 @@ class Session extends Model
      */
     public function logout()
     {
-        if(!isset($_SESSION)) session_start();
+        if(!isset($_SESSION)) @session_start();
         
         foreach ($_SESSION as $key => $value) {
             unset($_SESSION[$this->prefix.$key.'_timeout']);
@@ -101,14 +102,16 @@ class Session extends Model
     function open($savePath, $sessName) {
         if (empty(self::$db)){
             die('未配置数据库连接');
-
         }else{
-            $row = $this->select('table_name')
-                        ->from('information_schema.TABLES')
-                        ->where('table_name="'.$this->tableName.'"')
-                        ->getOne();
-            if (empty($row)) {
-                $sql = "CREATE TABLE `w_sessions` (
+            $tables = $this->getAll('show tables');
+            $tablesList = array();
+            foreach ($tables as $key => $value) {
+                $tablesList[] = $value['Tables_in_platform'];
+            }
+            if (in_array($this->tableName, $tablesList)) {
+                $this->isread = true;
+            }else{
+                $sql = "CREATE TABLE `".$this->tableName."` (
                     `session_id` varchar(255) CHARACTER 
                     SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
                     `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
@@ -128,12 +131,16 @@ class Session extends Model
     }
 
     function read($sessID) {
-        $row = $this->select('session_data')
-                    ->from($this->tableName)
-                    ->where("session_id='$sessID' AND session_expires > ".time())
-                    ->getOne();
-        if ($row) {
-            return $row['session_data'];
+        if ($this->isread) {
+            $row = $this->select('session_data')
+                        ->from($this->tableName)
+                        ->where("session_id='$sessID' AND session_expires > ".time())
+                        ->getOne();
+            if ($row) {
+                return $row['session_data'];
+            }else{
+                return '';
+            }
         }else{
             return '';
         }

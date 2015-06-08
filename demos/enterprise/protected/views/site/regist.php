@@ -1,10 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>企业后台</title>
+<title>用户注册</title>
 <?php $baseUrl = Wave::app()->request->baseUrl;?>
 <link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/bootstrap/css/bootstrap.min.css"/>
-<link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/css/admin.css"/>
+<link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/css/index.css"/>
 <script type="text/javascript" src="<?=$baseUrl?>/resouce/js/jquery.min.js"></script>
 </head>
 <body>
@@ -20,15 +20,15 @@ var getsubmit = function(){
         alert("请输入密码！");
         return false;
     }
-    $("#warning").css({"display":"none"});
     $.ajax({
         type: "POST",
-        url: "<?php echo Wave::app()->homeUrl.'site/loging';?>",
+        url: "<?php echo Wave::app()->homeUrl.'site/registing';?>",
         data: $("#login-form").serialize(),
         dataType: "json",
         success: function(data){
             if(data.success == true){
-                window.location.href="<?php echo Wave::app()->homeUrl.'site';?>";
+                alert('注册成功，请登录！');
+                window.location.href="<?php echo Wave::app()->homeUrl.'site/login';?>";
             }else{
                 alert(data.msg);
             }
@@ -48,23 +48,26 @@ $(function(){
 </script>
 <div class="container">
     <div class="con-login">
-        <div class="panel panel-success">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">企业后台登录</h3>
+                <h3 class="panel-title">用户注册</h3>
             </div>
             <div class="panel-body">
                 <form class="form-signin" role="form" id="login-form">
                     <div class="form-group" id="login-form">
-                        <label for="user_login">邮箱</label>
+                        <label for="user_login">用户名</label>
                         <input id="user_login" type="text" name="user_login" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">密码</label>
                         <input id="user_pass" type="password" name="user_pass" class="form-control">
                     </div>
-                    <button class="btn btn-success btn-block" id="submit" type="button">登录</button>
+                    <button class="btn btn-info btn-block" id="submit" type="button">注册</button>
                 </form>
             </div>
+        </div>
+        <div class="login-info">
+            <a href="<?php echo Wave::app()->homeUrl.'site/login';?>">->登录</a>
         </div>
     </div>
 </div>
