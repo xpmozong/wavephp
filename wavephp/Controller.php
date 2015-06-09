@@ -46,14 +46,11 @@ class Controller
      */
     public function render($filename, $variables = array())
     {
-        error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        error_reporting(0);
         //数组变量转换
         extract($variables, EXTR_SKIP);
-        ob_start();
+
         require $this->projectPath.$this->projectName.'/views/'.$filename.'.php';
-        $content = ob_get_contents();
-        ob_end_clean();
-        echo $content;
     }
 
     /**

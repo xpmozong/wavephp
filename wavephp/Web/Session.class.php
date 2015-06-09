@@ -49,13 +49,16 @@ class Session extends Model
      */
     public function setState($key, $val, $timeout = null)
     {
-        if(!isset($_SESSION)) @session_start(); 
+        if(!isset($_SESSION)) {
+            session_start(); 
+        }
 
-        if(!empty($timeout))
+        if(!empty($timeout)) {
             $_SESSION[$this->prefix.$key.'_timeout'] = time()+$timeout;
-        else
+        }else{
             $_SESSION[$this->prefix.$key.'_timeout'] = time()+$this->lifeTime;
-  
+        }
+
         $_SESSION[$this->prefix.$key] = $val;
     }
 
@@ -69,16 +72,18 @@ class Session extends Model
      */
     public function getState($key)
     {
-        if(!isset($_SESSION)) @session_start();
+        if(!isset($_SESSION)) {
+            session_start();
+        }
 
         if(isset($_SESSION[$this->prefix.$key])){
-            if(time() > $_SESSION[$this->prefix.$key.'_timeout']){
+            if(time() > $_SESSION[$this->prefix.$key.'_timeout']) {
                 unset($_SESSION[$this->prefix.$key.'_timeout']);
                 unset($_SESSION[$this->prefix.$key]);
                 $txt = '';
-            }
-            else
+            }else {
                 $txt = $_SESSION[$this->prefix.$key];
+            }
         }else{
             $txt = '';
         }
@@ -90,8 +95,9 @@ class Session extends Model
      */
     public function logout()
     {
-        if(!isset($_SESSION)) @session_start();
-        
+        if(!isset($_SESSION)) {
+            session_start();
+        }
         foreach ($_SESSION as $key => $value) {
             unset($_SESSION[$this->prefix.$key.'_timeout']);
             unset($_SESSION[$this->prefix.$key]);
