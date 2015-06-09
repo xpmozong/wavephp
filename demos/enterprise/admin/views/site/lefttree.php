@@ -7,16 +7,21 @@ $(function(){
     })
 })
 </script>
-<div class="col-sm-3 col-md-2 sidebar" id="sidebar">
-    <ul class="nav nav-sidebar list-group">
+<div class="sidebar" id="sidebar">
     <?php foreach ($list as $key => $value):?>
-        <?php foreach ($value as $k => $v):?>
-            <li class="list-group-item">
-                <a href="<?php echo $homeUrl.''.$v['permission_url'];?>" target="right_frame">
-                    <?php echo $v['permission_name'];?>
-                </a>
-            </li>
-        <?php endforeach;?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><h3 class="panel-title"><?=$value['title']?></h3></h3>
+        </div>
+        <ul class="nav nav-sidebar list-group">
+            <?php foreach ($value['list'] as $k => $v):?>
+                <li class="list-group-item">
+                    <a href="<?php echo $homeUrl.''.$v['permission_url'];?>" target="right_frame">
+                        <?php echo $v['permission_name'];?>
+                    </a>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </div>
     <?php endforeach;?>
-    </ul>
 </div>

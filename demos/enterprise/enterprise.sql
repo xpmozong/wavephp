@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 05 月 26 日 17:09
+-- 生成日期: 2015 年 06 月 09 日 18:07
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `cid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `c_name` varchar(255) DEFAULT NULL COMMENT '分类名',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='分类表' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='分类表' AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `category`
@@ -72,22 +72,50 @@ INSERT INTO `category` (`cid`, `c_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `gh_manage`
+--
+
+CREATE TABLE IF NOT EXISTS `gh_manage` (
+  `gid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL COMMENT '用户ID',
+  `gh_id` varchar(100) NOT NULL COMMENT '原始ID',
+  `gh_name` varchar(100) NOT NULL COMMENT '公众号名称',
+  `gh_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '账号类型 1-订阅号 2-认证订阅号 3-服务号 4-认证服务号',
+  `gh_key` varchar(255) NOT NULL COMMENT 'URL',
+  `gh_token` varchar(100) NOT NULL,
+  `gh_enaeskey` varchar(255) NOT NULL COMMENT 'EncodingAESKey',
+  `gh_appid` varchar(100) NOT NULL COMMENT '应用ID',
+  `gh_appsecret` varchar(100) NOT NULL COMMENT '应用密钥',
+  PRIMARY KEY (`gid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- 转存表中的数据 `gh_manage`
+--
+
+INSERT INTO `gh_manage` (`gid`, `userid`, `gh_id`, `gh_name`, `gh_type`, `gh_key`, `gh_token`, `gh_enaeskey`, `gh_appid`, `gh_appsecret`) VALUES
+(7, 3, 'gh_eb0595b205cb', 'xp趣行天下', 2, '541122111aa123f6', '0fecff7b', 'a20168b10fecff7b541122111aa123f6cff7b541122111aa123f6', 'wxad816166f3f27a0c', '166fd156f92ab5415c77838df2a94c43');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `links`
 --
 
 CREATE TABLE IF NOT EXISTS `links` (
-  `lid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `lid` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`lid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `links`
 --
 
 INSERT INTO `links` (`lid`, `url`, `title`) VALUES
-(1, 'http://www.baidu.com', '百度');
+(1, 'http://www.baidu.com', '百度'),
+(2, 'https://github.com/', 'github');
 
 -- --------------------------------------------------------
 
@@ -124,6 +152,48 @@ INSERT INTO `substance` (`sid`, `title`, `content`, `add_date`) VALUES
 (14, '场地驻场', '<p>场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场场地驻场</p>\r\n', NULL),
 (15, '远程服务', '<p>远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务远程服务</p>\r\n', NULL),
 (16, '咨询服务', '<p>咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务咨询服务</p>\r\n', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `user_login` varchar(255) NOT NULL,
+  `user_pass` varchar(32) NOT NULL,
+  `true_name` varchar(255) DEFAULT NULL,
+  `id_number` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `users`
+--
+
+INSERT INTO `users` (`userid`, `user_login`, `user_pass`, `true_name`, `id_number`) VALUES
+(3, 'xpmozong', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `w_sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `w_sessions` (
+  `session_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
+  `session_data` text,
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `w_sessions`
+--
+
+INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
+('ure0iqi6217h81dp1m2l5v76r7', 1433930784, '_userid_timeout|i:1433926554;_userid|s:1:"3";_username_timeout|i:1433926554;_username|s:8:"xpmozong";');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

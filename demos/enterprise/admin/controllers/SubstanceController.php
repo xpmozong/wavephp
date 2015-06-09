@@ -4,7 +4,6 @@
  */
 class SubstanceController extends Controller
 {
-    public $defaultAction = 'Index';
     public $userid;
     public $username;
        

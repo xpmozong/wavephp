@@ -1,8 +1,8 @@
 <?php
 /**
- * 友情链接控制层
+ * 公众账号管理控制层
  */
-class LinksController extends Controller
+class WxController extends Controller
 {
     public $userid;
     public $username;
@@ -19,30 +19,31 @@ class LinksController extends Controller
     }
 
     /**
-     * 友情链接页
+     * 公众账号列表
      */
     public function actionIndex()
     {
         $Common = new Common();
-        $list = $Common->getFieldList('links', '*');
+        $list = $Common->getFieldList('gh_manage', '*');
+
         $render = array('list' => $list);
         $this->render('layout/header');
-        $this->render('links/index', $render);
+        $this->render('wx/index', $render);
         $this->render('layout/footer');
     }
 
     /**
-     * 添加、修改链接
+     * 添加、修改公众号
      */
     public function actionModify($id)
     {
         $id = (int)$id;
         $Common = new Common();
-        $data = $Common->getOneData('links', '*', 'lid', $id);
+        $data = $Common->getOneData('gh_manage', '*', 'gid', $id);
         
-        $render = array('links' => $data);
+        $render = array('wx' => $data);
         $this->render('layout/header');
-        $this->render('links/modify', $render);
+        $this->render('wx/modify', $render);
         $this->render('layout/footer');
     }
 
@@ -53,30 +54,22 @@ class LinksController extends Controller
     {
         $Common = new Common();
         $data = $Common->getFilter($_POST);
-        $id = (int)$data['lid'];
-        unset($data['lid']);
+        $id = (int)$data['gid'];
+        unset($data['gid']);
         if ($id == 0) {
-            $Common->getInsert('links', $data);
+            $data['userid'] = $this->userid;
+            $Common->getInsert('gh_manage', $data);
+            $id = $Common->getLastId();
+            $updateData = array();
+            $md5 = md5($id.$data['gh_id']);
+            $updateData['gh_key'] = substr($md5, 16);
+            $updateData['gh_token'] = substr($md5, 8, 8);
+            $updateData['gh_enaeskey'] = $md5.substr($md5, 11);
+            $Common->getUpdate('gh_manage', $updateData, 'gid', $id);
         }else{
-            $Common->getUpdate('links', $data, 'lid', $id);
+            $Common->getUpdate('gh_manage', $data, 'gid', $id);
         }
 
-        $this->jumpBox('成功！', Wave::app()->homeUrl.'links', 1);
+        $this->jumpBox('成功！', Wave::app()->homeUrl.'wx', 1);
     }
-
-    /**
-     * 删除
-     */
-    public function actionDelete($id)
-    {
-        $id = (int)$id;
-
-        $Common = new Common();
-        $Common->getDelete('links', 'lid', $id);
-
-        $Common->exportResult(true, '成功！');
-    }
-
 }
-
-?>

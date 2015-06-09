@@ -49,14 +49,17 @@ class SiteController extends Controller
         if(empty($data['user_pass']))
             $Common->exportResult(false, '请输入密码！');
         
-        if($data['user_login'] != 'xuping'){
-            $Common->exportResult(false, '用户名不存在！');
-        }elseif($data['user_pass'] === '123456'){
-            Wave::app()->session->setState('userid', 1);
-            Wave::app()->session->setState('username', $data['user_login']);
-            $Common->exportResult(true, '登录成功！');
+        $array = $Common->getOneData('users', '*', 'user_login', $data['user_login']);
+        if(!empty($array)){
+            if ($array['user_pass'] == md5($data['user_pass'])) {
+                Wave::app()->session->setState('userid', $array['userid']);
+                Wave::app()->session->setState('username', $array['user_login']);
+                $Common->exportResult(true, '登录成功！');
+            }else{
+                $Common->exportResult(false, '用户名或密码错误！');
+            }
         }else{
-            $Common->exportResult(false, '密码错误！');
+            $Common->exportResult(false, '用户名或密码错误！');
         }
     }
 
@@ -98,10 +101,28 @@ class SiteController extends Controller
     {
         $Common = new Common();
         $list = array();
-        $list[][] = array('permission_name'=>'文章列表', 'permission_url'=>'articles');
-        $list[][] = array('permission_name'=>'分类列表', 'permission_url'=>'categories');
-        $list[][] = array('permission_name'=>'内容列表', 'permission_url'=>'substance');
-        $list[][] = array('permission_name'=>'友情链接', 'permission_url'=>'links');
+        $list[0]['title'] = '后台管理';
+        $list[0]['list'][] = array('permission_name'=>'文章列表', 
+                                    'permission_url'=>'articles');
+        $list[0]['list'][] = array('permission_name'=>'分类列表', 
+                                    'permission_url'=>'categories');
+        $list[0]['list'][] = array('permission_name'=>'内容列表', 
+                                    'permission_url'=>'substance');
+        $list[0]['list'][] = array('permission_name'=>'友情链接', 
+                                    'permission_url'=>'links');
+
+        $list[1]['title'] = '微信公众号';
+        $list[1]['list'][] = array('permission_name'=>'公众账号管理', 
+                                    'permission_url'=>'wx');
+        $list[1]['list'][] = array('permission_name'=>'粉丝列表', 
+                                    'permission_url'=>'links');
+        $list[1]['list'][] = array('permission_name'=>'消息群发', 
+                                    'permission_url'=>'links');
+        $list[1]['list'][] = array('permission_name'=>'自定义菜单', 
+                                    'permission_url'=>'links');
+        $list[1]['list'][] = array('permission_name'=>'自动回复', 
+                                    'permission_url'=>'links');
+
         $render = array('list' => $list);
         $this->render('layout/header');
         $this->render('site/lefttree', $render);

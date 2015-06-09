@@ -17,8 +17,8 @@ var mdelete = function(id){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">分类列表
-                <button type="button" class="btn btn-success btn-xs" onclick="javascript:location.href='<?php echo $homeUrl.'categories/modify/0';?>'">
-                    添加分类
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='<?php echo $homeUrl.'categories/modify/0';?>'">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加分类
                 </button>
             </h3>
         </div>
@@ -26,8 +26,8 @@ var mdelete = function(id){
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th width="40%">分类ID</th>
-                        <th width="30%">分类名</th>
+                        <th width="8%">ID</th>
+                        <th width="62%">分类名</th>
                         <th width="30%">操作</th>
                     </tr>
                 </thead>

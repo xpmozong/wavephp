@@ -61,8 +61,10 @@ class NewsController extends Controller
         $data = $Common->getOneData('articles', '*', 'aid', $aid);
         $category = $Common->getOneData('category', '*', 'cid', $data['cid']);
         $render = array('data' => $data,'category' => $category, 'cid' => $data['cid']);
-        $this->render('article', $render);
-
+        $links = $Common->getFieldList('links', '*', 'lid desc');
+        $this->render('layout/header');
+        $this->render('news/article', $render);
+        $this->render('layout/footer', array('links'=>$links));
     }
 
 }

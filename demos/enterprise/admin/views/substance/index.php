@@ -18,8 +18,8 @@ var mdelete = function(id){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">内容列表
-                <button type="button" class="btn btn-success btn-xs" onclick="javascript:location.href='<?php echo $homeUrl.'substance/modify/0';?>'">
-                    添加内容
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='<?php echo $homeUrl.'substance/modify/0';?>'">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加内容
                 </button>
             </h3>
         </div>
@@ -27,8 +27,8 @@ var mdelete = function(id){
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th width="10%">内容ID</th>
-                        <th width="60%">内容标题</th>
+                        <th width="8%">ID</th>
+                        <th width="62%">内容标题</th>
                         <th width="30%">操作</th>
                     </tr>
                 </thead>

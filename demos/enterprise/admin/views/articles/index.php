@@ -23,8 +23,8 @@ var changecid = function(){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">文章列表
-                <button type="button" class="btn btn-success btn-xs" onclick="javascript:location.href='<?php echo $homeUrl.'articles/modify/0';?>'">
-                    添加文章
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='<?php echo $homeUrl.'articles/modify/0';?>'">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加文章
                 </button>
             </h3>
         </div>
@@ -46,13 +46,15 @@ var changecid = function(){
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th width="70%">文章标题</th>
+                        <th width="8%">ID</th>
+                        <th width="62%">文章标题</th>
                         <th width="30%">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($list as $key => $value):?>
                     <tr>
+                        <td><?php echo $value['aid'];?></td>
                         <td><?php echo $value['title'];?></td>
                         <td>
                             <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='<?php echo $homeUrl.'articles/modify/'.$value['aid'];?>'">修改</button>
