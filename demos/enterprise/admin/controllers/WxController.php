@@ -25,6 +25,24 @@ class WxController extends Controller
     {
         $Common = new Common();
         $list = $Common->getFieldList('gh_manage', '*');
+        foreach ($list as $key => $value) {
+            switch ((int)$value['gh_type']) {
+                case 1:
+                    $list[$key]['gh_type'] = '订阅号';
+                    break;
+                case 2:
+                    $list[$key]['gh_type'] = '认证订阅号';
+                    break;
+                case 3:
+                    $list[$key]['gh_type'] = '服务号';
+                    break;
+                case 4:
+                    $list[$key]['gh_type'] = '认证服务号';
+                    break;
+                default:
+                    break;
+            }
+        }
 
         $render = array('list' => $list);
         $this->render('layout/header');
@@ -40,7 +58,10 @@ class WxController extends Controller
         $id = (int)$id;
         $Common = new Common();
         $data = $Common->getOneData('gh_manage', '*', 'gid', $id);
-        
+        if ($data['gh_key']) {
+            $data['gh_key'] = $Common->getWxApiUri().$data['gh_key'];
+        }
+
         $render = array('wx' => $data);
         $this->render('layout/header');
         $this->render('wx/modify', $render);

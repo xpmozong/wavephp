@@ -12,6 +12,24 @@ class Common extends Model
     }
 
     /**
+     * 获得微信接口地址
+     */
+    public function getWxApiUri()
+    {
+        return 'http://37study.com/wx?key=';
+    }
+
+    /**
+     * wx 记录日志
+     */
+    public function recordLog($txt)
+    {
+        $data = array('log_time' => $this->getDate());
+        $data['log_text'] = $txt;
+        $this->getInsert('wx_log', $data);
+    }
+
+    /**
      * 获得日期
      * @return string 日期
      */
@@ -213,6 +231,25 @@ class Common extends Model
     }
 
     /**
+     * 获得连接条件查询
+     * @param string $table     表名
+     * @param string $allfield  字段名
+     * @param string $jsonTable 连接表
+     * @param string $joinOn    连接字段
+     * @param string $wherestr  条件
+     * @return array            结果数组
+     */
+    public function getJoinOneData($table, $allfield, $jsonTable, 
+                                    $joinOn, $wherestr = null)
+    {
+        return $this->select($allfield)
+                    ->from($table)
+                    ->join($jsonTable, $joinOn)
+                    ->where($wherestr)
+                    ->getOne();
+    }
+
+    /**
      * 根据字段统计数量
      * @param string $table     表名
      * @return int              数量
@@ -353,7 +390,8 @@ class Common extends Model
             }
         }
         $list .= '<li><a href="'.
-                preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url).'">尾页'."</a></li>";
+                preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url)
+                .'">尾页'."</a></li>";
         $list .= '</ul>';
         $bar = '<div class="pagebar">'.$list.'</div>';
 

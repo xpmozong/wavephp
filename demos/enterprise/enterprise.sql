@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 06 月 09 日 18:07
+-- 生成日期: 2015 年 06 月 15 日 10:31
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -87,14 +87,34 @@ CREATE TABLE IF NOT EXISTS `gh_manage` (
   `gh_appid` varchar(100) NOT NULL COMMENT '应用ID',
   `gh_appsecret` varchar(100) NOT NULL COMMENT '应用密钥',
   PRIMARY KEY (`gid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `gh_manage`
 --
 
 INSERT INTO `gh_manage` (`gid`, `userid`, `gh_id`, `gh_name`, `gh_type`, `gh_key`, `gh_token`, `gh_enaeskey`, `gh_appid`, `gh_appsecret`) VALUES
-(7, 3, 'gh_eb0595b205cb', 'xp趣行天下', 2, '541122111aa123f6', '0fecff7b', 'a20168b10fecff7b541122111aa123f6cff7b541122111aa123f6', 'wxad816166f3f27a0c', '166fd156f92ab5415c77838df2a94c43');
+(7, 3, 'gh_eb0595b205cb', 'xp趣行天下', 1, '541122111aa123f6', '0fecff7c', 'a20168b10fecff7b541122111aa123f6cff7b541122', 'wxad816166f3f27a0c', '166fd156f92ab5415c77838df2a94c43');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gh_menu`
+--
+
+CREATE TABLE IF NOT EXISTS `gh_menu` (
+  `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单id',
+  `gid` int(11) NOT NULL COMMENT '公众号id',
+  `content` text NOT NULL COMMENT '公众号菜单 json',
+  PRIMARY KEY (`mid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `gh_menu`
+--
+
+INSERT INTO `gh_menu` (`mid`, `gid`, `content`) VALUES
+(2, 7, '{\r\n    "button":[\r\n    {\r\n        "type":"click",\r\n        "name":"会议",\r\n        "key":"RECENT_METTING"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"管理",\r\n        "key":"MANAGEMENT"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"帮助",\r\n        "key":"HELP"\r\n    }]\r\n}');
 
 -- --------------------------------------------------------
 
@@ -178,6 +198,43 @@ INSERT INTO `users` (`userid`, `user_login`, `user_pass`, `true_name`, `id_numbe
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `wx_log`
+--
+
+CREATE TABLE IF NOT EXISTS `wx_log` (
+  `log_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `log_text` text NOT NULL,
+  `log_time` datetime NOT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
+
+--
+-- 转存表中的数据 `wx_log`
+--
+
+INSERT INTO `wx_log` (`log_id`, `log_text`, `log_time`) VALUES
+(50, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[iAGXNEISyhm2FfY6xzmAWnklqI4KQQ+K+8Z0fPPNLjNsGRMC67jMJUGWalR2BHY8VbWNh0XAeV1IC8m7Ksu+cpRot/rtRYQGw7/Ii5dQnLSVmPvh/s7sioJ0NTPdFiOC2WcEbs5CSHgD5VsVvY35s59Xo72PuBfQOUqoOletuHYYOqq2j9a7EggnB2iMDv3MaY6kcdiodwGONwn915uHwEWW30xLEAMrsBqHyBKux4rCXS083kAvrfQuO9QIdDXtZ3aK78Ec0ZCPGWJCxxmnEVZ629S3lMFSp9ShNQwaGVA/FqsHHXJ2oNgR5EovLJps63YvAunpQY/oT+bEhLVa8IJMEZcKCMMHyxpnITovkImUTclnaX4xAjzh/NrPhmzjto9nXEBQmnVwmIx53JfH5p5qMSUD05EcODzXXaeKn6A=]]></Encrypt>\r\n</xml>', '2015-06-11 10:18:34'),
+(51, 'signature=b68405a1c12e20b4a8355e195e451604c8da64e5', '2015-06-11 10:18:34'),
+(52, 'timestamp=1433988755', '2015-06-11 10:18:34'),
+(53, 'nonce=704127271', '2015-06-11 10:18:34'),
+(54, 'msg=<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433988755</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[subscribe]]></Event>\n<EventKey><![CDATA[]]></EventKey>\n</xml>', '2015-06-11 10:18:34'),
+(55, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[c9ufZTumRvQRyGVNDc9+68ep4vGlOrihlqUxRHy51ebHAMn0lFxHJiv2G/tIEgHgT54/xJsbkNUm7kOnnqHVDXtiW52butxmsihose2h8e/w3FKHyELwvO4219xWVBsrCl3Kgkn+9Yp2lutEAD+7rwCr3231n3xS9cmAmv4w3FUMw9QvjqId9jH3zdzwDjfQqxhPNkAd4vgKnOWO06KLYXpXTnnuAOuMcrlmWgwLfu17wzmTq3ww7ipkezAXiB70bx25FH4GRvgYjVbDL/WNZKWhWhVIEqWzyiEvb6vuFvaSR5vMhpJxg2ZxfEcUpGQUtv47JVhVy9lxFmLtb6q3fZ39UMJeCRGgD7RuRxMlvs3a06vtEk2hXTKiQQADSvCJdATt5AV2EWM+mSPMrdhRdYClfjJ7TowNXysBAfeEQi2lO37CyDiObS8BurhTNPrPsCscgluSO0mrAslU/peHlQ==]]></Encrypt>\r\n</xml>', '2015-06-11 11:20:41'),
+(56, 'signature=9236e51efbd2b745c6e13b79f2d7e51f1e29246f', '2015-06-11 11:20:41'),
+(57, 'timestamp=1433992774', '2015-06-11 11:20:41'),
+(58, 'nonce=1808430341', '2015-06-11 11:20:41'),
+(59, '<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433992774</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[淡淡的]]></Content>\n<MsgId>6158952067237864159</MsgId>\n</xml>', '2015-06-11 11:20:41'),
+(60, 'MsgType=text Event=', '2015-06-11 11:20:41'),
+(61, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[c9ufZTumRvQRyGVNDc9+68ep4vGlOrihlqUxRHy51ebHAMn0lFxHJiv2G/tIEgHgT54/xJsbkNUm7kOnnqHVDXtiW52butxmsihose2h8e/w3FKHyELwvO4219xWVBsrCl3Kgkn+9Yp2lutEAD+7rwCr3231n3xS9cmAmv4w3FUMw9QvjqId9jH3zdzwDjfQqxhPNkAd4vgKnOWO06KLYXpXTnnuAOuMcrlmWgwLfu17wzmTq3ww7ipkezAXiB70bx25FH4GRvgYjVbDL/WNZKWhWhVIEqWzyiEvb6vuFvaSR5vMhpJxg2ZxfEcUpGQUtv47JVhVy9lxFmLtb6q3fZ39UMJeCRGgD7RuRxMlvs3a06vtEk2hXTKiQQADSvCJdATt5AV2EWM+mSPMrdhRdYClfjJ7TowNXysBAfeEQi2lO37CyDiObS8BurhTNPrPsCscgluSO0mrAslU/peHlQ==]]></Encrypt>\r\n</xml>', '2015-06-11 11:20:56'),
+(62, 'signature=9236e51efbd2b745c6e13b79f2d7e51f1e29246f', '2015-06-11 11:20:56'),
+(63, 'timestamp=1433992774', '2015-06-11 11:20:56'),
+(64, 'nonce=1808430341', '2015-06-11 11:20:56'),
+(65, '<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433992774</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[淡淡的]]></Content>\n<MsgId>6158952067237864159</MsgId>\n</xml>', '2015-06-11 11:20:56'),
+(66, 'MsgType=text Event=', '2015-06-11 11:20:56'),
+(67, '<xml>\r\n<ToUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></ToUserName>\r\n<FromUserName><![CDATA[gh_eb0595b205cb]]></FromUserName>\r\n<CreateTime>1433992774</CreateTime>\r\n<MsgType><![CDATA[text]]></MsgType>\r\n<Content><![CDATA[淡淡的]]></Content>\r\n</xml>', '2015-06-11 11:20:56');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `w_sessions`
 --
 
@@ -193,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('ure0iqi6217h81dp1m2l5v76r7', 1433930784, '_userid_timeout|i:1433926554;_userid|s:1:"3";_username_timeout|i:1433926554;_username|s:8:"xpmozong";');
+('aoivrqmdnq66ntuk1ea50uihd6', 1434095590, '_userid_timeout|i:1434074574;_userid|s:1:"3";_username_timeout|i:1434074574;_username|s:8:"xpmozong";');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

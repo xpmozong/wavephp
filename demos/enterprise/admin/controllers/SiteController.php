@@ -119,7 +119,7 @@ class SiteController extends Controller
         $list[1]['list'][] = array('permission_name'=>'消息群发', 
                                     'permission_url'=>'links');
         $list[1]['list'][] = array('permission_name'=>'自定义菜单', 
-                                    'permission_url'=>'links');
+                                    'permission_url'=>'wxmenu');
         $list[1]['list'][] = array('permission_name'=>'自动回复', 
                                     'permission_url'=>'links');
 

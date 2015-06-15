@@ -89,7 +89,7 @@ var checkForm = function(){
                             <h4 id="接口配置信息（请注意保密!!）">接口配置信息（请注意保密!!）</h4>
                             <p>URL：<?=$wx['gh_key']?></p>
                             <p>Token：<?=$wx['gh_token']?></p>
-                            <p>EncodingAESKey：<?=$wx['gh_appsecret']?></p>
+                            <p>EncodingAESKey：<?=$wx['gh_enaeskey']?></p>
                         </div>
                     </div>
                 </div>

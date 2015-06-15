@@ -131,6 +131,23 @@ class Model
     }
 
     /**
+     * NOT IN
+     *
+     * @param string $conditions 条件
+     *
+     * @return $this
+     *
+     */
+    public function notin($conditions = null)
+    {
+        if ($conditions) {
+            $this->_where[] = $conditions;
+        }
+
+        return $this;
+    }
+
+    /**
      * 条件查询
      *
      * @param string $conditions 条件 
@@ -273,15 +290,18 @@ class Model
     public function compileSelect()
     {
         $sql = ( !$this->_distinct) ? 'SELECT ' : 'SELECT DISTINCT ';
-        $sql .= (count($this->_select) == 0) ? '*' : implode(', ', $this->_select);
+        $sql .= (count($this->_select) == 0) ? '*' 
+                : implode(', ', $this->_select);
         $sql .= ' FROM ';
         $sql .= $this->_from;
         $sql .= ' ';
         $sql .= implode(' ', $this->_join);
-        if (count($this->_where) > 0 OR count($this->_like) > 0 OR count($this->_instr) > 0) {
+        if (count($this->_where) > 0 
+            OR count($this->_like) > 0 
+            OR count($this->_instr) > 0) {
             $sql .= ' WHERE ';
         }
-        $sql .= implode(' ', $this->_where);
+        $sql .= implode(' AND ', $this->_where);
 
         if (count($this->_like) > 0) {
             if (count($this->_where) > 0) {
@@ -307,7 +327,7 @@ class Model
             $sql .= implode(', ', $this->_order);
         }
 
-        if (is_numeric($this->_limit)) {
+        if (is_numeric($this->_limit) && $this->_limit > 0) {
             $sql .= self::$db->limit($this->_offset, $this->_limit);
         }
 

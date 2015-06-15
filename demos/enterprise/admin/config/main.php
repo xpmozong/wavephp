@@ -1,7 +1,7 @@
 <?php
 $config = array(
-    'projectName'=>'admin',
-    'modelName'=>'protected',
+    'projectName'   =>  'admin',
+    'modelName'     =>  'protected',
 
     'import'=>array(
         'models.*'
@@ -17,7 +17,8 @@ $config = array(
             'dbpasswd'      => '',
             'dbname'        => 'enterprise',
             'dbpconnect'    => 0,
-            'dbchart'       => 'utf8'
+            'dbchart'       => 'utf8',
+            'table_prefix'  => ''
         )
     ),
     'session'=>array(
