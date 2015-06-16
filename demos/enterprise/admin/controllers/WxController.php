@@ -77,16 +77,15 @@ class WxController extends Controller
         $data = $Common->getFilter($_POST);
         $id = (int)$data['gid'];
         unset($data['gid']);
+
+        $md5 = md5($data['gh_id']);
+        $data['gh_key'] = substr($md5, 16);
+        $data['gh_token'] = substr($md5, 8, 8);
+        $data['gh_enaeskey'] = $md5.substr($md5, 21);
+
         if ($id == 0) {
             $data['userid'] = $this->userid;
             $Common->getInsert('gh_manage', $data);
-            $id = $Common->getLastId();
-            $updateData = array();
-            $md5 = md5($id.$data['gh_id']);
-            $updateData['gh_key'] = substr($md5, 16);
-            $updateData['gh_token'] = substr($md5, 8, 8);
-            $updateData['gh_enaeskey'] = $md5.substr($md5, 11);
-            $Common->getUpdate('gh_manage', $updateData, 'gid', $id);
         }else{
             $Common->getUpdate('gh_manage', $data, 'gid', $id);
         }

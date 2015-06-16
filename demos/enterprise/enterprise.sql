@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 06 月 15 日 10:31
+-- 生成日期: 2015 年 06 月 16 日 13:30
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -84,17 +84,19 @@ CREATE TABLE IF NOT EXISTS `gh_manage` (
   `gh_key` varchar(255) NOT NULL COMMENT 'URL',
   `gh_token` varchar(100) NOT NULL,
   `gh_enaeskey` varchar(255) NOT NULL COMMENT 'EncodingAESKey',
+  `gh_iseskey` tinyint(1) NOT NULL DEFAULT '1' COMMENT '加密 0-否 1-是',
   `gh_appid` varchar(100) NOT NULL COMMENT '应用ID',
   `gh_appsecret` varchar(100) NOT NULL COMMENT '应用密钥',
   PRIMARY KEY (`gid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- 转存表中的数据 `gh_manage`
 --
 
-INSERT INTO `gh_manage` (`gid`, `userid`, `gh_id`, `gh_name`, `gh_type`, `gh_key`, `gh_token`, `gh_enaeskey`, `gh_appid`, `gh_appsecret`) VALUES
-(7, 3, 'gh_eb0595b205cb', 'xp趣行天下', 1, '541122111aa123f6', '0fecff7c', 'a20168b10fecff7b541122111aa123f6cff7b541122', 'wxad816166f3f27a0c', '166fd156f92ab5415c77838df2a94c43');
+INSERT INTO `gh_manage` (`gid`, `userid`, `gh_id`, `gh_name`, `gh_type`, `gh_key`, `gh_token`, `gh_enaeskey`, `gh_iseskey`, `gh_appid`, `gh_appsecret`) VALUES
+(7, 3, 'gh_eb0595b205cb', 'xp趣行天下', 1, '541122111aa123f6', '0fecff7c', 'a20168b10fecff7b541122111aa123f6cff7b541122', 1, 'wxad816166f3f27a0c', '166fd156f92ab5415c77838df2a94c43'),
+(10, 3, 'gh_18cb4be750e6', '测试公众号', 1, 'e2b10dbfd698078f', '9f9a1fb8', 'e8923ab49f9a1fb8e2b10dbfd698078fdbfd698078f', 0, 'wx5d57eecd289aba9e', '0173fb30d6a51c042728823ee9ab9d53');
 
 -- --------------------------------------------------------
 
@@ -107,14 +109,38 @@ CREATE TABLE IF NOT EXISTS `gh_menu` (
   `gid` int(11) NOT NULL COMMENT '公众号id',
   `content` text NOT NULL COMMENT '公众号菜单 json',
   PRIMARY KEY (`mid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gh_menu`
 --
 
 INSERT INTO `gh_menu` (`mid`, `gid`, `content`) VALUES
-(2, 7, '{\r\n    "button":[\r\n    {\r\n        "type":"click",\r\n        "name":"会议",\r\n        "key":"RECENT_METTING"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"管理",\r\n        "key":"MANAGEMENT"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"帮助",\r\n        "key":"HELP"\r\n    }]\r\n}');
+(2, 7, '{\r\n    "button":[\r\n    {\r\n        "type":"click",\r\n        "name":"会议",\r\n        "key":"RECENT_METTING"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"管理",\r\n        "key":"MANAGEMENT"\r\n    },\r\n    {\r\n        "type":"click",\r\n        "name":"帮助",\r\n        "key":"HELP"\r\n    }]\r\n}'),
+(3, 10, ' {\r\n     "button":[\r\n     {	\r\n          "type":"click",\r\n          "name":"今日歌曲",\r\n          "key":"V1001_TODAY_MUSIC"\r\n      },\r\n      {\r\n           "name":"菜单",\r\n           "sub_button":[\r\n           {	\r\n               "type":"view",\r\n               "name":"搜索",\r\n               "url":"http://www.soso.com/"\r\n            },\r\n            {\r\n               "type":"view",\r\n               "name":"视频",\r\n               "url":"http://v.qq.com/"\r\n            },\r\n            {\r\n               "type":"click",\r\n               "name":"赞一下我们",\r\n               "key":"V1001_GOOD"\r\n            }]\r\n       }]\r\n }');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gh_type`
+--
+
+CREATE TABLE IF NOT EXISTS `gh_type` (
+  `gh_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `gh_type_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`gh_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- 转存表中的数据 `gh_type`
+--
+
+INSERT INTO `gh_type` (`gh_type_id`, `gh_type_name`) VALUES
+(1, '订阅号'),
+(2, '认证订阅号'),
+(3, '服务号'),
+(4, '认证服务号'),
+(5, '测试公众号');
 
 -- --------------------------------------------------------
 
@@ -250,7 +276,8 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('aoivrqmdnq66ntuk1ea50uihd6', 1434095590, '_userid_timeout|i:1434074574;_userid|s:1:"3";_username_timeout|i:1434074574;_username|s:8:"xpmozong";');
+('2e4bp1a7klfrrphrs96bmgtud2', 1434512053, '_userid_timeout|i:1434507046;_userid|s:1:"3";_username_timeout|i:1434507046;_username|s:8:"xpmozong";'),
+('sgdjidvi9ub7ljj02kr4quc7h6', 1434448061, '_userid_timeout|i:1434443191;_userid|s:1:"3";_username_timeout|i:1434443191;_username|s:8:"xpmozong";');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -30,6 +30,28 @@ class Common extends Model
     }
 
     /**
+     * curl
+     */
+    public function curl($url, $curlPost)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_USERAGENT, 
+                    'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_POST, 1); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
+        $output = curl_exec($ch);
+        curl_close($ch);
+
+        return $output;
+    }
+
+    /**
      * 获得日期
      * @return string 日期
      */

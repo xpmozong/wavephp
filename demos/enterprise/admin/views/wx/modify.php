@@ -70,6 +70,17 @@ var checkForm = function(){
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="gh_iseskey" class="col-sm-2 control-label">EncodingAESKey加密</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="gh_iseskey" id="gh_iseskey" value="1" <?php if($wx['gh_iseskey'] == 1) echo "checked";?>> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="gh_iseskey" id="gh_iseskey" value="0" <?php if($wx['gh_iseskey'] == 0) echo "checked";?>> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="gh_appid" class="col-sm-2 control-label">AppID</label>
                     <div class="col-sm-10">
                         <input class="form-control" name="gh_appid" id="gh_appid" type="text" value="<?=$wx['gh_appid']?>" placeholder="请输入应用ID">

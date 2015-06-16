@@ -2,7 +2,7 @@
 /**
  * 公众账号菜单管理控制层
  */
-class WxMenuController extends Controller
+class WxmenuController extends Controller
 {
     public $userid;
     public $username;
@@ -41,7 +41,7 @@ class WxMenuController extends Controller
         $id = (int)$id;
         $Common = new Common();
         $data = $Common->getJoinOneData('gh_menu m', 'm.*,a.gh_name', 
-                        'gh_manage a', "m.mid='$id'");
+                        'gh_manage a', 'm.gid=a.gid', "m.mid='$id'");
         $wxdata = $Common->select('gid,gh_name')
                         ->from('gh_manage')
                         ->where('userid='.$this->userid)
