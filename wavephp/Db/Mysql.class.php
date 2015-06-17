@@ -24,18 +24,24 @@ include 'Abstarct.class.php';
 
 class Mysql extends Abstarct
 {
-    private $dbhost;            //数据库地址
-    private $dbport;            //数据库端口
-    private $dbuser;            //数据库用户名
-    private $dbpasswd;          //数据库密码
-    private $dbpconnect = 0;    //数据库长连接
-    private $dbname;            //数据库名称
-    private $dbchart;           //数据库链接编码
-    private $dblink;            //数据库连接对象
-    public  $sql;               //sql语句
-    private $errno;             //错误信息
-     
-    public function __construct($dbConfig)
+    private     $dbhost;            // 数据库地址
+    private     $dbport;            // 数据库端口
+    private     $dbuser;            // 数据库用户名
+    private     $dbpasswd;          // 数据库密码
+    private     $dbpconnect = 0;    // 数据库长连接
+    private     $dbname;            // 数据库名称
+    private     $dbchart;           // 数据库链接编码
+    private     $dblink;            // 数据库连接对象
+    public      $sql;               // sql语句
+    private     $errno;             // 错误信息
+    
+    /**
+     * 初始化
+     *
+     * @param array $dbConfig
+     *
+     */
+    protected function _connect($dbConfig)
     {
         $this->dbhost       = $dbConfig['dbhost'];
         $this->dbport       = isset($dbConfig['dbport']) ? $dbConfig['dbport'] : 3306;
@@ -62,7 +68,7 @@ class Mysql extends Abstarct
      * @return blooean
      *
      */
-    public function query($sql, $die_msg = 1)
+    protected function _query($sql, $die_msg = 1)
     {
         $result = @mysql_query($sql, $this->dblink);
         // 可以用自定义错误信息的方法，就要压制本身的错误信息
@@ -89,7 +95,7 @@ class Mysql extends Abstarct
      * @return boolean 
      *
      */
-    public function insertdb($table, $array)
+    protected function _insertdb($table, $array)
     {
         $tbcolumn = $tbvalue = '';
         foreach($array  as $key=>$value){
@@ -104,6 +110,18 @@ class Mysql extends Abstarct
     }
 
     /**
+     * 获得刚插入数据的id
+     *
+     * @return int id
+     *
+     */
+    protected function _insertId()
+    {
+        return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
+            $this->result($this->query('SELECT last_insert_id()'), 0);
+    }
+
+    /**
      * 更新数据
      *
      * @param string $table         表名
@@ -113,7 +131,7 @@ class Mysql extends Abstarct
      * @return boolean
      *
      */
-    public function updatedb($table, $array, $conditions)
+    protected function _updatedb($table, $array, $conditions)
     {
         $update = array();
         foreach ($array as $key => $value){
@@ -126,12 +144,23 @@ class Mysql extends Abstarct
     }
 
     /**
+     * 获得刚执行完的条数
+     *
+     * @return int num
+     *
+     */
+    protected function _affectedRows()
+    {
+        return mysql_affected_rows();
+    }
+
+    /**
      * 获得查询语句单条结果
      *
      * @return array
      *
      */
-    public function getOne() 
+    protected function _getOne() 
     {
         $res = $this->query($this->sql);
         return mysql_fetch_assoc($res);
@@ -143,7 +172,7 @@ class Mysql extends Abstarct
      * @return array
      *
      */
-    public function getAll() 
+    protected function _getAll()
     {
         $res = $this->query($this->sql);
         $arr = array();
@@ -163,7 +192,7 @@ class Mysql extends Abstarct
      * @return boolean
      *
      */
-    public function delete($table, $fields)
+    protected function _delete($table, $fields)
     {
         $sql = "DELETE FROM $table WHERE $fields";
         
@@ -178,31 +207,19 @@ class Mysql extends Abstarct
      * @return string
      *
      */
-    public function result($query, $row) 
+    protected function result($query, $row) 
     {
         $query = @mysql_result($query, $row);
         return $query;
     }
- 
-    /**
-     * 获得刚插入数据的id
-     *
-     * @return int id
-     *
-     */
-    public function getInsertID()
-    {
-        return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
-            $this->result($this->query('SELECT last_insert_id()'), 0);
-    }
- 
+
     /**
      * 关闭数据库连接，当您使用持续连接时该功能失效
      *
      * @return blooean
      *
      */
-    public function close() 
+    protected function _close() 
     {
         return mysql_close($this->dblink);
     }
@@ -210,7 +227,7 @@ class Mysql extends Abstarct
     /**
      * 显示自定义错误
      */
-    public function msg() 
+    protected function msg() 
     {
         if($this->errno) {
             $errMsg = mysql_error();
@@ -224,8 +241,10 @@ class Mysql extends Abstarct
         }
     }
     
-
-    public function limit($offset, $limit) {
+    /**
+     * mysql limit
+     */
+    protected function _limit($offset, $limit) {
         if ($offset == 0) {
             $offset = '';
         } else {
@@ -235,7 +254,10 @@ class Mysql extends Abstarct
         return " LIMIT ".$offset.$limit;
     }
 
-    public function escape_str($str) {
+    /**
+     * mysql escape
+     */
+    protected function _escape_str($str) {
         if (is_array($str)) {
             foreach ($str as $key => $val) {
                 $str[$key] = $this->escape_str($val);

@@ -444,7 +444,8 @@ class Model
      */
     public function update($tableName, $data, $conditions)
     {
-        return self::$db->updatedb($tableName, $data, $conditions);
+        self::$db->updatedb($tableName, $data, $conditions);
+        return self::$db->affectedRows();
     }
 
     /**
@@ -453,9 +454,9 @@ class Model
      * @return int
      *
      */
-    public function getInsertLastId()
+    public function insertId()
     {
-        return self::$db->getInsertID();
+        return self::$db->insertId();
     }
 
     /**
@@ -466,7 +467,8 @@ class Model
      */
     public function delete($table, $fields)
     {
-        return self::$db->delete($table, $fields);
+        self::$db->delete($table, $fields);
+        return self::$db->affectedRows();
     }
 
 }

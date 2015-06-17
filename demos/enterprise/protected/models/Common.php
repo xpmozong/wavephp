@@ -336,7 +336,7 @@ class Common extends Model
      */
     public function getLastId()
     {
-        return $this->getInsertLastId();
+        return $this->insertId();
     }
 
     /**
