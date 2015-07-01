@@ -25,6 +25,7 @@ class SiteController extends Controller
         $this->render('layout/header');
         $this->render('site/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
     public function actionTestDb()

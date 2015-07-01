@@ -31,6 +31,7 @@ class WxmenuController extends Controller
         $this->render('layout/header');
         $this->render('wxmenu/index', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**
@@ -51,6 +52,7 @@ class WxmenuController extends Controller
         $this->render('layout/header');
         $this->render('wxmenu/modify', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**

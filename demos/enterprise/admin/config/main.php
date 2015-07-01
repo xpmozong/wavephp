@@ -8,6 +8,8 @@ $config = array(
     ),
 
     'defaultController'=>'site',
+
+    'debuger'=>true,
     
     'database'=>array(
         'db'=>array(
@@ -21,6 +23,7 @@ $config = array(
             'table_prefix'  => ''
         )
     ),
+
     'session'=>array(
         'prefix'            => '',
         'timeout'           => 86400

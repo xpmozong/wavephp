@@ -8,6 +8,8 @@ $config = array(
     ),
 
     'defaultController'=>'site',
+
+    'debuger'=>false,
     
     'database'=>array(
         'db'=>array(

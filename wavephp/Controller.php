@@ -24,7 +24,7 @@ class Controller
     private $app            = '';       //项目信息
     private $frameworkPath  = '';       //框架路径
     private $projectPath    = '';       //项目路径
-    private $projectName    = '';       //项目名称 
+    private $projectName    = '';       //项目名称
 
     /**
      * 初始化
@@ -119,6 +119,25 @@ class Controller
                 </body>
                 </html>';
         exit($str);
+    }
+
+    /**
+     * 加载调试信息
+     */
+    public function debuger() 
+    {
+        if (isset($this->app->config['debuger'])) {
+            if ($this->app->config['debuger']) {
+                if(!isset($_SESSION)) {
+                    session_start(); 
+                }
+                $session = $_SESSION;
+                $files = get_included_files();
+                $render = array('session'=>$session,
+                                'files'=>$files);
+                $this->render('layout/debuger', $render);
+            }
+        }
     }
 
 }

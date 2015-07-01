@@ -23,6 +23,7 @@ class AboutController extends Controller
         $this->render('layout/header');
         $this->render('about/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
 }

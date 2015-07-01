@@ -23,6 +23,7 @@ class PatternController extends Controller
         $this->render('layout/header');
         $this->render('pattern/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
 }

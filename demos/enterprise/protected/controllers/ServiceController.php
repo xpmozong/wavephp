@@ -23,6 +23,7 @@ class ServiceController extends Controller
         $this->render('layout/header');
         $this->render('service/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
 }

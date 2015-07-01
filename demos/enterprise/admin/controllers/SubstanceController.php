@@ -45,6 +45,7 @@ class SubstanceController extends Controller
         $this->render('layout/header');
         $this->render('substance/index', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**
@@ -60,6 +61,7 @@ class SubstanceController extends Controller
         $this->render('layout/header');
         $this->render('substance/modify', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**

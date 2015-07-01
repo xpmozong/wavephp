@@ -48,6 +48,7 @@ class WxController extends Controller
         $this->render('layout/header');
         $this->render('wx/index', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**
@@ -66,6 +67,7 @@ class WxController extends Controller
         $this->render('layout/header');
         $this->render('wx/modify', $render);
         $this->render('layout/footer');
+        $this->debuger();
     }
 
     /**

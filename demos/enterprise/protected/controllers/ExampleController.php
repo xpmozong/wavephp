@@ -23,6 +23,7 @@ class ExampleController extends Controller
         $this->render('layout/header');
         $this->render('example/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
 }

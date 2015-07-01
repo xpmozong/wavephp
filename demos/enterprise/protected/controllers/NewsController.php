@@ -49,6 +49,7 @@ class NewsController extends Controller
         $this->render('layout/header');
         $this->render('news/index', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
     /**
@@ -65,6 +66,7 @@ class NewsController extends Controller
         $this->render('layout/header');
         $this->render('news/article', $render);
         $this->render('layout/footer', array('links'=>$links));
+        $this->debuger();
     }
 
 }

@@ -47,7 +47,7 @@ class SiteController extends Controller
 
         // $this->render('layout/header');
         // $this->render('site/index', array('username'=>$username));
-        // $this->render('layout/footer');
+        // $this->footer();
 
         // $tmp_object = new stdClass;
         // $tmp_object->str_attr = 'test';
