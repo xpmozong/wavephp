@@ -63,6 +63,8 @@ $config = array(
     ),
 
     'defaultController'=>'site',
+
+    'debuger'=>true,    // 显示debug信息
     
     'database'=>array(
         'db'=>array(

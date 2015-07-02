@@ -42,7 +42,12 @@ class Core
     public function __construct($config = null)
     {
         if(empty(self::$config)) {
-            if(!empty($config)) self::$config = $config;
+            if(!empty($config)) {
+                if (!isset($config['debuger'])) {
+                    $config['debuger'] = false;
+                }
+                self::$config = $config;
+            }
         }
 
         if(empty(self::$projectName)) {
