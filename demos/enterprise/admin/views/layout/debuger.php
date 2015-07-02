@@ -5,10 +5,23 @@
         </div>
         <div class="panel-body">
             <?php 
-                echo '<pre style="background-color:#FFF;"><p>Session:<br>'; 
-                print_r($session);
-                echo '<br>Loaded Class:<br>';
-                print_r($files);
+                echo '<p>Session:</p>';
+                print_r($debug['session']);
+                echo '<br><br><p>Loaded Class:</p>';
+                foreach ($debug['files'] as $key => $value) {
+                    echo '<p>'.$value.'</p>';
+                }
+                echo "<br><p>Database:</p>";
+                foreach ($debug['database'] as $key => $value) {
+                    echo '<p>[ Log time: '.$value['log_time'].' ]';
+                    echo '[ Expend time: '.$value['expend_time'].' ]';
+                    echo $value['message']."</p>";
+                }
+                echo '<br><p>Escape time: '.(microtime(TRUE) - START_TIME).', ';
+                echo count($debug['database']).' queries, ';
+                echo 'PHP Memory usage: '.
+                    ((memory_get_usage() - MEMORY_USAGE_START) / 1024).' KB, ';
+                echo 'Server time: '.date('Y-m-d H:i:s').'</p>';
             ?>
         </div>
     </div>

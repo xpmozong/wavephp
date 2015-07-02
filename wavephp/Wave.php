@@ -19,12 +19,20 @@
  * @author          许萍
  *
  */
+define('START_TIME', microtime(TRUE));
+
+if (function_exists('memory_get_usage'))
+{
+    define('MEMORY_USAGE_START', memory_get_usage());
+}
+
 class Wave
 {
-    public $Core        = null;
-    public $Import      = null;
-    public $config      = null;
-    public static $app  = null;
+    public $Core            = null;
+    public $Import          = null;
+    public $config          = array();
+    public static $app      = array();
+    public static $_debug   = array();
 
     /**
      * 初始化
@@ -46,13 +54,12 @@ class Wave
     public function run()
     {
         $this->Core->requireFrameworkFile('Route');
-        $this->Core->requireFrameworkFile('Controller');
         $this->Core->requireFrameworkFile('Model');
+        $this->Core->requireFrameworkFile('Controller');
         $this->Core->requireFrameworkFile('WaveBase');
         $this->Core->requireFrameworkFile('Web/Session.class');
-
         $this->loadSession();
-
+        
         $Route = new Route(self::$app, $this->Core);
         spl_autoload_register(array('WaveBase', 'loader'));
         $Route->route();
@@ -98,6 +105,24 @@ class Wave
     public static function app()
     {
         return self::$app;
+    }
+
+    /**
+     * 记录系统 Debug 事件
+     *
+     * 打开 debug 功能后相应事件会在页脚输出
+     *
+     * @param string $type
+     * @param string $expend_time
+     * @param string $message
+     */
+    public static function debug_log($type, $expend_time, $message)
+    {
+        self::$_debug[$type][] = array(
+            'expend_time' => $expend_time,
+            'log_time' => microtime(TRUE),
+            'message' => $message
+        );
     }
     
 }

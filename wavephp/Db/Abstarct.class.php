@@ -20,7 +20,9 @@
  * @author          许萍
  *
  */
-abstract class Abstarct{
+abstract class Abstarct
+{
+    public      $sql;   // sql语句
 
     /**
      * 初始化

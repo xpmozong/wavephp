@@ -9,7 +9,7 @@ $config = array(
 
     'defaultController'=>'site',
 
-    'debuger'=>false,
+    'debuger'=>true,
     
     'database'=>array(
         'db'=>array(

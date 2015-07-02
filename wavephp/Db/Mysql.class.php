@@ -32,7 +32,6 @@ class Mysql extends Abstarct
     private     $dbname;            // 数据库名称
     private     $dbchart;           // 数据库链接编码
     private     $dblink;            // 数据库连接对象
-    public      $sql;               // sql语句
     private     $errno;             // 错误信息
     
     /**
@@ -51,10 +50,16 @@ class Mysql extends Abstarct
         $this->dbname       = $dbConfig['dbname'];
         $this->dbchart      = isset($dbConfig['dbchart']) ? $dbConfig['dbchart'] : 'utf8';
         if($this->dbpconnect) {
-            $this->dblink = mysql_pconnect($this->dbhost.':'.$this->dbport,$this->dbuser,$this->dbpasswd,1) 
+            $this->dblink = mysql_pconnect($this->dbhost.':'.$this->dbport,
+                                            $this->dbuser,
+                                            $this->dbpasswd,
+                                            1) 
             or die('can not connect to mysql database!');
         } else {
-            $this->dblink = mysql_connect($this->dbhost.':'.$this->dbport,$this->dbuser,$this->dbpasswd,1) 
+            $this->dblink = mysql_connect($this->dbhost.':'.$this->dbport,
+                                            $this->dbuser,
+                                            $this->dbpasswd,
+                                            1) 
             or die('can not connect to mysql database!');
         }
         mysql_query('set names '.$this->dbchart, $this->dblink);
@@ -70,9 +75,16 @@ class Mysql extends Abstarct
      */
     protected function _query($sql, $die_msg = 1)
     {
+        if (Wave::app()->config['debuger']) {
+            $start_time = microtime(TRUE);
+        }
+        
         $result = @mysql_query($sql, $this->dblink);
         // 可以用自定义错误信息的方法，就要压制本身的错误信息
         if($result == true) {
+            if (Wave::app()->config['debuger']) {
+                Wave::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+            }
             return $result;
         }else{
             // 有错误发生
@@ -117,8 +129,9 @@ class Mysql extends Abstarct
      */
     protected function _insertId()
     {
-        return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
-            $this->result($this->query('SELECT last_insert_id()'), 0);
+        // return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
+        //     $this->result($this->query('SELECT last_insert_id()'), 0);
+        return mysql_insert_id($this->dblink);
     }
 
     /**

@@ -126,17 +126,14 @@ class Controller
      */
     public function debuger() 
     {
-        if (isset($this->app->config['debuger'])) {
-            if ($this->app->config['debuger']) {
-                if(!isset($_SESSION)) {
-                    session_start(); 
-                }
-                $session = $_SESSION;
-                $files = get_included_files();
-                $render = array('session'=>$session,
-                                'files'=>$files);
-                $this->render('layout/debuger', $render);
+        if ($this->app->config['debuger']) {
+            if(!isset($_SESSION)) {
+                session_start(); 
             }
+            Wave::$_debug['session'] = $_SESSION;
+            Wave::$_debug['files'] = get_included_files();
+            $render = array('debug' => Wave::$_debug);
+            $this->render('layout/debuger', $render);
         }
     }
 
