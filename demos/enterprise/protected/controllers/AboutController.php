@@ -2,7 +2,7 @@
 /**
  * 网站默认入口控制层
  */
-class AboutController extends Controller
+class AboutController extends CommonController
 {
        
     public function __construct()
@@ -15,14 +15,11 @@ class AboutController extends Controller
      */
     public function actionIndex($sid)
     {
-        $Common = new Common();
-        $data = $Common->getOneData('substance', '*', 'sid', $sid);
+        $data = $this->Common->getOneData('substance', '*', 'sid', $sid);
         $render = array('data' => $data);
-
-        $links = $Common->getFieldList('links', '*', 'lid desc');
         $this->render('layout/header');
         $this->render('about/index', $render);
-        $this->render('layout/footer', array('links'=>$links));
+        $this->render('layout/footer', array('links'=>$this->links));
         $this->debuger();
     }
 

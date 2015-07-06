@@ -1,10 +1,9 @@
 <?php
 $config = array(
     'projectName'=>'protected',
-    'modelName'=>'protected',
 
     'import'=>array(
-        'models.*'
+        'controllers.*'
     ),
 
     'defaultController'=>'site',

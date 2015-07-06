@@ -24,12 +24,31 @@ class WaveBase
     /**
      * 自动加载函数
      *
-     * 用于实例化数据库
      * 例如 $User = new User();
      * 会自动加载  项目路径/models/User.php 这个文件
      * 
      */
-    public static function loader($classname) 
+    public static function LoaderModel($class)
+    {
+        $app = Wave::app();
+        $filename = $app->projectPath.$app->modelName.
+                    '/models/'.$class.'.php';
+        if(file_exists($filename)){
+            require $filename;
+            if(!class_exists($class)){
+                exit('no '.$class);
+            }
+        }
+    }
+    
+    /**
+     * 自动加载函数
+     *
+     * 例如 extends CommonController
+     * 会自动加载 项目路径/controllers/CommonController.php 这个文件
+     * 
+     */
+    public static function LoaderOther($class)
     {
         $app = Wave::app();
         if(!empty($app->import)){
@@ -40,18 +59,18 @@ class WaveBase
                 foreach ($file_array as $k => $v) {
                     $path .= $v.'/';
                 }
-                $filename = $app->projectPath.$app->modelName.'/'.str_replace('*/', '', $path).$classname.'.php';
+                $filename = $app->projectPath.$app->projectName.
+                            '/'.str_replace('*/', '', $path).$class.'.php';
                 if(file_exists($filename)){
                     require $filename;
-                    if(!class_exists($classname)){
-                        exit('没有'.$classname.'这个类！');
+                    if(!class_exists($class)){
+                        exit('no '.$class);
                     }
                     break;
                 }
             }
         }
     }
-    
 }
 
 ?>

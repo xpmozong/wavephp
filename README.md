@@ -59,7 +59,7 @@ $config = array(
     'modelName'=>'protected',
 
     'import'=>array(
-        'models.*'
+        'controllers.*'
     ),
 
     'defaultController'=>'site',
@@ -127,9 +127,14 @@ class SiteController extends Controller
         echo Wave::app()->request->baseUrl;
 
         // 关闭自动加载
-        // spl_autoload_unregister(array('WaveBase','loader'));
+        // spl_autoload_unregister(array('WaveBase','LoaderModel'));
         // 开启自动加载
-        // spl_autoload_register(array('WaveBase','loader'));
+        // spl_autoload_register(array('WaveBase','LoaderModel'));
+
+        // 关闭自动加载
+        // spl_autoload_unregister(array('WaveBase','LoaderOther'));
+        // 开启自动加载
+        // spl_autoload_register(array('WaveBase','LoaderOther'));
 
         $User = new User();
         echo "User model 加载成功！";

@@ -2,7 +2,7 @@
 /**
  * 网站默认入口控制层
  */
-class SiteController extends Controller
+class SiteController extends CommonController
 {
        
     public function __construct()
@@ -15,16 +15,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $list = $Common->getJoinDataList('articles a', 
+        $list = $this->Common->getJoinDataList('articles a', 
         'a.aid,a.title,a.add_date,c.c_name', 0, 12, 'category c', 'a.cid=c.cid', 
         null, 'a.aid DESC');
         $render = array('list' => $list);
-
-        $links = $Common->getFieldList('links', '*', 'lid desc');
         $this->render('layout/header');
         $this->render('site/index', $render);
-        $this->render('layout/footer', array('links'=>$links));
+        $this->render('layout/footer', array('links'=>$this->links));
         $this->debuger();
     }
 
@@ -55,25 +52,24 @@ class SiteController extends Controller
 
     public function actionLoging()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $this->Common->getFilter($_POST);
         if(empty($data['user_login']))
-            $Common->exportResult(false, '请输入用户名！');
+            $this->Common->exportResult(false, '请输入用户名！');
 
         if(empty($data['user_pass']))
-            $Common->exportResult(false, '请输入密码！');
+            $this->Common->exportResult(false, '请输入密码！');
         
-        $array = $Common->getOneData('users', '*', 'user_login', $data['user_login']);
+        $array = $this->Common->getOneData('users', '*', 'user_login', $data['user_login']);
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userid', $array['userid']);
                 Wave::app()->session->setState('username', $array['user_login']);
-                $Common->exportResult(true, '登录成功！');
+                $this->Common->exportResult(true, '登录成功！');
             }else{
-                $Common->exportResult(false, '用户名或密码错误！');
+                $this->Common->exportResult(false, '用户名或密码错误！');
             }
         }else{
-            $Common->exportResult(false, '用户名或密码错误！');
+            $this->Common->exportResult(false, '用户名或密码错误！');
         }
     }
 
@@ -84,19 +80,18 @@ class SiteController extends Controller
 
     public function actionRegisting()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $this->Common->getFilter($_POST);
         if(empty($data['user_login']))
-            $Common->exportResult(false, '请输入用户名！');
+            $this->Common->exportResult(false, '请输入用户名！');
 
         if(empty($data['user_pass']))
-            $Common->exportResult(false, '请输入密码！');
+            $this->Common->exportResult(false, '请输入密码！');
         
         $data['user_pass'] = md5($data['user_pass']);
-        if ($Common->getInsert('users', $data)) {
-            $Common->exportResult(true, '注册成功！');
+        if ($this->Common->getInsert('users', $data)) {
+            $this->Common->exportResult(true, '注册成功！');
         }else{
-            $Common->exportResult(false, '注册失败！');
+            $this->Common->exportResult(false, '注册失败！');
         }
     }
 

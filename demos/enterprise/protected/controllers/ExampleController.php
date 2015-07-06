@@ -2,7 +2,7 @@
 /**
  * 案例入口控制层
  */
-class ExampleController extends Controller
+class ExampleController extends CommonController
 {
        
     public function __construct()
@@ -15,14 +15,11 @@ class ExampleController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $data = $Common->getOneData('substance', '*', 'sid', 5);
+        $data = $this->Common->getOneData('substance', '*', 'sid', 5);
         $render = array('data' => $data);
-
-        $links = $Common->getFieldList('links', '*', 'lid desc');
         $this->render('layout/header');
         $this->render('example/index', $render);
-        $this->render('layout/footer', array('links'=>$links));
+        $this->render('layout/footer', array('links'=>$this->links));
         $this->debuger();
     }
 

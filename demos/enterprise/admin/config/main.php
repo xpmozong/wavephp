@@ -1,10 +1,10 @@
 <?php
 $config = array(
     'projectName'   =>  'admin',
-    'modelName'     =>  'protected',
+    'modelName'=>'protected',
 
     'import'=>array(
-        'models.*'
+        'controllers.*'
     ),
 
     'defaultController'=>'site',
@@ -23,7 +23,6 @@ $config = array(
             'table_prefix'  => ''
         )
     ),
-
     'session'=>array(
         'prefix'            => '',
         'timeout'           => 86400
