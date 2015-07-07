@@ -61,8 +61,7 @@ class Wave
         $this->loadSession();
         
         $Route = new Route(self::$app, $this->Core);
-        spl_autoload_register(array('WaveBase', 'LoaderModel'));
-        spl_autoload_register(array('WaveBase', 'LoaderOther'));
+        spl_autoload_register(array('WaveBase', 'loader'));
         $Route->route();
         
         $this->Core->clear();

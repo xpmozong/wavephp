@@ -26,9 +26,11 @@ class WaveBase
      *
      * 例如 $User = new User();
      * 会自动加载  项目路径/models/User.php 这个文件
+     * 例如 extends CommonController
+     * 会自动加载 项目路径/controllers/CommonController.php 这个文件
      * 
      */
-    public static function LoaderModel($class)
+    public static function loader($class)
     {
         $app = Wave::app();
         $filename = $app->projectPath.$app->modelName.
@@ -39,18 +41,6 @@ class WaveBase
                 exit('no '.$class);
             }
         }
-    }
-    
-    /**
-     * 自动加载函数
-     *
-     * 例如 extends CommonController
-     * 会自动加载 项目路径/controllers/CommonController.php 这个文件
-     * 
-     */
-    public static function LoaderOther($class)
-    {
-        $app = Wave::app();
         if(!empty($app->import)){
             $import = $app->import;
             foreach ($import as $key => $value) {

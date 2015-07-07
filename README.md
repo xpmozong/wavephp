@@ -127,14 +127,9 @@ class SiteController extends Controller
         echo Wave::app()->request->baseUrl;
 
         // 关闭自动加载
-        // spl_autoload_unregister(array('WaveBase','LoaderModel'));
+        // spl_autoload_unregister(array('WaveBase','loader'));
         // 开启自动加载
-        // spl_autoload_register(array('WaveBase','LoaderModel'));
-
-        // 关闭自动加载
-        // spl_autoload_unregister(array('WaveBase','LoaderOther'));
-        // 开启自动加载
-        // spl_autoload_register(array('WaveBase','LoaderOther'));
+        // spl_autoload_register(array('WaveBase','loader'));
 
         $User = new User();
         echo "User model 加载成功！";
