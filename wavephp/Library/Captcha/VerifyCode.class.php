@@ -28,16 +28,16 @@ class VerifyCode
     public  $height     = 50;   //高度
     private $img;               //图形资源句柄
     private $font;              //指定的字体
-    private $fontsize   = 20;   //指定字体大小
+    private $fontsize   = 22;   //指定字体大小
     private $fontcolor;         //指定字体颜色
-    private $charset    = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ23456789'; //随机因子
+    private $charset;           //随机因子
 
     /**
      *构造方法初始化
      */
     public function __construct($path)
     {
-        $this->font = $path.'Library/font/GEORGIA.TTF';
+        $this->font = $path.'Library/Captcha/font/FetteSteinschrift.ttf';
     }
 
     /**
@@ -45,6 +45,11 @@ class VerifyCode
      */
     private function createCode()
     {
+        $uArray = range('A', 'Z');
+        $lArray = range('a', 'z');
+        $nArray = range(2, 9);
+        $strArray = array_merge($uArray, $lArray, $nArray);
+        $this->charset = implode('', $strArray);
         $_len = strlen($this->charset) - 1;
         for ($i = 0; $i < $this->codelen; $i++) {
             $this->code .= $this->charset[mt_rand(0,$_len)];
@@ -57,7 +62,10 @@ class VerifyCode
     private function createBg()
     {
         $this->img = imagecreatetruecolor($this->width, $this->height);
-        $color = imagecolorallocate($this->img, mt_rand(157,255), mt_rand(157,255), mt_rand(157,255));
+        $color = imagecolorallocate($this->img, 
+                                    mt_rand(157,255), 
+                                    mt_rand(157,255), 
+                                    mt_rand(157,255));
         imagefilledrectangle($this->img,0,$this->height,$this->width,0,$color);
     }
 
@@ -68,8 +76,18 @@ class VerifyCode
     {
         $_x = $this->width / $this->codelen;
         for ($i = 0; $i < $this->codelen; $i++) {
-            $this->fontcolor = imagecolorallocate($this->img,mt_rand(0,156),mt_rand(0,156),mt_rand(0,156));
-            imagettftext($this->img,$this->fontsize,mt_rand(-30,30),$_x*$i+mt_rand(1,5),$this->height / 1.4,$this->fontcolor,$this->font,$this->code[$i]);
+            $this->fontcolor = imagecolorallocate($this->img,
+                                                mt_rand(0,156),
+                                                mt_rand(0,156),
+                                                mt_rand(0,156));
+            imagettftext($this->img,
+                        $this->fontsize,
+                        mt_rand(-30,30),
+                        $_x*$i+mt_rand(1,5),
+                        $this->height / 1.4,
+                        $this->fontcolor,
+                        $this->font,
+                        $this->code[$i]);
         }
     }
 
@@ -79,12 +97,27 @@ class VerifyCode
     private function createLine()
     {
         for ($i = 0; $i < 6; $i++) {
-            $color = imagecolorallocate($this->img,mt_rand(0,156),mt_rand(0,156),mt_rand(0,156));
-            imageline($this->img,mt_rand(0,$this->width),mt_rand(0,$this->height),mt_rand(0,$this->width),mt_rand(0,$this->height),$color);
+            $color = imagecolorallocate($this->img,
+                                        mt_rand(0,156),
+                                        mt_rand(0,156),
+                                        mt_rand(0,156));
+            imageline($this->img,
+                        mt_rand(0,$this->width),
+                        mt_rand(0,$this->height),
+                        mt_rand(0,$this->width),
+                        mt_rand(0,$this->height),
+                        $color);
         }
-        for ($i = 0; $i < 100; $i++) {
-            $color = imagecolorallocate($this->img,mt_rand(200,255),mt_rand(200,255),mt_rand(200,255));
-            imagestring($this->img,mt_rand(1,5),mt_rand(0,$this->width),mt_rand(0,$this->height),'*',$color);
+        for ($i = 0; $i < 10; $i++) {
+            $color = imagecolorallocate($this->img,
+                                        mt_rand(200,255),
+                                        mt_rand(200,255),
+                                        mt_rand(200,255));
+            imagestring($this->img,
+                        mt_rand(1,5),
+                        mt_rand(0,$this->width),
+                        mt_rand(0,$this->height),
+                        '*',$color);
         }
     }
 

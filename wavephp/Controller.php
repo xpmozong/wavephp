@@ -65,7 +65,7 @@ class Controller
      */
     public function verifyCode($num = 4, $width = 130, $height = 50)
     {
-        require $this->frameworkPath.'Library/VerifyCode.class.php';
+        require $this->frameworkPath.'Library/Captcha/VerifyCode.class.php';
         $VerifyCode = new VerifyCode($this->frameworkPath);
         $VerifyCode->codelen = $num;
         $VerifyCode->width = $width;
