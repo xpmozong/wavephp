@@ -29,7 +29,7 @@ class LinksController extends Controller
         $this->render('layout/header');
         $this->render('links/index', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**
@@ -45,7 +45,7 @@ class LinksController extends Controller
         $this->render('layout/header');
         $this->render('links/modify', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**

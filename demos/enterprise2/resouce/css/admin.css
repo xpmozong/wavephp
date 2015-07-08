@@ -1,0 +1,163 @@
+*,body{ padding: 0; margin: 0;}
+body a{outline:none;blr:expression(this.onFocus=this.blur());}
+a:focus { 
+  outline: none; 
+} 
+/* 登录 */
+.con-login{ margin: 100px auto; width: 300px;}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  position: fixed;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  background-color: #f5f5f5;
+  border-right: 1px solid #eee;
+  width: 200px;
+  padding: 10px;
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-left: 0px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+.list-group-item { padding: 0;}
+
+/*
+ * Main content
+ */
+.main {
+  padding: 15px;
+}
+.main .page-header {
+  margin: 0;
+}
+.col-md-offset-2 { margin-left: 0;}
+.col-md-10 { width: 100%;}
+.col-sm-3{ padding-left: 0;}
+
+/**
+  pagebar
+ */
+#jumppage{ width: 50px; text-align: center;}
+.list-inline li a{ border: 1px solid #428bca; padding: 2px; width: 60px; display: block; border-radius: 3px; text-align: center;}
+.list-inline li a:hover{ text-decoration: none;};
+
+/* 自定义 */
+.table-responsive{ margin-top: 10px;}
+.info{ margin: 0 0 10px 0; width: 600px;}
+.select{ margin-top: 7px; width: 170px;}
+.s_select{ margin-top: 4px; width: 150px;}
+
+.modalBox{ margin-left: -220px;}
+.modalBox{ display: block;}
+.modalBox .col-sm-2{ width: 20%;}
+.modalBox .col-sm-10{ width: 80%;}
+
+.file{ margin-top: 7px;}
+.ajaxlist{ border: 1px solid #ccc; border-top: 0; display: none;}
+.ajaxlist ul{ margin-bottom: 0;}
+.ajaxlist li{ list-style: none; line-height: 22px;}
+.ajaxlist li a:hover{ text-decoration: none;}
+.ajaxlist li a:visited{ text-decoration: none;}
+
+.s_schoolList { position: fixed; background: #fff; margin-left: 81px; width: 168px;}
+
+.scan ul, .scan ol {
+    line-height: 1.6;
+    list-style: disc outside none;
+    margin: 15px 0;
+    padding: 0 0 0 40px;
+}
+table p{ text-indent: 2em;}
+table img{ width: 100%; margin-left: -2em;}
+blockquote p{ text-indent: 0em;}
+
+.ajaxlist .dropdown-menu {
+    float: none;
+    left: 0;
+    margin:0;
+    position: relative;
+    top: 0;
+}
+.form-inline .f-select{ width: 200px;}
+
+.bs-callout {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eee;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px 1px 1px 5px;
+    padding: 20px;
+}
+.bs-callout h4 {
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+.bs-callout code {
+    border-radius: 3px;
+}
+.bs-callout + .bs-callout {
+    margin-top: -5px;
+}
+.bs-callout-danger {
+    border-left-color: #ce4844;
+}
+.bs-callout-danger h4 {
+    color: #ce4844;
+}
+.bs-callout-warning {
+    border-left-color: #aa6708;
+}
+.bs-callout-warning h4 {
+    color: #aa6708;
+}
+.bs-callout-info {
+    border-left-color: #1b809e;
+}
+.bs-callout-info h4 {
+    color: #1b809e;
+}

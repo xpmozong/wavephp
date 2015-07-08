@@ -33,6 +33,7 @@ class Wave
     public $config          = array();
     public static $app      = array();
     public static $_debug   = array();
+    public static $Route;
 
     /**
      * 初始化
@@ -56,13 +57,14 @@ class Wave
         $this->Core->requireFrameworkFile('Route');
         $this->Core->requireFrameworkFile('Model');
         $this->Core->requireFrameworkFile('Controller');
+        $this->Core->requireFrameworkFile('View');
         $this->Core->requireFrameworkFile('WaveBase');
         $this->Core->requireFrameworkFile('Web/Session.class');
         $this->loadSession();
         
-        $Route = new Route(self::$app, $this->Core);
+        self::$Route = new Route(self::$app);
         spl_autoload_register(array('WaveBase', 'loader'));
-        $Route->route();
+        self::$Route->route();
         
         $this->Core->clear();
     }
@@ -72,26 +74,27 @@ class Wave
      */
     private function loadSession()
     {
-        $lifeTime   = 3600;
-        $prefix     = '';
         if(!empty(self::$app->config)){
             if(isset(self::$app->config['session'])){
-                if(!empty(self::$app->config['session']['timeout']))
+                $lifeTime   = 3600;
+                $prefix     = '';
+                if(!empty(self::$app->config['session']['timeout'])){
                     $lifeTime = self::$app->config['session']['timeout'];
-                if(!empty(self::$app->config['session']['prefix']))
+                }
+                if(!empty(self::$app->config['session']['prefix'])){
                     $prefix = self::$app->config['session']['prefix'];
+                }
+                $session = new Session($prefix, $lifeTime);
+                session_set_save_handler(array(&$session,"open"), 
+                             array(&$session,"close"), 
+                             array(&$session,"read"), 
+                             array(&$session,"write"), 
+                             array(&$session,"destroy"), 
+                             array(&$session,"gc"));
+
+                self::$app->session = $session;
             }
         }
-
-        $session = new Session($prefix, $lifeTime);
-        session_set_save_handler(array(&$session,"open"), 
-                     array(&$session,"close"), 
-                     array(&$session,"read"), 
-                     array(&$session,"write"), 
-                     array(&$session,"destroy"), 
-                     array(&$session,"gc"));
-
-        self::$app->session = $session;
     }
 
     /**
@@ -123,6 +126,20 @@ class Wave
             'log_time' => microtime(TRUE),
             'message' => $message
         );
+    }
+
+    /**
+     * 获取控制器名
+     */
+    public static function getClassName() {
+        return self::$Route->getClassName();
+    }
+
+    /**
+     * 获取控制器方法名
+     */
+    public static function getActionName() {
+        return self::$Route->getActionName();
     }
     
 }

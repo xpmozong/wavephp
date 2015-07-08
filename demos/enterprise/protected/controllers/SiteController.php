@@ -16,13 +16,12 @@ class SiteController extends CommonController
     public function actionIndex()
     {
         $list = $this->Common->getJoinDataList('articles a', 
-        'a.aid,a.title,a.add_date,c.c_name', 0, 12, 'category c', 'a.cid=c.cid', 
-        null, 'a.aid DESC');
+        'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
+        'category c', 'a.cid=c.cid', null, 'a.aid DESC');
         $render = array('list' => $list);
         $this->render('layout/header');
         $this->render('site/index', $render);
         $this->render('layout/footer', array('links'=>$this->links));
-        $this->debuger();
     }
 
     public function actionTestDb()
@@ -59,7 +58,8 @@ class SiteController extends CommonController
         if(empty($data['user_pass']))
             $this->Common->exportResult(false, '请输入密码！');
         
-        $array = $this->Common->getOneData('users', '*', 'user_login', $data['user_login']);
+        $array = $this->Common->getOneData('users', '*', 
+                                'user_login', $data['user_login']);
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userid', $array['userid']);
@@ -113,7 +113,7 @@ class SiteController extends CommonController
             $array['success'] = false;
         }
         
-        echo json_encode($array);
+        echo json_encode($array);die;
     }
 }
 

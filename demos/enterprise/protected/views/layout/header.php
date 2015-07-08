@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>企业网站</title>
+<title>测试</title>
 <?php $baseUrl = Wave::app()->request->baseUrl;?>
 <?php $homeUrl = Wave::app()->homeUrl;?>
 <link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/bootstrap/css/bootstrap.min.css"/>
@@ -36,7 +36,7 @@ $(function(){
 <div class="container clearfix">
     <div class="pull-left head-left">
         <a href="<?=$homeUrl?>">
-            企业网站
+            测试
         </a>
     </div>
     <div class="pull-right head-right clearfix">

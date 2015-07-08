@@ -20,7 +20,7 @@ class ServiceController extends CommonController
         $this->render('layout/header');
         $this->render('service/index', $render);
         $this->render('layout/footer', array('links'=>$this->links));
-        $this->debuger();
+        
     }
 
 }

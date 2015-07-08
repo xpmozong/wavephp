@@ -20,7 +20,7 @@ class PatternController extends CommonController
         $this->render('layout/header');
         $this->render('pattern/index', $render);
         $this->render('layout/footer', array('links'=>$this->links));
-        $this->debuger();
+        
     }
 
 }

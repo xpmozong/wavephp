@@ -8,8 +8,8 @@ wavephp
         Abstarct.class.php
         Mysql.class.php
     | Library
-        | font
-        VerifyCode.class.php
+        | Captcha
+        | Smarty
     | Web
         Session.class.php
     Controller.php
@@ -64,6 +64,7 @@ $config = array(
 
     'defaultController'=>'site',
 
+    'smarty'=>true,     // 是否使用smarty模板 参考demo下的enterprise2项目
     'debuger'=>true,    // 显示debug信息
     
     'database'=>array(

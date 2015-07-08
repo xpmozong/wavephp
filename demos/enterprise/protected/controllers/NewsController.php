@@ -47,7 +47,7 @@ class NewsController extends CommonController
         $this->render('layout/header');
         $this->render('news/index', $render);
         $this->render('layout/footer', array('links'=>$this->links));
-        $this->debuger();
+        
     }
 
     /**
@@ -63,7 +63,7 @@ class NewsController extends CommonController
         $this->render('layout/header');
         $this->render('news/article', $render);
         $this->render('layout/footer', array('links'=>$this->links));
-        $this->debuger();
+        
     }
 
 }
