@@ -20,6 +20,12 @@ class SiteController extends CommonController
         'category c', 'a.cid=c.cid', null, 'a.aid DESC');
     }
 
+    public function actionTestLang()
+    {
+        i18n::$lang = 'vi-vn';
+        echo i18n::get('平台管理')."<br>";
+    }
+
     /**
      * 验证码
      */

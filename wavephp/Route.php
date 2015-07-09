@@ -33,8 +33,9 @@ class Route
     /**
      * 初始化
      */
-    function __construct($app)
+    function __construct()
     {
+        $app = Wave::app();
         if (isset($app->config['smarty'])) {
             if (isset($app->config['smarty']['isOn'])) {
                 $this->isSmarty = $app->config['smarty']['isOn'];

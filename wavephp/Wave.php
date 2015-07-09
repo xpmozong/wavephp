@@ -65,7 +65,7 @@ class Wave
         $this->Core->requireFrameworkFile('i18n');
         $this->loadSession();
         
-        self::$Route = new Route(self::$app);
+        self::$Route = new Route();
         spl_autoload_register(array('WaveBase', 'loader'));
         self::$Route->route();
         
