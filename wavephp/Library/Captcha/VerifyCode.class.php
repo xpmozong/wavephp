@@ -35,8 +35,9 @@ class VerifyCode
     /**
      *构造方法初始化
      */
-    public function __construct($path)
+    public function __construct()
     {
+        $path = Wave::app()->frameworkPath;
         $this->font = $path.'Library/Captcha/font/FetteSteinschrift.ttf';
     }
 
