@@ -21,20 +21,20 @@
  */
 class Core
 {
-    private static $frameworkPath    = '';      //框架路径
-    private static $projectPath      = '';      //项目路径
-    private static $projectName      = '';      //项目名称
-    private static $modelName        = '';      //需要加载的模型文件夹名
-    private static $hostInfo         = '';      //当前域名
-    private static $pathInfo         = '';      //除域名外以及index.php
-    private static $homeUrl          = '';      //除域名外的地址
-    private static $baseUrl          = '';      //除域名外的根目录地址
-    private static $import           = '';      //需要加载的文件夹
-    private static $config           = '';      //配置项目
-    private static $database         = '';      //数据库连接对象
-    private static $memcache         = '';      //memcache 缓存对象
-    private static $session          = '';      //SESSION 对象
-    private static $defaultControl   = '';      //默认控制层
+    private static $frameworkPath;      // 框架路径
+    private static $projectPath;        // 项目路径
+    private static $projectName;        // 项目名称
+    private static $modelName;          // 需要加载的模型文件夹名
+    private static $hostInfo;           // 当前域名
+    private static $pathInfo;           // 除域名外以及index.php
+    private static $homeUrl;            // 除域名外的地址
+    private static $baseUrl;            // 除域名外的根目录地址
+    private static $import;             // 需要加载的文件夹
+    private static $config;             // 配置项目
+    private static $database;           // 数据库连接对象
+    private static $memcache;           // memcache 缓存对象
+    private static $redis;              // redis 缓存对象
+    private static $defaultControl;     // 默认控制层
 
     /**
      * 初始化
@@ -70,9 +70,9 @@ class Core
         }
 
         $this->loadBase();
-
         $this->loadDatabase();
         $this->loadMemcache();
+        $this->loadRedis();
     }
 
     /**
@@ -162,9 +162,32 @@ class Core
                         foreach (self::$config['memcache'] as $key => $value) {
                             $cache[$key] = new Memcache();
                             $cache[$key]->connect($value['host'], $value['port']) 
-                            or die ("Could not connect ".$value['host']);
+                            or die ("Memcache Could not connect ".$value['host']);
                         }
                         self::$memcache = (object) $cache;
+                        unset($cache);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * redis 连接
+     */
+    private function loadRedis()
+    {
+        if(empty(self::$redis)){
+            if(!empty(self::$config)){
+                if(isset(self::$config['redis'])){
+                    if(!empty(self::$config['redis'])){
+                        $cache = array();
+                        foreach (self::$config['redis'] as $key => $value) {
+                            $cache[$key] = new Redis();
+                            $cache[$key]->connect($value['host'], $value['port']) 
+                            or die ("Redis Could not connect ".$value['host']);
+                        }
+                        self::$redis = (object) $cache;
                         unset($cache);
                     }
                 }
@@ -190,6 +213,7 @@ class Core
         $parameter['homeUrl']           = self::$homeUrl;
         $parameter['database']          = self::$database;
         $parameter['memcache']          = self::$memcache;
+        $parameter['redis']             = self::$redis;
         $parameter['import']            = self::$import;
         $parameter['config']            = self::$config;
         $parameter['defaultControl']    = self::$defaultControl;
@@ -213,8 +237,8 @@ class Core
         self::$config           = '';
         self::$database         = '';
         self::$memcache         = '';
+        self::$redis            = '';
         self::$import           = '';
-        self::$session          = '';
         self::$hostInfo         = '';
         self::$pathInfo         = '';
         self::$homeUrl          = '';

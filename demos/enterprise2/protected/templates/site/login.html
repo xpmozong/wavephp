@@ -2,10 +2,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>用户登录</title>
-<?php $baseUrl = Wave::app()->request->baseUrl;?>
-<link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/bootstrap/css/bootstrap.min.css"/>
-<link type="text/css" rel="stylesheet" href="<?=$baseUrl?>/resouce/css/index.css"/>
-<script type="text/javascript" src="<?=$baseUrl?>/resouce/js/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/bootstrap/css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/index.css"/>
+<script type="text/javascript" src="{%$app->request->baseUrl%}/resouce/js/jquery.min.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -22,12 +21,12 @@ var getsubmit = function(){
     }
     $.ajax({
         type: "POST",
-        url: "<?php echo Wave::app()->homeUrl.'site/loging';?>",
+        url: "{%$app->homeUrl%}site/loging",
         data: $("#login-form").serialize(),
         dataType: "json",
         success: function(data){
             if(data.success == true){
-                window.location.href="<?php echo Wave::app()->homeUrl.'site';?>";
+                window.location.href="{%$app->homeUrl%}site";
             }else{
                 alert(data.msg);
             }
@@ -66,7 +65,7 @@ $(function(){
             </div>
         </div>
         <div class="login-info">
-            <a href="<?php echo Wave::app()->homeUrl.'site/regist';?>">->注册</a>
+            <a href="{%$app->homeUrl%}site/regist">->注册</a>
         </div>
     </div>
 </div>

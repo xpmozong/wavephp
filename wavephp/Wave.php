@@ -19,6 +19,7 @@
  * @author          许萍
  *
  */
+
 define('START_TIME', microtime(TRUE));
 
 if (function_exists('memory_get_usage'))
@@ -141,6 +142,8 @@ class Wave
     public static function getActionName() {
         return self::$Route->getActionName();
     }
+
+    
     
 }
 

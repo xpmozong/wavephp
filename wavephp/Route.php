@@ -36,7 +36,9 @@ class Route
     function __construct($app)
     {
         if (isset($app->config['smarty'])) {
-            $this->isSmarty = $app->config['smarty'];
+            if (isset($app->config['smarty']['isOn'])) {
+                $this->isSmarty = $app->config['smarty']['isOn'];
+            }
         }
         if (isset($app->config['debuger'])) {
             $this->isDebuger = $app->config['debuger'];

@@ -1,37 +1,30 @@
 <?php
 
 class View 
-{
-    private $app            = '';       //项目信息
-    private $frameworkPath  = '';       //框架路径
-    private $projectPath    = '';       //项目路径
-    private $projectName    = '';       //项目名称
-
-    public $engin;
+{public $engin;
     private $scriptPackage;
 
     /**
      * 初始化smarty模板引擎
      */
     public function __construct(){
-        $this->app              = Wave::app();
-        $this->frameworkPath    = $this->app->frameworkPath;
-        $this->projectPath      = $this->app->projectPath;
-        $this->projectName      = $this->app->projectName;
-        require $this->frameworkPath.'Library/Smarty/Smarty.class.php';
-        $dir = $this->projectPath.$this->projectName;
+        $app = Wave::app();
+        require $app->frameworkPath.'Library/Smarty/Smarty.class.php';
+        $dir = $app->projectPath.$app->projectName;
+
+        $config = Wave::app()->config['smarty'];
 
         $smarty = new Smarty();
-        $smarty->left_delimiter     = '{%';
-        $smarty->right_delimiter    = '%}';
-        $smarty->debugging          = false;
-        $smarty->caching            = false;
-        $smarty->cache_lifetime     = 120;
-        $smarty->compile_check      = true;
-        $smarty->template_dir       = $dir.'/templates';
-        $smarty->cache_dir          = $dir.'/templates/cache';
-        $smarty->config_dir         = $dir.'/templates/config';
-        $smarty->compile_dir        = $dir.'/templates_c';
+        $smarty->left_delimiter     = $config['left_delimiter'];
+        $smarty->right_delimiter    = $config['right_delimiter'];
+        $smarty->debugging          = $config['debugging'];
+        $smarty->caching            = $config['caching'];
+        $smarty->cache_lifetime     = $config['cache_lifetime'];
+        $smarty->compile_check      = $config['compile_check'];
+        $smarty->template_dir       = $dir.'/'.$config['template_dir'];
+        $smarty->cache_dir          = $dir.'/'.$config['cache_dir'];
+        $smarty->config_dir         = $dir.'/'.$config['config_dir'];
+        $smarty->compile_dir        = $dir.'/'.$config['compile_dir'];
 
         if (!is_dir($smarty->template_dir)) {
             mkdir($smarty->template_dir);

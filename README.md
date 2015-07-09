@@ -55,46 +55,62 @@ $wave->run();
     config/main.php
 <pre>
 $config = array(
-    'projectName'=>'protected',
-    'modelName'=>'protected',
+    'projectName'           =>  'protected',
+    'modelName'             =>'protected',
 
     'import'=>array(
         'controllers.*'
     ),
 
-    'defaultController'=>'site',
+    'defaultController'     =>'site',
 
-    'smarty'=>true,     // 是否使用smarty模板 参考demo下的enterprise2项目
-    'debuger'=>true,    // 显示debug信息
+    'smarty'=>array(
+        'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+        'left_delimiter'    => '{%',
+        'right_delimiter'   => '%}',
+        'debugging'         => false,
+        'caching'           => false,
+        'cache_lifetime'    => 120,
+        'compile_check'     => true,
+        'template_dir'      => 'templates',
+        'cache_dir'         => 'templates/cache',
+        'config_dir'        => 'templates/config',
+        'compile_dir'       => 'templates_c'
+    ),
+    
+    'debuger'=>false,       // 显示debug信息
     
     'database'=>array(
         'db'=>array(
-            'dbhost'        => 'localhost',
+            'dbhost'        => '127.0.0.1',
+            'dbport'        => '3306',
             'dbuser'        => 'root',
             'dbpasswd'      => '',
-            'dbname'        => 'wordpress',
+            'dbname'        => 'enterprise',
             'dbpconnect'    => 0,
-            'dbchart'       => 'utf8'
-        ),
-        'db2'=>array(
-            'dbhost'        => 'localhost',
-            'dbuser'        => 'root',
-            'dbpasswd'      => '',
-            'dbname'        => 'joke',
-            'dbpconnect'    => 0,
-            'dbchart'       => 'utf8'
+            'dbchart'       => 'utf8',
+            'table_prefix'  => ''
         )
     ),
     'session'=>array(
-        'pre'               => 'blog',
+        'prefix'            => '',
         'timeout'           => 86400
     ),
+    
     'memcache'=>array(
         'cache1' => array(
-            'host'              => 'localhost',
-            'port'              => '11211'
+            'host'          => 'localhost',
+            'port'          => 11211
+        )
+    ),
+
+    'redis'=>array(
+        'cache1' => array(
+            'host'          => '127.0.0.1',
+            'port'          => 6379
         )
     )
+
 );
 </pre>
 5、默认控制层文件controllers/SiteController.php
@@ -142,15 +158,18 @@ class SiteController extends Controller
         $this->render('layout/footer');
 
         // mecache使用
-        $tmp_object = new stdClass;
-        $tmp_object->str_attr = 'test';
-        $tmp_object->int_attr = 123;
-        Wave::app()->memcache->cache1->set('key', $tmp_object, false, 30) 
+        Wave::app()->memcache->cache1->set('key', '11111', false, 30) 
         or die ("Failed to save data at the server");
-        echo "Store data in the cache (data will expire in 30 seconds)";
+        echo "Store data in the cache (data will expire in 30 seconds)<br>";
         $get_result = Wave::app()->memcache->cache1->get('key');
-        echo "Data from the cache:";
-        print_r($get_result);
+        echo "Memcache Data from the cache:$get_result<br>";
+
+        // redis使用
+        Wave::app()->redis->cache1->set('key', '11111', 30) 
+        or die ("Failed to save data at the server");
+        echo "Store data in the cache (data will expire in 30 seconds)<br>";
+        $get_result = Wave::app()->redis->cache1->get('key');
+        echo "Redis Data from the cache:$get_result<br>";
 
     }
 }
