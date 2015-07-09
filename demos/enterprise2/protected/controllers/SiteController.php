@@ -101,7 +101,7 @@ class SiteController extends CommonController
             $array['success'] = false;
         }
         
-        echo json_encode($array);
+        echo json_encode($array);die;
     }
 }
 
