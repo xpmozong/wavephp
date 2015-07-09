@@ -20,6 +20,7 @@
  *
  */
 
+define('Application', true);
 define('START_TIME', microtime(TRUE));
 
 if (function_exists('memory_get_usage'))
@@ -61,6 +62,7 @@ class Wave
         $this->Core->requireFrameworkFile('View');
         $this->Core->requireFrameworkFile('WaveBase');
         $this->Core->requireFrameworkFile('Web/Session.class');
+        $this->Core->requireFrameworkFile('i18n');
         $this->loadSession();
         
         self::$Route = new Route(self::$app);
@@ -132,18 +134,30 @@ class Wave
     /**
      * 获取控制器名
      */
-    public static function getClassName() {
+    public static function getClassName() 
+    {
         return self::$Route->getClassName();
     }
 
     /**
      * 获取控制器方法名
      */
-    public static function getActionName() {
+    public static function getActionName() 
+    {
         return self::$Route->getActionName();
     }
 
-    
+    /**
+     * 写入缓存文件
+     */
+    public static function writeCache($filepath, $content, $mod = 'w') 
+    {
+        $fp = fopen($filepath, $mod);
+        flock($fp, LOCK_EX);
+        fwrite($fp, $content);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+    }
     
 }
 

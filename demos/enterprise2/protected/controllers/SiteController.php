@@ -15,18 +15,6 @@ class SiteController extends CommonController
      */
     public function actionIndex()
     {
-        // Wave::app()->memcache->cache1->set('key', '11111', false, 30) 
-        // or die ("Failed to save data at the server");
-        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
-        // $get_result = Wave::app()->memcache->cache1->get('key');
-        // echo "Memcache Data from the cache:$get_result<br>";
-
-        // Wave::app()->redis->cache1->set('key', '11111', 30) 
-        // or die ("Failed to save data at the server");
-        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
-        // $get_result = Wave::app()->redis->cache1->get('key');
-        // echo "Redis Data from the cache:$get_result<br>";
-
         $this->list = $this->Common->getJoinDataList('articles a', 
         'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
         'category c', 'a.cid=c.cid', null, 'a.aid DESC');

@@ -132,6 +132,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // 多语言使用，要连数据库，表为w_language，参看enterprise数据库
+        // 按规定填入数据
+        // 使用方式
+        i18n::$lang = 'vi-vn';
+        echo i18n::get('平台管理');
+        // smarty模板使用方式
+        {%i18n var=平台管理%}
+
         // 项目路径
         echo Wave::app()->projectPath;
         //当前域名

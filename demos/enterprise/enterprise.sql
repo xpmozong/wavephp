@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 06 月 16 日 13:30
+-- 生成日期: 2015 年 07 月 09 日 14:44
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `gh_manage` (
   `gh_appid` varchar(100) NOT NULL COMMENT '应用ID',
   `gh_appsecret` varchar(100) NOT NULL COMMENT '应用密钥',
   PRIMARY KEY (`gid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- 转存表中的数据 `gh_manage`
@@ -232,31 +232,30 @@ CREATE TABLE IF NOT EXISTS `wx_log` (
   `log_text` text NOT NULL,
   `log_time` datetime NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
--- 转存表中的数据 `wx_log`
+-- 表的结构 `w_language`
 --
 
-INSERT INTO `wx_log` (`log_id`, `log_text`, `log_time`) VALUES
-(50, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[iAGXNEISyhm2FfY6xzmAWnklqI4KQQ+K+8Z0fPPNLjNsGRMC67jMJUGWalR2BHY8VbWNh0XAeV1IC8m7Ksu+cpRot/rtRYQGw7/Ii5dQnLSVmPvh/s7sioJ0NTPdFiOC2WcEbs5CSHgD5VsVvY35s59Xo72PuBfQOUqoOletuHYYOqq2j9a7EggnB2iMDv3MaY6kcdiodwGONwn915uHwEWW30xLEAMrsBqHyBKux4rCXS083kAvrfQuO9QIdDXtZ3aK78Ec0ZCPGWJCxxmnEVZ629S3lMFSp9ShNQwaGVA/FqsHHXJ2oNgR5EovLJps63YvAunpQY/oT+bEhLVa8IJMEZcKCMMHyxpnITovkImUTclnaX4xAjzh/NrPhmzjto9nXEBQmnVwmIx53JfH5p5qMSUD05EcODzXXaeKn6A=]]></Encrypt>\r\n</xml>', '2015-06-11 10:18:34'),
-(51, 'signature=b68405a1c12e20b4a8355e195e451604c8da64e5', '2015-06-11 10:18:34'),
-(52, 'timestamp=1433988755', '2015-06-11 10:18:34'),
-(53, 'nonce=704127271', '2015-06-11 10:18:34'),
-(54, 'msg=<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433988755</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[subscribe]]></Event>\n<EventKey><![CDATA[]]></EventKey>\n</xml>', '2015-06-11 10:18:34'),
-(55, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[c9ufZTumRvQRyGVNDc9+68ep4vGlOrihlqUxRHy51ebHAMn0lFxHJiv2G/tIEgHgT54/xJsbkNUm7kOnnqHVDXtiW52butxmsihose2h8e/w3FKHyELwvO4219xWVBsrCl3Kgkn+9Yp2lutEAD+7rwCr3231n3xS9cmAmv4w3FUMw9QvjqId9jH3zdzwDjfQqxhPNkAd4vgKnOWO06KLYXpXTnnuAOuMcrlmWgwLfu17wzmTq3ww7ipkezAXiB70bx25FH4GRvgYjVbDL/WNZKWhWhVIEqWzyiEvb6vuFvaSR5vMhpJxg2ZxfEcUpGQUtv47JVhVy9lxFmLtb6q3fZ39UMJeCRGgD7RuRxMlvs3a06vtEk2hXTKiQQADSvCJdATt5AV2EWM+mSPMrdhRdYClfjJ7TowNXysBAfeEQi2lO37CyDiObS8BurhTNPrPsCscgluSO0mrAslU/peHlQ==]]></Encrypt>\r\n</xml>', '2015-06-11 11:20:41'),
-(56, 'signature=9236e51efbd2b745c6e13b79f2d7e51f1e29246f', '2015-06-11 11:20:41'),
-(57, 'timestamp=1433992774', '2015-06-11 11:20:41'),
-(58, 'nonce=1808430341', '2015-06-11 11:20:41'),
-(59, '<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433992774</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[淡淡的]]></Content>\n<MsgId>6158952067237864159</MsgId>\n</xml>', '2015-06-11 11:20:41'),
-(60, 'MsgType=text Event=', '2015-06-11 11:20:41'),
-(61, '<xml>\r\n    <ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\r\n    <Encrypt><![CDATA[c9ufZTumRvQRyGVNDc9+68ep4vGlOrihlqUxRHy51ebHAMn0lFxHJiv2G/tIEgHgT54/xJsbkNUm7kOnnqHVDXtiW52butxmsihose2h8e/w3FKHyELwvO4219xWVBsrCl3Kgkn+9Yp2lutEAD+7rwCr3231n3xS9cmAmv4w3FUMw9QvjqId9jH3zdzwDjfQqxhPNkAd4vgKnOWO06KLYXpXTnnuAOuMcrlmWgwLfu17wzmTq3ww7ipkezAXiB70bx25FH4GRvgYjVbDL/WNZKWhWhVIEqWzyiEvb6vuFvaSR5vMhpJxg2ZxfEcUpGQUtv47JVhVy9lxFmLtb6q3fZ39UMJeCRGgD7RuRxMlvs3a06vtEk2hXTKiQQADSvCJdATt5AV2EWM+mSPMrdhRdYClfjJ7TowNXysBAfeEQi2lO37CyDiObS8BurhTNPrPsCscgluSO0mrAslU/peHlQ==]]></Encrypt>\r\n</xml>', '2015-06-11 11:20:56'),
-(62, 'signature=9236e51efbd2b745c6e13b79f2d7e51f1e29246f', '2015-06-11 11:20:56'),
-(63, 'timestamp=1433992774', '2015-06-11 11:20:56'),
-(64, 'nonce=1808430341', '2015-06-11 11:20:56'),
-(65, '<xml><ToUserName><![CDATA[gh_eb0595b205cb]]></ToUserName>\n<FromUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></FromUserName>\n<CreateTime>1433992774</CreateTime>\n<MsgType><![CDATA[text]]></MsgType>\n<Content><![CDATA[淡淡的]]></Content>\n<MsgId>6158952067237864159</MsgId>\n</xml>', '2015-06-11 11:20:56'),
-(66, 'MsgType=text Event=', '2015-06-11 11:20:56'),
-(67, '<xml>\r\n<ToUserName><![CDATA[oT8VCs7gdqgwQIIu0aqFDthDTD3I]]></ToUserName>\r\n<FromUserName><![CDATA[gh_eb0595b205cb]]></FromUserName>\r\n<CreateTime>1433992774</CreateTime>\r\n<MsgType><![CDATA[text]]></MsgType>\r\n<Content><![CDATA[淡淡的]]></Content>\r\n</xml>', '2015-06-11 11:20:56');
+CREATE TABLE IF NOT EXISTS `w_language` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '语言id',
+  `lang_code` varchar(20) NOT NULL DEFAULT '' COMMENT '语言编码',
+  `lang_key` varchar(50) NOT NULL COMMENT '翻译项',
+  `lang_value` varchar(128) NOT NULL DEFAULT '' COMMENT '翻译内容',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `lang_index` (`lang_value`,`lang_code`,`lang_key`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='多语言翻译项' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `w_language`
+--
+
+INSERT INTO `w_language` (`id`, `lang_code`, `lang_key`, `lang_value`) VALUES
+(2, 'vi-vn', '1', 'Quản lý cổng'),
+(1, 'zh-cn', '1', '平台管理');
 
 -- --------------------------------------------------------
 
@@ -276,8 +275,8 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('2e4bp1a7klfrrphrs96bmgtud2', 1434512053, '_userid_timeout|i:1434507046;_userid|s:1:"3";_username_timeout|i:1434507046;_username|s:8:"xpmozong";'),
-('sgdjidvi9ub7ljj02kr4quc7h6', 1434448061, '_userid_timeout|i:1434443191;_userid|s:1:"3";_username_timeout|i:1434443191;_username|s:8:"xpmozong";');
+('0mo00bhq030bqs8q6v2dt4io26', 1436493987, '_userid_timeout|i:1436493987;_userid|s:1:"3";_username_timeout|i:1436493987;_username|s:8:"xpmozong";'),
+('m6rfqu132n1bj0blb5142159m3', 1436432472, '_userid_timeout|i:1436431504;_userid|s:1:"3";_username_timeout|i:1436431504;_username|s:8:"xpmozong";');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

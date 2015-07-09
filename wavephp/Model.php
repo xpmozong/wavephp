@@ -35,14 +35,6 @@ class Model
     protected $_order               = array();
 
     /**
-     * 初始化
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
      * 查询字段
      *
      * @param string $field 字段

@@ -115,9 +115,7 @@ class Session extends Model
             foreach ($tables as $key => $value) {
                 $tablesList[] = $value['Tables_in_'.$dbName];
             }
-            if (in_array($this->tableName, $tablesList)) {
-                $this->isread = true;
-            }else{
+            if (!in_array($this->tableName, $tablesList)) {
                 $sql = "CREATE TABLE `".$this->tableName."` (
                     `session_id` varchar(255) CHARACTER 
                     SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -127,6 +125,8 @@ class Session extends Model
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
                 $this->sqlQuery($sql);
             }
+
+            $this->isread = true;
         }
         
         return true; 

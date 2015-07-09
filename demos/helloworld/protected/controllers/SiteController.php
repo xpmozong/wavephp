@@ -15,7 +15,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        echo 'Hello world !';
+        i18n::$lang = 'vi-vn';
+        echo i18n::get('平台管理')."<br>";
+
+        // echo 'Hello world !';
         // $arr = Wave::app()->database->db->getOne("select user_login from wp_users");
         // print_r($arr);
 
@@ -48,19 +51,21 @@ class SiteController extends Controller
         // $this->render('layout/header');
         // $this->render('site/index', array('username'=>$username));
         // $this->footer();
+        // 也可以选择使用smarty模板
 
-        // $tmp_object = new stdClass;
-        // $tmp_object->str_attr = 'test';
-        // $tmp_object->int_attr = 123;
-        // Wave::app()->memcache->cache1->set('key', $tmp_object, false, 30) or die ("Failed to save data at the server");
-        // echo "Store data in the cache (data will expire in 30 seconds)<br/>\n";
+        // // mecache使用
+        // Wave::app()->memcache->cache1->set('key', '11111', false, 30) 
+        // or die ("Failed to save data at the server");
+        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
         // $get_result = Wave::app()->memcache->cache1->get('key');
-        // echo "Data from the cache:<br/>\n";
-        // echo "<pre>";
-        // print_r($get_result);
+        // echo "Memcache Data from the cache:$get_result<br>";
 
-        // echo "<pre>";
-        // print_r(get_included_files());
+        // // redis使用
+        // Wave::app()->redis->cache1->set('key', '11111', 30) 
+        // or die ("Failed to save data at the server");
+        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
+        // $get_result = Wave::app()->redis->cache1->get('key');
+        // echo "Redis Data from the cache:$get_result<br>";
 
     }
 
