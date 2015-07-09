@@ -26,6 +26,11 @@ class SiteController extends CommonController
         echo i18n::get('平台管理')."<br>";
     }
 
+    public function actionTestReport()
+    {
+        $this->report('测试弹窗', Wave::app()->homeUrl.'site/testlang', true);
+    }
+
     /**
      * 验证码
      */

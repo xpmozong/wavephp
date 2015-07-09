@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" 
+content="text/html; charset=utf-8" />
+<title>信息弹窗</title>
+<style type="text/css">
+*,body{ padding: 0; margin: 0;}
+.box{ margin: 0 auto; padding: 30px; 
+    border-radius:3px; border: 5px solid #000; 
+    width: 400px; margin-top: 15%;}
+</style>
+<script type="text/javascript">
+var jump = function(){
+    window.location.href="{%$url%}";
+}
+setTimeout(jump, {%$time%}*1000);
+</script>
+</head>
+<body>
+<div class="box">
+    {%$msg%}
+</div>
+</body>
+</html>

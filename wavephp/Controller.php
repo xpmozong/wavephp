@@ -202,9 +202,9 @@ class Controller
      *
      */
     public function report($msg, $url, $state = true, 
-                        $time = 3, $tpl = 'report')
+                        $time = 3, $tpl = 'layout/report')
     {
-        $this->assign('message', $msg);
+        $this->assign('msg', $msg);
         $this->assign('url', $url);
         $this->assign('state', $state);
         $this->assign('time', $time);
