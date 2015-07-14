@@ -22,6 +22,7 @@
 class Model
 {
     protected static $db;
+    public $cache;
     protected $_select              = array();
     protected $_from                = '';
     protected $_join                = array();
@@ -51,6 +52,74 @@ class Model
             $val = $v;
             $this->_select[] = $val;
         }
+
+        return $this;
+    }
+
+    /**
+     * 取得某个字段的最大值
+     *
+     * @access public
+     * @param string $field  字段名
+     * @param mixed $where  条件
+     *
+     */
+    public function max($field, $alias = 'max')
+    {
+        $alias = ($alias != '') ? $alias : $field;
+        $sql = 'MAX('.$field.') AS '.$alias;
+        $this->_select[] = $sql;
+
+        return $this;
+    }
+
+    /**
+     * 取得某个字段的最小值
+     *
+     * @access public
+     * @param string $field  字段名
+     * @param mixed $where  条件
+     *
+     */
+    public function min($field, $alias = 'min')
+    {
+        $alias = ($alias != '') ? $alias : $field;
+        $sql = 'MIN('.$field.') AS '.$alias;
+        $this->_select[] = $sql;
+
+        return $this;
+    }
+
+    /**
+     * 统计某个字段的平均值
+     *
+     * @access public
+     * @param string $field  字段名
+     * @param mixed $condition  条件
+     *
+     */
+    public function avg($field, $alias = 'avg')
+    {
+        $alias = ($alias != '') ? $alias : $field;
+        $sql = 'AVG('.$field.') AS '.$alias;
+        $this->_select[] = $sql;
+
+        return $this;
+    }
+
+    /**
+     * 统计某个字段的总和
+     *
+     * @access public
+     * @param string $field  字段名
+     * @param mixed $where  条件
+     * @return integer
+     */
+    public function sum($field, $alias = 'sum')
+    {
+        $alias = ($alias != '') ? $alias : $field;
+        $sql = 'SUM('.$field.') AS '.$alias;
+        $this->_select[] = $sql;
 
         return $this;
     }
@@ -87,7 +156,8 @@ class Model
     public function join($table, $conditions, $type = 'LEFT')
     {
         $type = strtoupper($type);
-        $this->_join[] = $type.' JOIN '.$table.' ON '.$conditions;
+        $con = explode('=', $conditions);
+        $this->_join[] = $type.' JOIN '.$table.' ON '.$con[0].'='.$con[1];
 
         return $this;
     }
@@ -113,10 +183,18 @@ class Model
      * @return $this
      *
      */
-    public function in($conditions = null)
+    public function in($where, $not = false, $type = 'AND')
     {
-        if ($conditions) {
-            $this->_where[] = $conditions;
+        foreach ($where as $k => $v) {
+            $prefix = (count($this->_where) == 0) ? '' : $type.' ';
+            $not = $not ? ' NOT' : '';
+            $arr = array();
+            $values = explode(',', $v);
+            foreach ($values as $value) {
+                $arr[] = self::$db->escape($value);
+            }
+
+            $this->_where[] = $prefix . $k . $not . " IN (" . implode(", ", $arr) . ") ";
         }
 
         return $this;
@@ -130,13 +208,9 @@ class Model
      * @return $this
      *
      */
-    public function notin($conditions = null)
+    public function notin($where, $type = 'AND')
     {
-        if ($conditions) {
-            $this->_where[] = $conditions;
-        }
-
-        return $this;
+        return $this->in($where, true, $type);
     }
 
     /**
@@ -147,13 +221,37 @@ class Model
      * @return $this
      *
      */
-    public function where($conditions = null)
+    public function where($where, $type = 'AND', $type2 = '')
     {
-        if ($conditions) {
-            $this->_where[] = $conditions;
+        if (!empty($where)) {
+            foreach ($where as $k => $v) {
+                $prefix = (count($this->_where) == 0) ? '' : $type.' ';
+                if ( !self::$db->_parse($k) && is_null($v) ) {
+                    $k .= ' IS NULL';
+                }
+                if ( !self::$db->_parse($k)) {
+                    $k .= ' =';
+                }
+                if (!is_null($v)) {
+                    $v = self::$db->escape($v);
+                }
+                if ( !empty($type2) ){
+                    $_where[] = $k.' '.$v;
+                }else{
+                    $this->_where[] = $prefix.$k.' '.$v;
+                }
+            }
+            if ( !empty($type2) && !empty($_where)){
+                $this->_where[] = $prefix .'('.  implode(" $type2 ", $_where) . ') ';
+            }
         }
 
         return $this;
+    }
+
+
+    public function orlike($where, $not = false, $like='all') {
+        return $this->like($where, $not, 'OR', $like);
     }
 
     /**
@@ -189,6 +287,10 @@ class Model
         }
 
         return $this;
+    }
+
+    public function orinstr($where) {
+        return $this->instr($where, 'OR');
     }
 
     /**
@@ -264,11 +366,15 @@ class Model
      * @return $this
      *
      */
-    public function order($orderStr = null)
+    public function order($orderStr, $direction = "desc")
     {
-        if ($orderStr) {
-            $this->_order[] = $orderStr;
+        $direction = strtoupper($direction);
+
+        if ($direction == "RAND") {
+            $direction = "RAND()";
         }
+
+        $this->_order[] = $orderStr.' '.$direction;
 
         return $this;
     }
@@ -293,7 +399,7 @@ class Model
             OR count($this->_instr) > 0) {
             $sql .= ' WHERE ';
         }
-        $sql .= implode(' AND ', $this->_where);
+        $sql .= implode(' ', $this->_where);
 
         if (count($this->_like) > 0) {
             if (count($this->_where) > 0) {
@@ -374,39 +480,76 @@ class Model
     }
 
     /**
-     * 根据sql获得全部数据
+     * 根据条件获得全部数据
      *
      * @param string $sql       sql语句
      *
      * @return array 
      *
      */
-    public function getAll($sql = '')
+    public function getAll($cache_key = '', $exp = 0)
     {
-        if ($sql) {
-            self::$db->sql = $sql;
-        }else{
-            self::$db->sql = $this->compileSelect();
+        if (!empty($cache_key) && is_object($this->cache)) {
+            if ($rs = $this->cache->get($cache_key)) {
+                $this->resetSelect();
+                return $rs;
+            }
         }
+
+        self::$db->sql = $this->compileSelect();
+        $rs = self::$db->getAll();
+
+        if (!empty($cache_key) && is_object($this->cache)) {
+            $this->cache->set($cache_key, $rs, 0, $exp);
+        }
+
+        return $rs;
+    }
+
+    /**
+     * 根据sql获得全部数据
+     */
+    public function queryAll($sql, $cache_key = '', $exp = 0)
+    {
+        self::$db->sql = $sql;
+
         return self::$db->getAll();
     }
 
     /**
-     * 根据sql获得单条数据
+     * 根据条件获得单条数据
      *
      * @param string $sql       sql语句
      *
      * @return array 
      *
      */
-    public function getOne($sql = '')
+    public function getOne($cache_key = '', $exp = 0)
     {
-        if ($sql) {
-            self::$db->sql = $sql;
-        }else{
-            self::$db->sql = $this->compileSelect();
+        if (!empty($cache_key) && is_object($this->cache)) {
+            if ($rs = $this->cache->get($cache_key)) {
+                $this->resetSelect();
+                return $rs;
+            }
         }
-        
+
+        self::$db->sql = $this->compileSelect();
+        $rs = self::$db->getOne();
+
+        if (!empty($cache_key) && is_object($this->cache)) {
+            $this->cache->set($cache_key, $rs, 0, $exp);
+        }
+
+        return $rs;
+    }
+
+    /**
+     * 根据sql获得单条数据
+     */
+    public function queryOne($sql)
+    {
+        self::$db->sql = $sql;
+
         return self::$db->getOne();
     }
 
@@ -434,9 +577,18 @@ class Model
      * @return bool
      *
      */
-    public function update($tableName, $data, $conditions)
+    public function update($tableName, $data, $where, $cache_key = '')
     {
+        if(!isset($where) || !is_array($where) ) exit('参数错误');
+        if (!empty($cache_key) && is_object($this->cache)){
+            $this->cache->delete($cache_key);
+        }
+        $this->where($where);
+        $conditions = implode(' ', $this->_where);
+
         self::$db->updatedb($tableName, $data, $conditions);
+        $this->resetSelect();
+
         return self::$db->affectedRows();
     }
 
@@ -457,9 +609,17 @@ class Model
      * @return bool
      *
      */
-    public function delete($table, $fields)
+    public function delete($table, $where, $cache_key = '')
     {
-        self::$db->delete($table, $fields);
+        if(!isset($where) || !is_array($where) ) exit('参数错误');
+        if (!empty($cache_key) && is_object($this->cache)){
+            $this->cache->delete($cache_key);
+        }
+        $this->where($where);
+        $conditions = implode(' ', $this->_where);
+        self::$db->delete($table, $conditions);
+        $this->resetSelect();
+
         return self::$db->affectedRows();
     }
 

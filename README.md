@@ -191,35 +191,45 @@ site指SiteController.php，index指actionIndex
 
 $a 就是 aaa， $b 就是 bbb
 
-7、数据库 仅支持mysql数据库，参看demos/enterprise/protected/models/TestModel.php的sql用法，继承Model
+7、数据库 仅支持mysql数据库，参看demos/enterprise/protected/models/TestModel.php的sql用法，继承Model，有问题可以改Model这个文件
 
 	$like = array();
-	$like['content'] = '是';
-	$array = $this  ->select('*')
-	                ->from('articles')
-	                ->like($like)
-	                ->limit(0, 2)
-	                ->group('aid')
-	                ->order('aid desc')
-	                ->getAll();
-	
-	$array = $this  ->select('*')
-	                ->from('articles')
-	                ->in("aid IN(2,3,4)")
-	                ->getAll();
-	
-	$array = $this  ->select('*')
-	                ->from('articles a')
-	                ->join('category c', 'a.cid=c.cid')
-	                ->getAll();
-	
-	$array = $this  ->select('*')
-	                ->from('category')
-	                ->getAll();
-	
-	$data = array('c_name'=>'测试测试update');
-	var_dump($this->insert('category', $data));die;
-	var_dump($this->update('category', $data, "cid=4"));die;
+    $like['content'] = '是';
+    $array = $this  ->select('*')
+                    ->from('articles')
+                    ->like($like)
+                    ->limit(0, 2)
+                    ->group('aid')
+                    ->order('aid')
+                    ->getAll();
+
+    $where = array('aid'=>2);
+    $array = $this  ->select('*')
+                    ->from('articles')
+                    ->where($where)
+                    ->getAll();
+
+    $in = array('aid' => '2,3,4');
+    $array = $this  ->select('*')
+                    ->from('articles')
+                    ->in($in)
+                    ->getAll();
+
+    $array = $this  ->select('*')
+                    ->from('articles a')
+                    ->join('category c', 'a.cid=c.cid')
+                    ->getAll();
+
+    $array = $this  ->select('*')
+                    ->from('category')
+                    ->getAll();
+
+    $data = array('c_name'=>'测试4');
+    var_dump($this->insert('category', $data));
+    var_dump($this->insertId());die;
+    $where = array('cid'=>4);
+    $updateCount = $this->update('category', $data, $where);
+    echo $updateCount;die;
 	
 	return $array;
 

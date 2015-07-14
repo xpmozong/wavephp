@@ -174,9 +174,10 @@ class Common extends Model
      */
     public function getOneData($table, $allField, $field, $id)
     {
+        $where = array($field=>$id);
         $array = $this  ->select($allField)
                         ->from($table)
-                        ->where("$field='$id'")
+                        ->where($where)
                         ->getOne();
 
         return $array;
@@ -194,14 +195,16 @@ class Common extends Model
     public function getAllData($table, $allField, $field, $id, $in = false)
     {
         if ($in) {
+            $in = array($field=>$id);
             return $this->select($allField)
                         ->from($table)
-                        ->in("$field IN ($id)")
+                        ->in($in)
                         ->getAll();
         }else{
+            $where = array($field=>$id);
             return $this->select($allField)
                         ->from($table)
-                        ->where("$field='$id'")
+                        ->where($where)
                         ->getAll();
         }
     }
@@ -210,18 +213,18 @@ class Common extends Model
      * 有条件获得分页数据列表
      * @param string $table     表名
      * @param string $allfield  字段名
-     * @param string $wherestr  条件
+     * @param array $where      条件数组
      * @param int $start        从第几条开始查询
      * @param int $limit        限制几条
      * @param string $order     排序
      * @return array            结果数组
      */
-    public function getFieldDataList($table, $allfield, $wherestr, 
+    public function getFieldDataList($table, $allfield, $where, 
                     $start, $limit, $order = null)
     {
         return $this->select($allfield)
                     ->from($table)
-                    ->where($wherestr)
+                    ->where($where)
                     ->order($order)
                     ->limit($start, $limit)
                     ->getAll();
@@ -235,18 +238,18 @@ class Common extends Model
      * @param int $limit        限制几条
      * @param string $jsonTable 连接表
      * @param string $joinOn    连接字段
-     * @param string $wherestr  条件
+     * @param array $where      条件数组
      * @param string $order     排序
      * @return array            结果数组
      */
     public function getJoinDataList($table, 
                     $allfield, $start, $limit, $jsonTable, $joinOn, 
-                    $wherestr = null, $order = null)
+                    $where, $order = null)
     {
         return $this->select($allfield)
                     ->from($table)
                     ->join($jsonTable, $joinOn)
-                    ->where($wherestr)
+                    ->where($where)
                     ->order($order)
                     ->limit($start, $limit)
                     ->getAll();
@@ -258,16 +261,16 @@ class Common extends Model
      * @param string $allfield  字段名
      * @param string $jsonTable 连接表
      * @param string $joinOn    连接字段
-     * @param string $wherestr  条件
+     * @param array $where      条件数组
      * @return array            结果数组
      */
     public function getJoinOneData($table, $allfield, $jsonTable, 
-                                    $joinOn, $wherestr = null)
+                                    $joinOn, $where)
     {
         return $this->select($allfield)
                     ->from($table)
                     ->join($jsonTable, $joinOn)
-                    ->where($wherestr)
+                    ->where($where)
                     ->getOne();
     }
 
@@ -294,9 +297,10 @@ class Common extends Model
      */
     public function getFieldCount($table, $field, $id)
     {
+        $where = array($field=>$id);
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
-                            ->where("$field='$id'")
+                            ->where($where)
                             ->getOne();
         $count = $countArr['count'];
 
@@ -306,14 +310,14 @@ class Common extends Model
     /**
      * 根据条件字段统计数量
      * @param string $table     表名
-     * @param string $wherestr  条件
+     * @param array $where      条件数组
      * @return int              数量
      */
-    public function getFieldWhereCount($table, $wherestr)
+    public function getFieldWhereCount($table, $where)
     {
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
-                            ->where($wherestr)
+                            ->where($where)
                             ->getOne();
         $count = $countArr['count'];
         
@@ -345,17 +349,14 @@ class Common extends Model
      * @param array $data   更新数据数组
      * @param string $field 条件字段名
      * @param string $id    条件
-     * @param bool $in    是否用IN
      * @return boolean
      *
      */
-    public function getUpdate($table, $data, $field, $id, $in = false)
+    public function getUpdate($table, $data, $field, $id)
     {
-        if (!$in) {
-            return $this->update($table, $data, "$field='$id'");
-        }else{
-            return $this->update($table, $data, "$field in ($id)");
-        }
+        $where = array($field=>$id);
+        
+        return $this->update($table, $data, $where);
     }
 
     /**
@@ -363,16 +364,13 @@ class Common extends Model
      * @param string $table 表名
      * @param string $field 条件字段名
      * @param string $id    条件
-     * @param string $in    是否用IN
      * @return boolean
      */
-    public function getDelete($table, $field, $id, $in = false)
+    public function getDelete($table, $field, $id)
     {
-        if(!$in) {
-            return $this->delete($table, "$field='$id'");
-        }else{
-            return $this->delete($table, "$field in ($id)");
-        }
+        $where = array($field=>$id);
+        
+        return $this->delete($table, $where);
     }
 
     /**

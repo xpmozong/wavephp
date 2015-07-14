@@ -17,7 +17,7 @@ class SiteController extends CommonController
     {
         $list = $this->Common->getJoinDataList('articles a', 
         'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
-        'category c', 'a.cid=c.cid', null, 'a.aid DESC');
+        'category c', 'a.cid=c.cid', null, 'a.aid');
         $render = array('list' => $list);
         $this->render('layout/header');
         $this->render('site/index', $render);
