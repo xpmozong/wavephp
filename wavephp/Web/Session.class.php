@@ -109,7 +109,7 @@ class Session extends Model
         if (empty(self::$db)){
             die('未配置数据库连接');
         }else{
-            $tables = $this->getAll('show tables');
+            $tables = $this->queryAll('show tables');
             $tablesList = array();
             $dbName = Wave::app()->config['database']['db']['dbname'];
             foreach ($tables as $key => $value) {
@@ -139,9 +139,10 @@ class Session extends Model
 
     function read($sessID) {
         if ($this->isread) {
+            $where = array('session_id'=>$sessID, 'session_expires > '.time());
             $row = $this->select('session_data')
                         ->from($this->tableName)
-                        ->where("session_id='$sessID' AND session_expires > ".time())
+                        ->where($where)
                         ->getOne();
             if ($row) {
                 return $row['session_data'];
@@ -153,18 +154,20 @@ class Session extends Model
         }
    }
 
-   function write($sessID, $sessData) { 
+   function write($sessID, $sessData) {
         // new session-expire-time 
         $newExp = time() + $this->lifeTime; 
         // is a session with this id in the database? 
+        $where = array('session_id'=>$sessID);
         $row = $this->select('session_data')
                     ->from($this->tableName)
-                    ->where("session_id='$sessID'")
+                    ->where($where)
                     ->getOne();
         if ($row) {
+
             $data = array('session_expires' =>$newExp, 
                             'session_data'  =>$sessData);
-            return $this->update($this->tableName, $data, "session_id = '$sessID'");
+            return $this->update($this->tableName, $data, $where);
 
         }else{
             $data = array('session_id'=>$sessID,
@@ -176,12 +179,14 @@ class Session extends Model
 
     function destroy($sessID) { 
         // delete session-data 
-        return $this->delete($this->tableName, "session_id = '$sessID'");
+        $where = array('session_id'=>$sessID);
+        return $this->delete($this->tableName, $where);
     } 
 
     function gc($sessMaxLifeTime) {
+        $where = array('session_expires < '=>time());
         // delete old sessions
-        return $this->delete($this->tableName, "session_expires < '".time()."'");
+        return $this->delete($this->tableName, $where);
     } 
 
 }
