@@ -30,7 +30,7 @@ class Session extends Model
     
     public function __construct($pre, $timeout)
     {
-        $this->prefix = $pre.'_';
+        $this->prefix = $pre;
         $this->lifeTime = $timeout;
         $this->tableName = 'w_sessions';
         if (empty(self::$db)) {
