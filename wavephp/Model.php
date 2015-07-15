@@ -185,18 +185,20 @@ class Model
      */
     public function in($where, $not = false, $type = 'AND')
     {
-        foreach ($where as $k => $v) {
-            $prefix = (count($this->_where) == 0) ? '' : $type.' ';
-            $not = $not ? ' NOT' : '';
-            $arr = array();
-            $values = explode(',', $v);
-            foreach ($values as $value) {
-                $arr[] = self::$db->escape($value);
+        if (!empty($where)) {
+            foreach ($where as $k => $v) {
+                $prefix = (count($this->_where) == 0) ? '' : $type.' ';
+                $not = $not ? ' NOT' : '';
+                $arr = array();
+                $values = explode(',', $v);
+                foreach ($values as $value) {
+                    $arr[] = self::$db->escape($value);
+                }
+
+                $this->_where[] = $prefix . $k . $not . " IN (" . implode(", ", $arr) . ") ";
             }
-
-            $this->_where[] = $prefix . $k . $not . " IN (" . implode(", ", $arr) . ") ";
         }
-
+        
         return $this;
     }
 
@@ -348,13 +350,15 @@ class Model
      */
     public function group($field)
     {
-        if (is_string($field)) {
-            $field = explode(',', $field);
+        if (!empty($field)) {
+            if (is_string($field)) {
+                $field = explode(',', $field);
+            }
+            foreach ( $field as $v ) {
+                $this->_group[] = $v;
+            }
         }
-        foreach ( $field as $v ) {
-            $this->_group[] = $v;
-        }
-
+        
         return $this;
     }
 
@@ -368,13 +372,15 @@ class Model
      */
     public function order($orderStr, $direction = "desc")
     {
-        $direction = strtoupper($direction);
+        if (!empty($orderStr)) {
+            $direction = strtoupper($direction);
 
-        if ($direction == "RAND") {
-            $direction = "RAND()";
+            if ($direction == "RAND") {
+                $direction = "RAND()";
+            }
+
+            $this->_order[] = $orderStr.' '.$direction;
         }
-
-        $this->_order[] = $orderStr.' '.$direction;
 
         return $this;
     }
