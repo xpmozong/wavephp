@@ -34,6 +34,7 @@ class Model
     protected $_limit               = '';
     protected $_group               = array();
     protected $_order               = array();
+    protected $_tableName           = '';
 
     /**
      * 查询字段
@@ -137,7 +138,7 @@ class Model
         if ($tableName) {
             $this->_from = $tableName;
         }else{
-            exit('no table name');
+            $this->_from = $this->_tableName;
         }
 
         return $this;
@@ -185,7 +186,7 @@ class Model
      */
     public function in($where, $not = false, $type = 'AND')
     {
-        if (!empty($where)) {
+        if (!empty($where) && is_array($where)) {
             foreach ($where as $k => $v) {
                 $prefix = (count($this->_where) == 0) ? '' : $type.' ';
                 $not = $not ? ' NOT' : '';
@@ -225,7 +226,7 @@ class Model
      */
     public function where($where, $type = 'AND', $type2 = '')
     {
-        if (!empty($where)) {
+        if (!empty($where) && is_array($where)) {
             foreach ($where as $k => $v) {
                 $prefix = (count($this->_where) == 0) ? '' : $type.' ';
                 if ( !self::$db->_parse($k) && is_null($v) ) {
@@ -269,23 +270,25 @@ class Model
      */
     public function like($where, $not = false, $type = 'AND', $like = 'all')
     {
-        foreach ( $where as $k => $v ) {
-            $prefix = (count($this->_like) == 0) ? '' : $type.' ';
-            $not = ($not) ? ' NOT' : '';
-            $arr = array();
-            $v = str_replace("+", " ", $v);
-            $values = explode( ' ', $v );
-            foreach ( $values as $value ) {
-                if ( $like == 'left' ) {
-                    $keyword = "'%{$value}'";
-                }else if ( $like == 'right' ) {
-                    $keyword = "'{$value}%'";
-                }else {
-                    $keyword = "'%{$value}%'";
+        if (!empty($where) && is_array($where)) {
+            foreach ( $where as $k => $v ) {
+                $prefix = (count($this->_like) == 0) ? '' : $type.' ';
+                $not = ($not) ? ' NOT' : '';
+                $arr = array();
+                $v = str_replace("+", " ", $v);
+                $values = explode( ' ', $v );
+                foreach ( $values as $value ) {
+                    if ( $like == 'left' ) {
+                        $keyword = "'%{$value}'";
+                    }else if ( $like == 'right' ) {
+                        $keyword = "'{$value}%'";
+                    }else {
+                        $keyword = "'%{$value}%'";
+                    }
+                    $arr[] =  $k . $not.' LIKE '.$keyword;
                 }
-                $arr[] =  $k . $not.' LIKE '.$keyword;
+                $this->_like[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
             }
-            $this->_like[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
         }
 
         return $this;
@@ -308,16 +311,18 @@ class Model
      */
     public function instr($where, $type = 'AND')
     {
-        foreach ( $where as $k => $v )
-        {
-            $prefix = (count($this->_instr) == 0) ? '' : $type.' ';
-            $arr = array();
-            $v = str_replace("+", " ", $v);
-            $values = explode( ' ', $v );
-            foreach ( $values as $value ) {
-                $arr[] =  'INSTR('.$k.', '.self::$db->escape($value).')';
+        if (!empty($where) && is_array($where)) {
+            foreach ( $where as $k => $v )
+            {
+                $prefix = (count($this->_instr) == 0) ? '' : $type.' ';
+                $arr = array();
+                $v = str_replace("+", " ", $v);
+                $values = explode( ' ', $v );
+                foreach ( $values as $value ) {
+                    $arr[] =  'INSTR('.$k.', '.self::$db->escape($value).')';
+                }
+                $this->_instr[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
             }
-            $this->_instr[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
         }
 
         return $this;
@@ -515,7 +520,7 @@ class Model
     /**
      * 根据sql获得全部数据
      */
-    public function queryAll($sql, $cache_key = '', $exp = 0)
+    public function queryAll($sql)
     {
         self::$db->sql = $sql;
 

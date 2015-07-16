@@ -10,7 +10,7 @@ class CommonController extends Controller
         parent::__construct();
 
         $this->Common = new Common();
-        $this->links = $this->Common->getFieldList('links', '*', 'lid desc');
+        $this->links = $this->Common->getFieldList('links', '*', 'lid');
     }
 
 }

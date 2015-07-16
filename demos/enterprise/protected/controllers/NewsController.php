@@ -17,10 +17,10 @@ class NewsController extends CommonController
     {
         $data = $this->Common->getFilter($_GET);
         $cid = (int)$cid;
-        $where = '';
+        $where = array();
         $category = array();
         if ($cid != 0) {
-            $where .= " AND a.cid='$cid'";
+            $where['a.cid'] = $cid;
             $category = $this->Common->getOneData('category', '*', 'cid', $cid);
         }
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -29,9 +29,9 @@ class NewsController extends CommonController
 
         $list = $this->Common->getJoinDataList('articles a', 
         'a.aid,a.title,a.add_date,c.c_name', $start, $pagesize, 'category c', 'a.cid=c.cid', 
-        "1=1 $where", 'a.aid DESC');
+        $where, 'a.aid');
     
-        $count = $this->Common->getFieldWhereCount('articles a', "1=1 $where");
+        $count = $this->Common->getFieldWhereCount('articles a', $where);
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){

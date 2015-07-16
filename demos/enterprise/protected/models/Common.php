@@ -136,7 +136,7 @@ class Common extends Model
      */
     public function getSqlList($sql)
     {
-        return $this->getAll($sql);
+        return $this->queryAll($sql);
     }
 
     /**
@@ -146,7 +146,7 @@ class Common extends Model
      */
     public function getSqlOne($sql)
     {
-        return $this->getOne($sql);
+        return $this->queryOne($sql);
     }
 
     /**
@@ -174,9 +174,10 @@ class Common extends Model
      */
     public function getOneData($table, $allField, $field, $id)
     {
+        $where = array($field=>$id);
         $array = $this  ->select($allField)
                         ->from($table)
-                        ->where("$field='$id'")
+                        ->where($where)
                         ->getOne();
 
         return $array;
@@ -193,35 +194,30 @@ class Common extends Model
      */
     public function getAllData($table, $allField, $field, $id, $in = false)
     {
-        if ($in) {
-            return $this->select($allField)
-                        ->from($table)
-                        ->in("$field IN ($id)")
-                        ->getAll();
-        }else{
-            return $this->select($allField)
-                        ->from($table)
-                        ->where("$field='$id'")
-                        ->getAll();
-        }
+        $array = array($field=>$id);
+        return $this->select($allField)
+                    ->from($table)
+                    ->in($array)
+                    ->where($array)
+                    ->getAll();
     }
 
     /**
      * 有条件获得分页数据列表
      * @param string $table     表名
      * @param string $allfield  字段名
-     * @param string $wherestr  条件
+     * @param array $where      条件
      * @param int $start        从第几条开始查询
      * @param int $limit        限制几条
      * @param string $order     排序
      * @return array            结果数组
      */
-    public function getFieldDataList($table, $allfield, $wherestr, 
+    public function getFieldDataList($table, $allfield, $where, 
                     $start, $limit, $order = null)
     {
         return $this->select($allfield)
                     ->from($table)
-                    ->where($wherestr)
+                    ->where($where)
                     ->order($order)
                     ->limit($start, $limit)
                     ->getAll();
@@ -298,9 +294,10 @@ class Common extends Model
      */
     public function getFieldCount($table, $field, $id)
     {
+        $where = array($field=>$id);
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
-                            ->where("$field='$id'")
+                            ->where($where)
                             ->getOne();
         $count = $countArr['count'];
 
@@ -310,14 +307,14 @@ class Common extends Model
     /**
      * 根据条件字段统计数量
      * @param string $table     表名
-     * @param string $wherestr  条件
+     * @param array $where      条件数组
      * @return int              数量
      */
-    public function getFieldWhereCount($table, $wherestr)
+    public function getFieldWhereCount($table, $where)
     {
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
-                            ->where($wherestr)
+                            ->where($where)
                             ->getOne();
         $count = $countArr['count'];
         
@@ -355,11 +352,9 @@ class Common extends Model
      */
     public function getUpdate($table, $data, $field, $id, $in = false)
     {
-        if (!$in) {
-            return $this->update($table, $data, "$field='$id'");
-        }else{
-            return $this->update($table, $data, "$field in ($id)");
-        }
+        $where = array($field=>$id);
+
+        return $this->update($table, $data, $where);
     }
 
     /**
@@ -372,11 +367,9 @@ class Common extends Model
      */
     public function getDelete($table, $field, $id, $in = false)
     {
-        if(!$in) {
-            return $this->delete($table, "$field='$id'");
-        }else{
-            return $this->delete($table, "$field in ($id)");
-        }
+        $where = array($field=>$id);
+
+        return $this->delete($table, $where);
     }
 
     /**

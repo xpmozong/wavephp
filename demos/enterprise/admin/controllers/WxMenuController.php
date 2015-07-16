@@ -26,7 +26,7 @@ class WxmenuController extends Controller
         $Common = new Common();
         $list = $Common->getJoinDataList('gh_menu m', 
                     'm.*,a.gh_name', 0, 0, 'gh_manage a', 'm.gid=a.gid', 
-                    null, 'm.mid DESC');
+                    null, 'm.mid');
         $render = array('list' => $list);
         $this->render('layout/header');
         $this->render('wxmenu/index', $render);

@@ -30,8 +30,9 @@ class ArticlesController extends Controller
         $pagesize = 15;
         $start = ($page - 1) * $pagesize;
 
-        $list = $Common->getFieldDataList('articles', 'aid,title', "cid='$cid'", 
-                    $start, $pagesize, 'aid DESC');
+        $where = array('cid'=>$cid);
+        $list = $Common->getFieldDataList('articles', 'aid,title', $where, 
+                    $start, $pagesize, 'aid');
         $count = $Common->getFieldCount('articles', 'cid', $cid);
 
         $category = $Common->getFieldList('category', '*');

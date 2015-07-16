@@ -30,7 +30,7 @@ class SubstanceController extends Controller
         $start = ($page - 1) * $pagesize;
 
         $list = $Common->getFieldDataList('substance', '*', null, 
-                    $start, $pagesize, 'sid DESC');
+                    $start, $pagesize, 'sid');
         $count = $Common->getCount('substance');
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
