@@ -402,7 +402,12 @@ class Model
         $sql .= (count($this->_select) == 0) ? '*' 
                 : implode(', ', $this->_select);
         $sql .= ' FROM ';
-        $sql .= $this->_from;
+        if (empty($this->_from)) {
+            $sql .= $this->_tableName;
+        }else{
+            $sql .= $this->_from;
+        }
+
         $sql .= ' ';
         $sql .= implode(' ', $this->_join);
         if (count($this->_where) > 0 
