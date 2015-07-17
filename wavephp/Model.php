@@ -407,7 +407,6 @@ class Model
         }else{
             $sql .= $this->_from;
         }
-
         $sql .= ' ';
         $sql .= implode(' ', $this->_join);
         if (count($this->_where) > 0 

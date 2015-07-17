@@ -55,7 +55,7 @@ class ArticlesController extends Controller
         $this->render('layout/header');
         $this->render('articles/index', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**
@@ -73,7 +73,7 @@ class ArticlesController extends Controller
         $this->render('layout/header');
         $this->render('articles/modify', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**

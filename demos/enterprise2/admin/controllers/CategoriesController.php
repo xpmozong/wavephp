@@ -29,7 +29,7 @@ class CategoriesController extends Controller
         $this->render('layout/header');
         $this->render('categories/index', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**
@@ -44,7 +44,7 @@ class CategoriesController extends Controller
         $this->render('layout/header');
         $this->render('categories/modify', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**

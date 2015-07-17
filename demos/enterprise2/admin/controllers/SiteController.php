@@ -33,7 +33,7 @@ class SiteController extends Controller
             $this->render('layout/header');
             $this->render('site/login');
             $this->render('layout/footer');
-            $this->debuger();
+            
         }
     }
 
@@ -81,7 +81,7 @@ class SiteController extends Controller
         $this->render('layout/header');
         $this->render('site/header');
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**
@@ -94,7 +94,7 @@ class SiteController extends Controller
         $this->render('layout/header');
         $this->render('site/right', $render);
         $this->render('layout/footer');
-        $this->debuger();
+        
     }
 
     /**
