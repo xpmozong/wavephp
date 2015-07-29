@@ -339,8 +339,12 @@ class Model
      */
     public function limit($offset = 0, $limit)
     {
-        $this->_limit = $limit;
-        $this->_offset = $offset;
+        if ($limit) {
+            $this->_limit = $limit;
+        }
+        if ($offset) {
+            $this->_offset = $offset;
+        }
 
         return $this;
     }
