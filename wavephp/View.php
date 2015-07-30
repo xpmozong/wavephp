@@ -50,12 +50,12 @@ class View
 
         if (!is_dir($smarty->template_dir)) {
             mkdir($smarty->template_dir);
-            if (!is_dir($smarty->cache_dir)) {
-                mkdir($smarty->cache_dir);
-            }
-            if (!is_dir($smarty->config_dir)) {
-                mkdir($smarty->config_dir);
-            }
+        }
+        if (!is_dir($smarty->cache_dir)) {
+            mkdir($smarty->cache_dir);
+        }
+        if (!is_dir($smarty->config_dir)) {
+            mkdir($smarty->config_dir);
         }
         if (!is_dir($smarty->compile_dir)) {
             mkdir($smarty->compile_dir);
