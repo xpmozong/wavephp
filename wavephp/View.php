@@ -46,7 +46,7 @@ class View
         $smarty->template_dir       = $dir.'/'.$config['template_dir'];
         $smarty->cache_dir          = $dir.'/'.$config['cache_dir'];
         $smarty->config_dir         = $dir.'/'.$config['config_dir'];
-        $smarty->compile_dir        = $dir.'/'.$config['compile_dir'];
+        $smarty->compile_dir        = $app->projectPath.$config['compile_dir'];
 
         if (!is_dir($smarty->template_dir)) {
             mkdir($smarty->template_dir);
@@ -54,11 +54,13 @@ class View
         if (!is_dir($smarty->compile_dir)) {
             mkdir($smarty->compile_dir);
         }
-        if (!is_dir($smarty->cache_dir)) {
-            mkdir($smarty->cache_dir);
-        }
-        if (!is_dir($smarty->config_dir)) {
-            mkdir($smarty->config_dir);
+        if ($config['caching']) {
+            if (!is_dir($smarty->cache_dir)) {
+                mkdir($smarty->cache_dir);
+            }
+            if (!is_dir($smarty->config_dir)) {
+                mkdir($smarty->config_dir);
+            }
         }
 
         $this->engin = $smarty;
