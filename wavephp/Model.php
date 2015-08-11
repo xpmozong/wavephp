@@ -583,7 +583,11 @@ class Model
      */
     public function insert($tableName, $data)
     {
-        return self::$db->insertdb($tableName, $data);
+        if(self::$db->insertdb($tableName, $data)){
+            return self::$db->insertId();
+        }else{
+            return false;
+        }
     }
 
     /**
