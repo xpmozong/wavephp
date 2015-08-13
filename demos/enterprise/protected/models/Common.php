@@ -20,35 +20,36 @@ class Common extends Model
     }
 
     /**
-     * wx 记录日志
-     */
-    public function recordLog($txt)
-    {
-        $data = array('log_time' => $this->getDate());
-        $data['log_text'] = $txt;
-        $this->getInsert('wx_log', $data);
-    }
-
-    /**
      * curl
      */
-    public function curl($url, $curlPost)
+    public function curl_get_contents($url = '', $method = "GET", $data = array()) 
     {
+        $postdata = http_build_query($data, '', '&');
         $ch = curl_init();
+        if(strtoupper($method) == 'GET' && $data){
+            $url .= '?'.$postdata;
+        } elseif (strtoupper($method) == 'POST' && $data){
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        } elseif(strtoupper($method) == 'JSON' && $data) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type:application/json'));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+
+        curl_setopt($ch, CURLOPT_TIMEOUT, 120);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_USERAGENT, 
-                    'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)');
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_POST, 1); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
-        $output = curl_exec($ch);
-        curl_close($ch);
 
-        return $output;
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            exit(curl_errno($ch).' : '.curl_error($ch).$url);
+        } else {
+            curl_close($ch);
+        }
+
+        return $response;
     }
 
     /**
@@ -156,11 +157,11 @@ class Common extends Model
      * @param string $order     排序
      * @return array            结果数组
      */
-    public function getFieldList($table, $allfield, $order = null)
+    public function getFieldList($table, $allfield, $order = null, $orderBy = 'desc')
     {
         return $this->select($allfield)
                     ->from($table)
-                    ->order($order)
+                    ->order($order, $orderBy)
                     ->getAll();
     }
 
@@ -192,13 +193,56 @@ class Common extends Model
      * @param bool $in          是否用IN
      * @return array            结果数组
      */
-    public function getAllData($table, $allField, $field, $id, $in = false)
+    public function getAllData($table, $allField, 
+                                $field, $id, $in = null,
+                                $order = null, $orderBy = 'desc')
     {
         $array = array($field=>$id);
         return $this->select($allField)
                     ->from($table)
-                    ->in($array)
+                    ->in($in)
                     ->where($array)
+                    ->order($order, $orderBy)
+                    ->getAll();
+    }
+
+    /**
+     * 有条件的获得所有数据
+     * @param string $table     表名
+     * @param string $allfield  字段名
+     * @return array            结果数组
+     */
+    public function getAllData2($table, $allField, 
+                                $where, $in = null,
+                                $order = null, $orderBy = 'desc')
+    {
+        return $this->select($allField)
+                    ->from($table)
+                    ->in($in)
+                    ->where($where)
+                    ->order($order, $orderBy)
+                    ->getAll();
+    }
+
+    public function getGroupData($table, $allField, $where, $group = '')
+    {
+        return $this->select($allField)
+                    ->from($table)
+                    ->where($where)
+                    ->group($group)
+                    ->getAll();
+    }
+
+    public function getAllDataByLike($table, $allField, 
+                                $where, $like = null, $in = null,
+                                $order = null, $orderBy = 'desc')
+    {
+        return $this->select($allField)
+                    ->from($table)
+                    ->in($in)
+                    ->where($where)
+                    ->like($like)
+                    ->order($order, $orderBy)
                     ->getAll();
     }
 
@@ -212,7 +256,7 @@ class Common extends Model
      * @param string $order     排序
      * @return array            结果数组
      */
-    public function getFieldDataList($table, $allfield, $where, 
+    public function getFieldDataList($table, $allfield, $where, $like = null,
                     $start, $limit, $order = null)
     {
         return $this->select($allfield)
@@ -274,20 +318,6 @@ class Common extends Model
     /**
      * 根据字段统计数量
      * @param string $table     表名
-     * @return int              数量
-     */
-    public function getCount($table)
-    {
-        $count = $this  ->select('count(*) count')
-                        ->from($table)
-                        ->getOne();
-        
-        return $count['count'];
-    }
-
-    /**
-     * 根据字段统计数量
-     * @param string $table     表名
      * @param string $field     条件字段名
      * @param string $id        条件
      * @return int              数量
@@ -310,7 +340,7 @@ class Common extends Model
      * @param array $where      条件数组
      * @return int              数量
      */
-    public function getFieldWhereCount($table, $where)
+    public function getFieldWhereCount($table, $where = null, $like = null)
     {
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
@@ -328,7 +358,8 @@ class Common extends Model
      */
     public function getInsert($table, $data)
     {
-        return $this->insert($table, $data);
+        $this->_tableName = $table;
+        return $this->insert($data);
     }
 
     /**
@@ -352,9 +383,10 @@ class Common extends Model
      */
     public function getUpdate($table, $data, $field, $id, $in = false)
     {
+        $this->_tableName = $table;
         $where = array($field=>$id);
 
-        return $this->update($table, $data, $where);
+        return $this->update($data, $where);
     }
 
     /**
@@ -367,9 +399,10 @@ class Common extends Model
      */
     public function getDelete($table, $field, $id, $in = false)
     {
+        $this->_tableName = $table;
         $where = array($field=>$id);
 
-        return $this->delete($table, $where);
+        return $this->delete($where);
     }
 
     /**
@@ -398,8 +431,16 @@ class Common extends Model
             $begin = 1;
             $end = $pagenum;
         }
-        $list .= '<li><a href="'.
-                preg_replace('/page\=(\d+)/', 'page=1', $url).'">首页'."</a></li>";
+        $prevpage = $page - 1;
+        if ($prevpage <= 0) {
+            $prevpage = 1;
+        }
+        $list .= '<li>';
+        $list .= '<a href="'. preg_replace('/page\=(\d+)/', 'page=1', $url).'">';
+        $list .= '首页</a></li>';
+        $list .= '<li>';
+        $list .= '<a href="'. preg_replace('/page\=(\d+)/', 'page='.$prevpage, $url).'">';
+        $list .= '上一页</a></li>';        
         for ($i = $begin; $i <= $end; $i++) {
             if ($i == $page) {
                 $list .= '<li class="active"><a href="javascript:;">'.$i."</a></li>";
@@ -408,9 +449,16 @@ class Common extends Model
                 preg_replace('/page\=(\d+)/', 'page='.$i, $url).'">'.$i."</a></li>";
             }
         }
-        $list .= '<li><a href="'.
-                preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url)
-                .'">尾页'."</a></li>";
+        $nextpage = $page + 1;
+        if ($nextpage > $pagenum) {
+            $nextpage = $pagenum;
+        }
+        $list .= '<li>';
+        $list .= '<a href="'. preg_replace('/page\=(\d+)/', 'page='.$nextpage, $url).'">';
+        $list .= '下一页</a></li>'; 
+        $list .= '<li>';
+        $list .= '<a href="'. preg_replace('/page\=(\d+)/', 'page='.$pagenum, $url).'">';
+        $list .= '尾页</a></li>';
         $list .= '</ul>';
         $bar = '<div class="pagebar">'.$list.'</div>';
 

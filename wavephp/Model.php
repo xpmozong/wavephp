@@ -339,11 +339,11 @@ class Model
      */
     public function limit($offset = 0, $limit)
     {
-        if ($limit) {
-            $this->_limit = $limit;
-        }
         if ($offset) {
             $this->_offset = $offset;
+        }
+        if ($limit) {
+            $this->_limit = $limit;
         }
 
         return $this;
@@ -448,6 +448,8 @@ class Model
             $sql .= self::$db->limit($this->_offset, $this->_limit);
         }
 
+        // echo $sql."<br>";
+
         $this->resetSelect();
 
         return $sql;
@@ -506,7 +508,7 @@ class Model
      * @return array 
      *
      */
-    public function getAll($cache_key = '', $exp = 0)
+    public function getAll($field = '*', $where = array(), $cache_key = '', $exp = 0)
     {
         if (!empty($cache_key) && is_object($this->cache)) {
             if ($rs = $this->cache->get($cache_key)) {
@@ -514,9 +516,13 @@ class Model
                 return $rs;
             }
         }
-
-        self::$db->sql = $this->compileSelect();
+        if (count($this->_select)) {
+            self::$db->sql = $this->where($where)->compileSelect();
+        }else{
+            self::$db->sql = $this->select($field)->where($where)->compileSelect();
+        }
         $rs = self::$db->getAll();
+        $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
             $this->cache->set($cache_key, $rs, 0, $exp);
@@ -543,7 +549,7 @@ class Model
      * @return array 
      *
      */
-    public function getOne($cache_key = '', $exp = 0)
+    public function getOne($field = '*', $where = null, $cache_key = '', $exp = 0)
     {
         if (!empty($cache_key) && is_object($this->cache)) {
             if ($rs = $this->cache->get($cache_key)) {
@@ -551,9 +557,13 @@ class Model
                 return $rs;
             }
         }
-
-        self::$db->sql = $this->compileSelect();
+        if (count($this->_select)) {
+            self::$db->sql = $this->where($where)->compileSelect();
+        }else{
+            self::$db->sql = $this->select($field)->where($where)->compileSelect();
+        }
         $rs = self::$db->getOne();
+        $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
             $this->cache->set($cache_key, $rs, 0, $exp);
@@ -573,6 +583,17 @@ class Model
     }
 
     /**
+     * 获得表名
+     */
+    public function getTableName(){
+        if (empty($this->_from)) {
+            return $this->_tableName;
+        }else{
+            return $this->_from;
+        }
+    }
+
+    /**
      * 插入数据
      *
      * @param string $tableName     表名
@@ -581,8 +602,9 @@ class Model
      * @return bool
      *
      */
-    public function insert($tableName, $data)
+    public function insert($data)
     {
+        $tableName = $this->getTableName();
         if(self::$db->insertdb($tableName, $data)){
             return self::$db->insertId();
         }else{
@@ -600,8 +622,9 @@ class Model
      * @return bool
      *
      */
-    public function update($tableName, $data, $where, $cache_key = '')
+    public function update($data, $where, $cache_key = '')
     {
+        $tableName = $this->getTableName();
         if(!isset($where) || !is_array($where) ) exit('参数错误');
         if (!empty($cache_key) && is_object($this->cache)){
             $this->cache->delete($cache_key);
@@ -632,19 +655,57 @@ class Model
      * @return bool
      *
      */
-    public function delete($table, $where, $cache_key = '')
+    public function delete($where, $cache_key = '')
     {
+        $tableName = $this->getTableName();
         if(!isset($where) || !is_array($where) ) exit('参数错误');
         if (!empty($cache_key) && is_object($this->cache)){
             $this->cache->delete($cache_key);
         }
         $this->where($where);
         $conditions = implode(' ', $this->_where);
-        self::$db->delete($table, $conditions);
+        self::$db->delete($tableName, $conditions);
         $this->resetSelect();
 
         return self::$db->affectedRows();
     }
 
+    /**
+     * 统计满足条件的记录个数
+     *
+     * @access public
+     * @param mixed $where  条件
+     * @param string $field  字段名
+     * @return integer
+     *
+     */
+    public function count($field = '*', $alias = 'count', $distinct = false)
+    {
+        $alias = ($alias != '') ? $alias : $field;
+        $field = $field == '*' ? $field : ($distinct ? 'DISTINCT '.$field : $field);
+        $sql = 'COUNT('.$field.') AS '.$alias;
+        $this->_select[] = $sql;
+
+        return $this;
+    }
+
+    public function getCount($col = '*', $where = array(), $cache_key = '', $exp = 3600)
+    {
+        if (!empty($cache_key) && is_object($this->cache)) {
+            $res = $this->cache->get($cache_key);
+            if ($res) {
+                $this->resetSelect();
+                return $res;
+            }
+        }
+        self::$db->sql = $this->count($col)->where($where)->compileSelect();
+        $arr = self::$db->getOne();
+        $res = $arr['count'];
+        if (!empty($cache_key) && is_object($this->cache)) {
+            $this->cache->set($cache_key, $res, 0, $exp);
+        }
+
+        return $res;
+    }
 }
 ?>

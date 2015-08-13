@@ -25,14 +25,13 @@ class Session extends Model
 {
     protected $prefix       = '';       // session前缀
     protected $lifeTime     = 86400;    // 生存周期
-    protected $tableName    = '';    
     protected $isread       = false;
     
     public function __construct($pre, $timeout)
     {
         $this->prefix = $pre;
         $this->lifeTime = $timeout;
-        $this->tableName = 'w_sessions';
+        $this->_tableName = 'w_sessions';
         if (empty(self::$db)) {
             if (Wave::app()->database) {
                 self::$db = Wave::app()->database->db;
@@ -115,8 +114,8 @@ class Session extends Model
             foreach ($tables as $key => $value) {
                 $tablesList[] = $value['Tables_in_'.$dbName];
             }
-            if (!in_array($this->tableName, $tablesList)) {
-                $sql = "CREATE TABLE `".$this->tableName."` (
+            if (!in_array($this->_tableName, $tablesList)) {
+                $sql = "CREATE TABLE `".$this->_tableName."` (
                     `session_id` varchar(255) CHARACTER 
                     SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
                     `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
@@ -139,11 +138,9 @@ class Session extends Model
 
     function read($sessID) {
         if ($this->isread) {
-            $where = array('session_id'=>$sessID, 'session_expires > '.time());
-            $row = $this->select('session_data')
-                        ->from($this->tableName)
-                        ->where($where)
-                        ->getOne();
+            $where = array('session_id'=>$sessID, 'session_expires>'=> time());
+            $row = $this->where($where)
+                        ->getOne('session_data');
             if ($row) {
                 return $row['session_data'];
             }else{
@@ -159,34 +156,32 @@ class Session extends Model
         $newExp = time() + $this->lifeTime; 
         // is a session with this id in the database? 
         $where = array('session_id'=>$sessID);
-        $row = $this->select('session_data')
-                    ->from($this->tableName)
-                    ->where($where)
-                    ->getOne();
+        $row = $this->where($where)
+                    ->getOne('session_data');
         if ($row) {
 
             $data = array('session_expires' =>$newExp, 
                             'session_data'  =>$sessData);
-            return $this->update($this->tableName, $data, $where);
+            return $this->update($data, $where);
 
         }else{
             $data = array('session_id'=>$sessID,
                      'session_expires'=>$newExp, 
                         'session_data'=>$sessData);
-            return $this->insert($this->tableName, $data);
+            return $this->insert($data);
         }
    }
 
     function destroy($sessID) { 
         // delete session-data 
         $where = array('session_id'=>$sessID);
-        return $this->delete($this->tableName, $where);
+        return $this->delete($where);
     } 
 
     function gc($sessMaxLifeTime) {
-        $where = array('session_expires < '=>time());
+        $where = array('session_expires<'=>time());
         // delete old sessions
-        return $this->delete($this->tableName, $where);
+        return $this->delete($where);
     } 
 
 }

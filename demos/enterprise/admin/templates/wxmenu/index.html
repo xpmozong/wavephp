@@ -1,0 +1,54 @@
+{%include file="layout/header.html"%}
+<script type="text/javascript">
+// 删除
+var mdelete = function(id){
+    if(window.confirm('确定删除？')){
+        $.getJSON("{%$app->homeUrl%}wxmenu/delete/"+id, function(data){
+            if(data.success == true){
+                window.location.href = "{%$app->homeUrl%}wxmenu";
+            }else{
+                alert(data.msg);
+            }
+        })
+    }
+}
+
+</script>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">自定义菜单列表
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$app->homeUrl%}wxmenu/modify/0'">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加菜单
+                </button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th width="8%">ID</th>
+                        <th width="40%">公众号</th>
+                        <th width="32%">自定义菜单</th>
+                        <th width="20%">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%foreach from=$list item="value" key="key" %}
+                    <tr>
+                        <td>{%$value.mid%}</td>
+                        <td>{%$value.gh_name%}</td>
+                        <td>{%$value.content%}</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$app->homeUrl%}wxmenu/modify/{%$value.mid%}'">修改</button>
+                            |
+                            <button type="button" class="btn btn-danger btn-xs" onclick="mdelete({%$value.mid%})">删除</button>
+                        </td>
+                    </tr>
+                    {%/foreach%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{%include file="layout/footer.html"%}

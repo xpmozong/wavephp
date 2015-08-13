@@ -15,21 +15,20 @@ class SiteController extends CommonController
      */
     public function actionIndex()
     {
-        $list = $this->Common->getJoinDataList('articles a', 
+        $this->list = $this->Common->getJoinDataList('articles a', 
         'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
         'category c', 'a.cid=c.cid', null, 'a.aid');
-        $render = array('list' => $list);
-        $this->render('layout/header');
-        $this->render('site/index', $render);
-        $this->render('layout/footer', array('links'=>$this->links));
     }
 
-    public function actionTestDb()
+    public function actionTestLang()
     {
-        $TestModel = new TestModel();
-        $list = $TestModel->getList();
-        echo "<pre>";
-        print_r($list);die;
+        i18n::$lang = 'vi-vn';
+        echo i18n::get('平台管理')."<br>";
+    }
+
+    public function actionTestReport()
+    {
+        $this->report('测试弹窗', Wave::app()->homeUrl.'site/testlang', true);
     }
 
     /**
@@ -45,7 +44,7 @@ class SiteController extends CommonController
         if(Wave::app()->session->getState('userid')){
             $this->redirect(Wave::app()->homeUrl);
         }else{
-            $this->render('site/login');
+            
         }
     }
 
@@ -75,7 +74,7 @@ class SiteController extends CommonController
 
     public function actionRegist()
     {
-        $this->render('site/regist');
+        
     }
 
     public function actionRegisting()

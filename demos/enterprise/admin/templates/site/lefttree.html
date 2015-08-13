@@ -1,0 +1,28 @@
+{%include file="layout/header.html"%}
+<script type="text/javascript">
+$(function(){
+    $(".nav li").click(function(){
+        $(".nav li").removeClass('active');
+        $(this).addClass('active');
+    })
+})
+</script>
+<div class="sidebar" id="sidebar">
+    {%foreach from=$list item="value" key="key" %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><h3 class="panel-title">{%$value.title%}</h3></h3>
+        </div>
+        <ul class="nav nav-sidebar list-group">
+            {%foreach from=$value.list item="v" key="k" %}
+                <li class="list-group-item">
+                    <a href="{%$app->homeUrl%}{%$v.permission_url%}" target="right_frame">
+                        {%$v.permission_name%}
+                    </a>
+                </li>
+            {%/foreach%}
+        </ul>
+    </div>
+    {%/foreach%}
+</div>
+{%include file="layout/footer.html"%}

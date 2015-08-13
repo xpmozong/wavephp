@@ -15,12 +15,7 @@ class ServiceController extends CommonController
      */
     public function actionIndex($sid)
     {
-        $data = $this->Common->getOneData('substance', '*', 'sid', $sid);
-        $render = array('data' => $data);
-        $this->render('layout/header');
-        $this->render('service/index', $render);
-        $this->render('layout/footer', array('links'=>$this->links));
-        
+        $this->data = $this->Common->getOneData('substance', '*', 'sid', $sid);
     }
 
 }

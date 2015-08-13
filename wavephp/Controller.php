@@ -242,6 +242,14 @@ class Controller
         }
     }
 
+    /**
+     * 获得表单信息
+     */
+    public function getRequest()
+    {
+        return Request::getInstance();
+    }
+
 }
 
 

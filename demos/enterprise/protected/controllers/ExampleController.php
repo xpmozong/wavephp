@@ -15,12 +15,7 @@ class ExampleController extends CommonController
      */
     public function actionIndex()
     {
-        $data = $this->Common->getOneData('substance', '*', 'sid', 5);
-        $render = array('data' => $data);
-        $this->render('layout/header');
-        $this->render('example/index', $render);
-        $this->render('layout/footer', array('links'=>$this->links));
-        
+        $this->data = $this->Common->getOneData('substance', '*', 'sid', 5);
     }
 
 }

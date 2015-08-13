@@ -2,20 +2,12 @@
 /**
  * 内容列表控制层
  */
-class SubstanceController extends Controller
+class SubstanceController extends CommonController
 {
-    public $userid;
-    public $username;
-       
     public function __construct()
     {
         parent::__construct();
-        if(Wave::app()->session->getState('userid')) {
-            $this->userid = Wave::app()->session->getState('userid');
-            $this->username = Wave::app()->session->getState('username');
-        }else{
-            $this->redirect(Wave::app()->homeUrl);
-        }
+        $this->title = '内容管理';
     }
 
     /**
@@ -23,29 +15,20 @@ class SubstanceController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_GET);
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $data = $this->Common->getFilter($_GET);
+        $this->page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagesize = 15;
-        $start = ($page - 1) * $pagesize;
+        $start = ($this->page - 1) * $pagesize;
 
-        $list = $Common->getFieldDataList('substance', '*', null, 
+        $this->list = $this->Common->getFieldDataList('substance', '*', null, null, 
                     $start, $pagesize, 'sid');
-        $count = $Common->getCount('substance');
+        $count = $this->Common->getFieldWhereCount('substance');
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){
             $url .= '?page=1';
         }
-        $pagebar = $Common->getPageBar($url, $count, $pagesize, $page);
-
-        $render = array('list'      => $list,
-                        'page'      => $page,
-                        'pagebar'   => $pagebar);
-        $this->render('layout/header');
-        $this->render('substance/index', $render);
-        $this->render('layout/footer');
-        
+        $this->pagebar = $this->Common->getPageBar($url, $count, $pagesize, $this->page);
     }
 
     /**
@@ -54,14 +37,7 @@ class SubstanceController extends Controller
     public function actionModify($id)
     {
         $id = (int)$id;
-        $Common = new Common();
-        $data = $Common->getOneData('substance', '*', 'sid', $id);
-        
-        $render = array('substance' => $data);
-        $this->render('layout/header');
-        $this->render('substance/modify', $render);
-        $this->render('layout/footer');
-        
+        $this->data = $this->Common->getOneData('substance', '*', 'sid', $id);
     }
 
     /**
@@ -69,14 +45,14 @@ class SubstanceController extends Controller
      */
     public function actionModified()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $this->Common = new Common();
+        $data = $this->Common->getFilter($_POST);
         $sid = (int)$data['sid'];
         unset($data['sid']);
         if ($sid == 0) {
-            $Common->getInsert('substance', $data);
+            $this->Common->getInsert('substance', $data);
         }else{
-            $Common->getUpdate('substance', $data, 'sid', $sid);
+            $this->Common->getUpdate('substance', $data, 'sid', $sid);
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'substance', 1);
@@ -87,10 +63,10 @@ class SubstanceController extends Controller
      */
     public function actionUpload()
     {
-        $Common = new Common();
+        $this->Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $Common->getCompleteUrl();
-        $imgTypeArr = $Common->getImageTypes();
+        $url = $this->Common->getCompleteUrl();
+        $imgTypeArr = $this->Common->getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
@@ -99,7 +75,7 @@ class SubstanceController extends Controller
             $projectPath = Wave::app()->projectPath;
             $uploadPath = $projectPath.'uploadfile/substance';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $Common->getYearMonth();
+            $ym = $this->Common->getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
@@ -125,10 +101,10 @@ class SubstanceController extends Controller
     {
         $id = (int)$id;
 
-        $Common = new Common();
-        $Common->getDelete('substance', 'sid', $id);
+        $this->Common = new Common();
+        $this->Common->getDelete('substance', 'sid', $id);
 
-        $Common->exportResult(true, '成功！');
+        $this->Common->exportResult(true, '成功！');
     }
 }
 

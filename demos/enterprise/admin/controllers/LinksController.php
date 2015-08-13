@@ -2,20 +2,12 @@
 /**
  * 友情链接控制层
  */
-class LinksController extends Controller
+class LinksController extends CommonController
 {
-    public $userid;
-    public $username;
-       
     public function __construct()
     {
         parent::__construct();
-        if(Wave::app()->session->getState('userid')) {
-            $this->userid = Wave::app()->session->getState('userid');
-            $this->username = Wave::app()->session->getState('username');
-        }else{
-            $this->redirect(Wave::app()->homeUrl);
-        }
+        $this->title = '友情链接';
     }
 
     /**
@@ -23,13 +15,7 @@ class LinksController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $list = $Common->getFieldList('links', '*');
-        $render = array('list' => $list);
-        $this->render('layout/header');
-        $this->render('links/index', $render);
-        $this->render('layout/footer');
-        
+        $this->list = $this->Common->getFieldList('links', '*');   
     }
 
     /**
@@ -38,14 +24,7 @@ class LinksController extends Controller
     public function actionModify($id)
     {
         $id = (int)$id;
-        $Common = new Common();
-        $data = $Common->getOneData('links', '*', 'lid', $id);
-        
-        $render = array('links' => $data);
-        $this->render('layout/header');
-        $this->render('links/modify', $render);
-        $this->render('layout/footer');
-        
+        $this->data = $this->Common->getOneData('links', '*', 'lid', $id);
     }
 
     /**
@@ -53,14 +32,13 @@ class LinksController extends Controller
      */
     public function actionModified()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $this->Common->getFilter($_POST);
         $id = (int)$data['lid'];
         unset($data['lid']);
         if ($id == 0) {
-            $Common->getInsert('links', $data);
+            $this->Common->getInsert('links', $data);
         }else{
-            $Common->getUpdate('links', $data, 'lid', $id);
+            $this->Common->getUpdate('links', $data, 'lid', $id);
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'links', 1);
@@ -72,11 +50,10 @@ class LinksController extends Controller
     public function actionDelete($id)
     {
         $id = (int)$id;
+        
+        $this->Common->getDelete('links', 'lid', $id);
 
-        $Common = new Common();
-        $Common->getDelete('links', 'lid', $id);
-
-        $Common->exportResult(true, '成功！');
+        $this->Common->exportResult(true, '成功！');
     }
 
 }

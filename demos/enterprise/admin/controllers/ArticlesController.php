@@ -2,40 +2,30 @@
 /**
  * 文章列表控制层
  */
-class ArticlesController extends Controller
+class ArticlesController extends CommonController
 {
-    public $userid;
-    public $username;
-       
     public function __construct()
     {
         parent::__construct();
-        if(Wave::app()->session->getState('userid')) {
-            $this->userid = Wave::app()->session->getState('userid');
-            $this->username = Wave::app()->session->getState('username');
-        }else{
-            $this->redirect(Wave::app()->homeUrl);
-        }
+        $this->title = '文章管理';
     }
-
     /**
      * 文章页
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_GET);
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 1;
+        $data = $this->Common->getFilter($_GET);
+        $this->page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $this->cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 1;
         $pagesize = 15;
-        $start = ($page - 1) * $pagesize;
+        $start = ($this->page - 1) * $pagesize;
 
-        $where = array('cid'=>$cid);
-        $list = $Common->getFieldDataList('articles', 'aid,title', $where, 
+        $where = array('cid'=>$this->cid);
+        $this->list = $this->Common->getFieldDataList('articles', 'aid,title', $where, null,
                     $start, $pagesize, 'aid');
-        $count = $Common->getFieldCount('articles', 'cid', $cid);
+        $count = $this->Common->getFieldCount('articles', 'cid', $this->cid);
 
-        $category = $Common->getFieldList('category', '*');
+        $this->category = $this->Common->getFieldList('category', '*');
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['cid'])){
@@ -44,18 +34,7 @@ class ArticlesController extends Controller
         if(empty($data['page'])){
             $url .= '&page=1';
         }
-        $pagebar = $Common->getPageBar($url, $count, $pagesize, $page);
-
-        $render = array('list'      => $list,
-                        'page'      => $page,
-                        'category'  => $category,
-                        'cid'       => $cid,
-                        'pagebar'   => $pagebar);
-
-        $this->render('layout/header');
-        $this->render('articles/index', $render);
-        $this->render('layout/footer');
-        
+        $this->pagebar = $this->Common->getPageBar($url, $count, $pagesize, $this->page);
     }
 
     /**
@@ -64,16 +43,8 @@ class ArticlesController extends Controller
     public function actionModify($id)
     {
         $id = (int)$id;
-        $Common = new Common();
-        $data = $Common->getOneData('articles', '*', 'aid', $id);
-        $category = $Common->getFieldList('category', '*');
-        
-        $render = array('article'   => $data,
-                        'category'  => $category);
-        $this->render('layout/header');
-        $this->render('articles/modify', $render);
-        $this->render('layout/footer');
-        
+        $this->data = $this->Common->getOneData('articles', '*', 'aid', $id);
+        $this->category = $this->Common->getFieldList('category', '*');
     }
 
     /**
@@ -81,15 +52,14 @@ class ArticlesController extends Controller
      */
     public function actionModified()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $this->Common->getFilter($_POST);
         $aid = (int)$data['aid'];
         unset($data['aid']);
         if ($aid == 0) {
-            $data['add_date'] = $Common->getDate();
-            $Common->getInsert('articles', $data);
+            $data['add_date'] = $this->Common->getDate();
+            $this->Common->getInsert('articles', $data);
         }else{
-            $Common->getUpdate('articles', $data, 'aid', $aid);
+            $this->Common->getUpdate('articles', $data, 'aid', $aid);
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'articles', 1);
@@ -100,10 +70,9 @@ class ArticlesController extends Controller
      */
     public function actionUpload()
     {
-        $Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $Common->getCompleteUrl();
-        $imgTypeArr = $Common->getImageTypes();
+        $url = $this->Common->getCompleteUrl();
+        $imgTypeArr = $this->Common->getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
@@ -112,7 +81,7 @@ class ArticlesController extends Controller
             $projectPath = Wave::app()->projectPath;
             $uploadPath = $projectPath.'uploadfile/articles';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $Common->getYearMonth();
+            $ym = $this->Common->getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
@@ -137,11 +106,8 @@ class ArticlesController extends Controller
     public function actionDelete($id)
     {
         $id = (int)$id;
-
-        $Common = new Common();
-        $Common->getDelete('articles', 'aid', $id);
-
-        $Common->exportResult(true, '成功！');
+        $this->Common->getDelete('articles', 'aid', $id);
+        $this->Common->exportResult(true, '成功！');
     }
 }
 

@@ -8,6 +8,7 @@ class SiteController extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->title = '后台管理';
     }
 
     /**
@@ -29,11 +30,6 @@ class SiteController extends Controller
     {
         if(Wave::app()->session->getState('userid')){
             $this->redirect(Wave::app()->homeUrl);
-        }else{
-            $this->render('layout/header');
-            $this->render('site/login');
-            $this->render('layout/footer');
-            
         }
     }
 
@@ -44,23 +40,17 @@ class SiteController extends Controller
     {
         $Common = new Common();
         $data = $Common->getFilter($_POST);
-        if(empty($data['user_login']))
-            $Common->exportResult(false, '请输入用户名！');
-
-        if(empty($data['user_pass']))
-            $Common->exportResult(false, '请输入密码！');
-        
         $array = $Common->getOneData('users', '*', 'user_login', $data['user_login']);
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userid', $array['userid']);
                 Wave::app()->session->setState('username', $array['user_login']);
-                $Common->exportResult(true, '登录成功！');
+                $this->jumpBox('登录成功！', Wave::app()->homeUrl, 1);
             }else{
-                $Common->exportResult(false, '用户名或密码错误！');
+                $this->jumpBox('用户名或密码错误！', Wave::app()->homeUrl, 1);
             }
         }else{
-            $Common->exportResult(false, '用户名或密码错误！');
+            $this->jumpBox('没有该用户！', Wave::app()->homeUrl, 1);
         }
     }
 
@@ -78,10 +68,6 @@ class SiteController extends Controller
      */
     public function actionHeader()
     {
-        $this->render('layout/header');
-        $this->render('site/header');
-        $this->render('layout/footer');
-        
     }
 
     /**
@@ -90,11 +76,7 @@ class SiteController extends Controller
     public function actionRight()
     {
         $Common = new Common();
-        $render = array('username' => Wave::app()->session->getState('username'));
-        $this->render('layout/header');
-        $this->render('site/right', $render);
-        $this->render('layout/footer');
-        
+        $this->username = Wave::app()->session->getState('username');
     }
 
     /**
@@ -103,34 +85,30 @@ class SiteController extends Controller
     public function actionLeftTree()
     {
         $Common = new Common();
-        $list = array();
-        $list[0]['title'] = '后台管理';
-        $list[0]['list'][] = array('permission_name'=>'文章列表', 
+        $this->list = array();
+        $this->list[0]['title'] = '后台管理';
+        $this->list[0]['list'][] = array('permission_name'=>'文章列表', 
                                     'permission_url'=>'articles');
-        $list[0]['list'][] = array('permission_name'=>'分类列表', 
+        $this->list[0]['list'][] = array('permission_name'=>'分类列表', 
                                     'permission_url'=>'categories');
-        $list[0]['list'][] = array('permission_name'=>'内容列表', 
+        $this->list[0]['list'][] = array('permission_name'=>'内容列表', 
                                     'permission_url'=>'substance');
-        $list[0]['list'][] = array('permission_name'=>'友情链接', 
+        $this->list[0]['list'][] = array('permission_name'=>'友情链接', 
                                     'permission_url'=>'links');
 
-        $list[1]['title'] = '微信公众号';
-        $list[1]['list'][] = array('permission_name'=>'公众账号管理', 
+        $this->list[1]['title'] = '微信公众号';
+        $this->list[1]['list'][] = array('permission_name'=>'公众账号管理', 
                                     'permission_url'=>'wx');
-        $list[1]['list'][] = array('permission_name'=>'粉丝列表', 
+        $this->list[1]['list'][] = array('permission_name'=>'粉丝列表', 
                                     'permission_url'=>'links');
-        $list[1]['list'][] = array('permission_name'=>'消息群发', 
+        $this->list[1]['list'][] = array('permission_name'=>'消息群发', 
                                     'permission_url'=>'links');
-        $list[1]['list'][] = array('permission_name'=>'自定义菜单', 
+        $this->list[1]['list'][] = array('permission_name'=>'自定义菜单', 
                                     'permission_url'=>'wxmenu');
-        $list[1]['list'][] = array('permission_name'=>'自动回复', 
+        $this->list[1]['list'][] = array('permission_name'=>'自动回复', 
                                     'permission_url'=>'links');
+        
 
-        $render = array('list' => $list);
-        $this->render('layout/header');
-        $this->render('site/lefttree', $render);
-        $this->render('layout/footer');
-        die;
     }
 
 }

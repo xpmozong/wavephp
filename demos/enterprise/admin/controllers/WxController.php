@@ -2,20 +2,12 @@
 /**
  * 公众账号管理控制层
  */
-class WxController extends Controller
+class WxController extends CommonController
 {
-    public $userid;
-    public $username;
-       
     public function __construct()
     {
         parent::__construct();
-        if(Wave::app()->session->getState('userid')) {
-            $this->userid = Wave::app()->session->getState('userid');
-            $this->username = Wave::app()->session->getState('username');
-        }else{
-            $this->redirect(Wave::app()->homeUrl);
-        }
+        $this->title = '公众账号管理';
     }
 
     /**
@@ -23,32 +15,25 @@ class WxController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $list = $Common->getFieldList('gh_manage', '*');
-        foreach ($list as $key => $value) {
+        $this->list = $this->Common->getFieldList('gh_manage', '*');
+        foreach ($this->list as $key => $value) {
             switch ((int)$value['gh_type']) {
                 case 1:
-                    $list[$key]['gh_type'] = '订阅号';
+                    $this->list[$key]['gh_type'] = '订阅号';
                     break;
                 case 2:
-                    $list[$key]['gh_type'] = '认证订阅号';
+                    $this->list[$key]['gh_type'] = '认证订阅号';
                     break;
                 case 3:
-                    $list[$key]['gh_type'] = '服务号';
+                    $this->list[$key]['gh_type'] = '服务号';
                     break;
                 case 4:
-                    $list[$key]['gh_type'] = '认证服务号';
+                    $this->list[$key]['gh_type'] = '认证服务号';
                     break;
                 default:
                     break;
             }
         }
-
-        $render = array('list' => $list);
-        $this->render('layout/header');
-        $this->render('wx/index', $render);
-        $this->render('layout/footer');
-        
     }
 
     /**
@@ -57,17 +42,10 @@ class WxController extends Controller
     public function actionModify($id)
     {
         $id = (int)$id;
-        $Common = new Common();
-        $data = $Common->getOneData('gh_manage', '*', 'gid', $id);
-        if ($data['gh_key']) {
-            $data['gh_key'] = $Common->getWxApiUri().$data['gh_key'];
+        $this->data = $this->Common->getOneData('gh_manage', '*', 'gid', $id);
+        if ($this->data['gh_key']) {
+            $this->data['gh_key'] = $this->data['gh_key'];
         }
-
-        $render = array('wx' => $data);
-        $this->render('layout/header');
-        $this->render('wx/modify', $render);
-        $this->render('layout/footer');
-        
     }
 
     /**
@@ -75,8 +53,7 @@ class WxController extends Controller
      */
     public function actionModified()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $this->Common->getFilter($_POST);
         $id = (int)$data['gid'];
         unset($data['gid']);
 
@@ -87,9 +64,9 @@ class WxController extends Controller
 
         if ($id == 0) {
             $data['userid'] = $this->userid;
-            $Common->getInsert('gh_manage', $data);
+            $this->Common->getInsert('gh_manage', $data);
         }else{
-            $Common->getUpdate('gh_manage', $data, 'gid', $id);
+            $this->Common->getUpdate('gh_manage', $data, 'gid', $id);
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'wx', 1);

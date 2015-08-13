@@ -63,6 +63,7 @@ class Wave
         $this->Core->requireFrameworkFile('WaveBase');
         $this->Core->requireFrameworkFile('Web/Session.class');
         $this->Core->requireFrameworkFile('i18n');
+        $this->Core->requireFrameworkFile('Request');
         $this->loadSession();
         
         self::$Route = new Route();
