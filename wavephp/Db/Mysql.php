@@ -20,9 +20,7 @@
  * @author          许萍
  *
  */
-include 'Abstarct.class.php';
-
-class Mysql extends Abstarct
+class Mysql extends Db_Abstract
 {
     private     $dbhost;            // 数据库地址
     private     $dbport;            // 数据库端口

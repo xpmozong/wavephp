@@ -161,3 +161,6 @@ blockquote p{ text-indent: 0em;}
 .bs-callout-info h4 {
     color: #1b809e;
 }
+.m-right20{ margin-right: 20px;}
+.m-right50{ margin-right: 50px;}
+.m-right100{ margin-right: 100px;}

@@ -53,20 +53,6 @@ class SiteController extends Controller
         // $this->footer();
         // 也可以选择使用smarty模板
 
-        // // mecache使用
-        // Wave::app()->memcache->cache1->set('key', '11111', false, 30) 
-        // or die ("Failed to save data at the server");
-        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
-        // $get_result = Wave::app()->memcache->cache1->get('key');
-        // echo "Memcache Data from the cache:$get_result<br>";
-
-        // // redis使用
-        // Wave::app()->redis->cache1->set('key', '11111', 30) 
-        // or die ("Failed to save data at the server");
-        // echo "Store data in the cache (data will expire in 30 seconds)<br>";
-        // $get_result = Wave::app()->redis->cache1->get('key');
-        // echo "Redis Data from the cache:$get_result<br>";
-
     }
 
     /**

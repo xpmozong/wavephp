@@ -1,12 +1,14 @@
 <?php
 $config = array(
-    'projectName'=>'protected',
+    'projectName'           => 'protected',
 
-    'import'=>array(
+    'import'                => array(
         'controllers.*'
     ),
 
-    'defaultController'=>'site',
+    'defaultController'     => 'site',
+    
+    'debuger'               => false,
 
     'smarty'=>array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
@@ -21,8 +23,6 @@ $config = array(
         'config_dir'        => 'templates/config',
         'compile_dir'       => 'templates_c'
     ),
-    
-    'debuger'=>false,       // 显示debug信息
 
     'database'=>array(
         'db'=>array(
@@ -59,18 +59,6 @@ $config = array(
     //         'dbname'        => 'joke',
     //         'dbpconnect'    => 0,
     //         'dbchart'       => 'utf8'
-    //     )
-    // ),
-    // 'memcache'=>array(
-    //     'cache1' => array(
-    //         'host'          => 'localhost',
-    //         'port'          => '11211'
-    //     )
-    // ),
-    // 'redis'=>array(
-    //     'cache1' => array(
-    //         'host'          => '127.0.0.1',
-    //         'port'          => 6379
     //     )
     // )
 );

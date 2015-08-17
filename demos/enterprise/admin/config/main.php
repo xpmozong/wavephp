@@ -1,13 +1,15 @@
 <?php
 $config = array(
-    'projectName'   =>  'admin',
-    'modelName'=>'protected',
+    'projectName'           => 'admin',
+    'modelName'             => 'protected',
 
-    'import'=>array(
+    'import'                => array(
         'controllers.*'
     ),
 
-    'defaultController'=>'site',
+    'defaultController'     => 'site',
+
+    'debuger'               => false,
 
     'smarty'=>array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
@@ -22,8 +24,6 @@ $config = array(
         'config_dir'        => 'templates/config',
         'compile_dir'       => 'admin/templates_c'
     ),
-
-    'debuger'=>false,
     
     'database'=>array(
         'db'=>array(
@@ -40,6 +40,18 @@ $config = array(
     'session'=>array(
         'prefix'            => '',
         'timeout'           => 86400
+    ),
+    'memcache'=>array(
+        array(
+            'host'          => 'localhost',
+            'port'          => 11211
+        ),
+    ),
+    'redis'=>array(
+        array(
+            'host'          => '127.0.0.1',
+            'port'          => 6379
+        )
     )
 );
 ?>

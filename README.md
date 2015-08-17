@@ -4,24 +4,30 @@
 1、框架目录结构
 
 	wavephp
+		| Cache
+			Cache_File.php
+			Cache_Interface.php
+			Cache_Memcache.php
+			Cache_Redis.php
+			File.php
 	    | Db
-	        Abstarct.class.php
-	        Mysql.class.php
+	        Db_Abstarct.php
+	        Mysql.php
 	    | Library
 	        | Captcha
 	        | Smarty
-	    | Web
-	        Session.class.php
 	    Controller.php
 	    Core.php
 		i18n.php
 		i18nModel.php
 	    Model.php
+		Request.php
 	    Route.php
+		Session.php
+		SessionDb.php
+		View.php
 	    Wave.php
 	    WaveBase.php
-
-虽然框架的文件少，代码少，新功能可以加嘛，很好加的，就这几个文件。
 
 2、项目目录结构
 
@@ -32,6 +38,7 @@
 	        | controllers
 	            SiteController.php
 	        | models
+				TestModel.php
 	        | views
 	            | layout
 	                main.php
@@ -55,14 +62,14 @@
 4、配置文件 config/main.php
 
 	$config = array(
-	    'projectName'           =>  'protected',
-	    'modelName'             =>'protected',
+	    'projectName'           => 'protected',
+	    'modelName'             => 'protected',
 	
-	    'import'=>array(
+	    'import'				=> array(
 	        'controllers.*'
 	    ),
 	
-	    'defaultController'     =>'site',
+	    'defaultController'     => 'site',
 	
 	    'smarty'=>array(
 	        'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
@@ -78,7 +85,7 @@
 	        'compile_dir'       => 'templates_c'
 	    ),
 	    
-	    'debuger'=>false,       // 显示debug信息
+	    'debuger'				=> false,	// 显示debug信息
 	    
 	    'database'=>array(
 	        'db'=>array(
@@ -98,14 +105,14 @@
 	    ),
 	    
 	    'memcache'=>array(
-	        'cache1' => array(
+	        array(
 	            'host'          => 'localhost',
 	            'port'          => 11211
-	        )
+	        ) 
 	    ),
 	
 	    'redis'=>array(
-	        'cache1' => array(
+	        array(
 	            'host'          => '127.0.0.1',
 	            'port'          => 6379
 	        )
@@ -164,17 +171,15 @@
 	        $this->render('layout/footer');
 	
 	        // mecache使用
-	        Wave::app()->memcache->cache1->set('key', '11111', false, 30) 
-	        or die ("Failed to save data at the server");
+	        Wave::app()->memcache->set('key', '11111', 30);
 	        echo "Store data in the cache (data will expire in 30 seconds)";
-	        $get_result = Wave::app()->memcache->cache1->get('key');
+	        $get_result = Wave::app()->memcache->get('key');
 	        echo " Memcache Data from the cache:$get_result";
 	
 	        // redis使用
-	        Wave::app()->redis->cache1->set('key', '11111', 30) 
-	        or die ("Failed to save data at the server");
+	        Wave::app()->redis->set('key', '11111', 30);
 	        echo "Store data in the cache (data will expire in 30 seconds)";
-	        $get_result = Wave::app()->redis->cache1->get('key');
+	        $get_result = Wave::app()->redis->get('key');
 	        echo " Redis Data from the cache:$get_result";
 	
 	    }
@@ -191,47 +196,67 @@ site指SiteController.php，index指actionIndex
 
 $a 就是 aaa， $b 就是 bbb
 
-7、数据库 仅支持mysql数据库，参看demos/enterprise/protected/models/TestModel.php的sql用法，继承Model，有问题可以改Model这个文件
-
-	$like = array();
-    $like['content'] = '是';
-    $array = $this  ->select('*')
-                    ->from('articles')
-                    ->like($like)
-                    ->limit(0, 2)
-                    ->group('aid')
-                    ->order('aid')
-                    ->getAll();
-
-    $where = array('aid'=>2);
-    $array = $this  ->select('*')
-                    ->from('articles')
-                    ->where($where)
-                    ->getAll();
-
-    $in = array('aid' => '2,3,4');
-    $array = $this  ->select('*')
-                    ->from('articles')
-                    ->in($in)
-                    ->getAll();
-
-    $array = $this  ->select('*')
-                    ->from('articles a')
-                    ->join('category c', 'a.cid=c.cid')
-                    ->getAll();
-
-    $array = $this  ->select('*')
-                    ->from('category')
-                    ->getAll();
-
-    $data = array('c_name'=>'测试4');
-    var_dump($this->insert('category', $data));
-    var_dump($this->insertId());die;
-    $where = array('cid'=>4);
-    $updateCount = $this->update('category', $data, $where);
-    echo $updateCount;die;
+7、数据库 仅支持mysql数据库，参看TestModel.php的sql用法，继承Model，有问题可以改Model这个文件
 	
-	return $array;
+	<?php
+	/**
+	 * 测试模型
+	 */
+	class TestModel
+	{
+	    public function __construct()
+	    {
+	        if (empty(self::$db)) {
+	            self::$db = Wave::app()->database->db;
+	        }
+	        $this->_tableName = 't_sys_mod_relation';
+	
+	        $this->cache = Wave::app()->redis;
+	    }
+	
+	    public function getList()
+	    {
+	        $like = array();
+	        $like['content'] = '是';
+	        $array = $this  ->select('*')
+	                        ->from('articles')
+	                        ->like($like)
+	                        ->limit(0, 2)
+	                        ->group('aid')
+	                        ->order('aid')
+	                        ->getAll();
+	
+	        $where = array('aid'=>2);
+	        $array = $this  ->select('*')
+	                        ->from('articles')
+	                        ->where($where)
+	                        ->getAll();
+	
+	        $in = array('aid' => '2,3,4');
+	        $array = $this  ->select('*')
+	                        ->from('articles')
+	                        ->in($in)
+	                        ->getAll();
+	
+	        $array = $this  ->select('*')
+	                        ->from('articles a')
+	                        ->join('category c', 'a.cid=c.cid')
+	                        ->getAll();
+	
+	        $array = $this  ->getAll();
+	        // 数据缓存
+	        $array = $this ->getAll('*', null, 'parent_code', 60);
+	
+	        $data = array('c_name'=>'测试4');
+	        var_dump($this->insert($data));
+	        $where = array('cid'=>4);
+	        $updateCount = $this->update($data, $where);
+	        echo $updateCount;die;
+	        
+	        return $array;
+	    }
+	}
+	?>
 
 8、session
 
@@ -250,26 +275,30 @@ session 怎么用？
 配置文件
 
 	'memcache'=>array(
-	    'cache1' => array(
-	        'host'              => 'localhost',
-	        'port'              => '11211'
-	    )
+	    array(
+	        'host'			=> 'localhost',
+	        'port'         	=> '11211'
+	    ),
+		array(
+	        'host'     		=> '192.168.1.1',
+	        'port'    		=> '11211'
+	    ),
 	)
 
-可以多个
+可以多个集群
 
 调用的时候 
 
-存储：Wave::app()->memcache->cache1->set('key', $tmp_object, false, 30)
+存储：Wave::app()->memcache->set('key', $tmp_object, 30)
 
-获得：Wave::app()->memcache->cache1->get('key')
+获得：Wave::app()->memcache->get('key')
 
 11、redis
 
 配置文件
 	
 	'redis'=>array(
-        'cache1' => array(
+        array(
             'host'          => '127.0.0.1',
             'port'          => 6379
         )
@@ -279,9 +308,9 @@ session 怎么用？
 
 调用的时候
 
-存储：Wave::app()->redis->cache1->set('key', $tmp_object, 30)
+存储：Wave::app()->redis->set('key', $tmp_object, 30)
 
-获得：Wave::app()->redis->cache1->get('key')
+获得：Wave::app()->redis->get('key')
 
 以demos下enterprise为例，nginx配置如下：
 

@@ -1,13 +1,13 @@
 <?php
 $config = array(
-    'projectName'           =>  'protected',
-    'modelName'             =>'protected',
+    'projectName'           => 'protected',
+    'modelName'             => 'protected',
 
-    'import'=>array(
+    'import'                => array(
         'controllers.*'
     ),
 
-    'defaultController'     =>'site',
+    'defaultController'     => 'site',
 
     'smarty'=>array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
@@ -41,20 +41,17 @@ $config = array(
         'prefix'            => '',
         'timeout'           => 86400
     ),
-    
     'memcache'=>array(
-        'cache1' => array(
+        array(
             'host'          => 'localhost',
             'port'          => 11211
-        )
+        ),
     ),
-
     'redis'=>array(
-        'cache1' => array(
+        array(
             'host'          => '127.0.0.1',
             'port'          => 6379
         )
     )
-
 );
 ?>

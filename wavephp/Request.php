@@ -1,8 +1,26 @@
 <?php
 /**
- * HTTP请求信息
+ * PHP 5.0 以上
+ * 
+ * @package         Wavephp
+ * @author          许萍
+ * @copyright       Copyright (c) 2013
+ * @link            https://github.com/xpmozong/wavephp
+ * @since           Version 1.0
+ *
  */
-class Request{
+
+/**
+ * Wavephp Application Request Class
+ *
+ * HTTP请求信息
+ *
+ * @package         Wavephp
+ * @author          许萍
+ *
+ */
+class Request
+{
     const URI_DELIMITER = '/';
     const SCHEME_HTTP  = 'http';
     const SCHEME_HTTPS = 'https';

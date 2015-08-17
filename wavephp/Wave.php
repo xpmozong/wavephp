@@ -48,6 +48,9 @@ class Wave
             $this->config = $config;
         }
         $this->Core = new Core($this->config);
+        $this->Core->requireFrameworkFile('Cache/Cache_Interface');
+        $this->Core->requireFrameworkFile('WaveBase');
+        spl_autoload_register(array('WaveBase', 'loader'));
         self::$app = $this->Core->app();
     }
 
@@ -56,21 +59,68 @@ class Wave
      */
     public function run()
     {
-        $this->Core->requireFrameworkFile('Route');
-        $this->Core->requireFrameworkFile('Model');
-        $this->Core->requireFrameworkFile('Controller');
-        $this->Core->requireFrameworkFile('View');
-        $this->Core->requireFrameworkFile('WaveBase');
-        $this->Core->requireFrameworkFile('Web/Session.class');
-        $this->Core->requireFrameworkFile('i18n');
-        $this->Core->requireFrameworkFile('Request');
+        $this->loadDatabase();
+        $this->loadMemcache();
+        $this->loadRedis();
         $this->loadSession();
-        
         self::$Route = new Route();
-        spl_autoload_register(array('WaveBase', 'loader'));
         self::$Route->route();
-        
         $this->Core->clear();
+    }
+
+    /**
+     * 数据库连接
+     */
+    private function loadDatabase()
+    {
+        if(empty(self::$app->database)){
+            if(!empty(self::$app->config)){
+                if(isset(self::$app->config['database'])){
+                    if(!empty(self::$app->config['database'])){
+                        $ndb = array();
+                        foreach (self::$app->config['database'] as $key => $value) {
+                            $ndb[$key] = new Mysql($value);
+                        }
+                        self::$app->database = (object) $ndb;
+                        unset($ndb);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * memcache 连接
+     */
+    private function loadMemcache()
+    {
+        if(empty(self::$app->memcache)){
+            if(!empty(self::$app->config)){
+                if(isset(self::$app->config['memcache'])){
+                    if(!empty(self::$app->config['memcache'])){
+                        $memcache = self::$app->config['memcache'];
+                        self::$app->memcache = new Cache_Memcache($memcache);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * redis 连接
+     */
+    private function loadRedis()
+    {
+        if(empty(self::$app->redis)){
+            if(!empty(self::$app->config)){
+                if(isset(self::$app->config['redis'])){
+                    if(!empty(self::$app->config['redis'])){
+                        $redis = self::$app->config['redis'];
+                        self::$app->redis = new Cache_Redis($redis);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -88,7 +138,13 @@ class Wave
                 if(!empty(self::$app->config['session']['prefix'])){
                     $prefix = self::$app->config['session']['prefix'];
                 }
-                $session = new Session($prefix, $lifeTime);
+
+                $session = '';
+                if (empty(self::$app->memcache) && empty(self::$app->redis)) {
+                    $session = new SessionDb($prefix, $lifeTime);
+                }else{
+                    $session = new Session($prefix, $lifeTime);
+                }
                 session_set_save_handler(array(&$session,"open"), 
                              array(&$session,"close"), 
                              array(&$session,"read"), 

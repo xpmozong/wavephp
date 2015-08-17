@@ -16,10 +16,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if(Wave::app()->session->getState('userid')){
-            $this->render('site/index');
-        }else{
+        if(!Wave::app()->session->getState('userid')){
             $this->redirect(Wave::app()->homeUrl.'site/login');
+        }else{
+            
         }
     }
     

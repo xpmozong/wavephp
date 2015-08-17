@@ -512,10 +512,12 @@ class Model
     {
         if (!empty($cache_key) && is_object($this->cache)) {
             if ($rs = $this->cache->get($cache_key)) {
+                $res = json_decode($rs, true);
                 $this->resetSelect();
-                return $rs;
+                return $res;
             }
         }
+
         if (count($this->_select)) {
             self::$db->sql = $this->where($where)->compileSelect();
         }else{
@@ -525,7 +527,8 @@ class Model
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
-            $this->cache->set($cache_key, $rs, 0, $exp);
+            $res = json_encode($rs);
+            $this->cache->set($cache_key, $res, $exp);
         }
 
         return $rs;
@@ -553,10 +556,12 @@ class Model
     {
         if (!empty($cache_key) && is_object($this->cache)) {
             if ($rs = $this->cache->get($cache_key)) {
+                $res = json_decode($rs, true);
                 $this->resetSelect();
-                return $rs;
+                return $res;
             }
         }
+
         if (count($this->_select)) {
             self::$db->sql = $this->where($where)->compileSelect();
         }else{
@@ -566,7 +571,8 @@ class Model
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
-            $this->cache->set($cache_key, $rs, 0, $exp);
+            $res = json_encode($rs);
+            $this->cache->set($cache_key, $res, $exp);
         }
 
         return $rs;
@@ -698,11 +704,12 @@ class Model
                 return $res;
             }
         }
+        
         self::$db->sql = $this->count($col)->where($where)->compileSelect();
         $arr = self::$db->getOne();
         $res = $arr['count'];
         if (!empty($cache_key) && is_object($this->cache)) {
-            $this->cache->set($cache_key, $res, 0, $exp);
+            $this->cache->set($cache_key, $res, $exp);
         }
 
         return $res;

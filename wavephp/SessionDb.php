@@ -21,7 +21,7 @@
  *
  */
 
-class Session extends Model
+class SessionDb extends Model
 {
     protected $prefix       = '';       // session前缀
     protected $lifeTime     = 86400;    // 生存周期

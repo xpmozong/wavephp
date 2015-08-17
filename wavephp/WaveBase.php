@@ -60,6 +60,25 @@ class WaveBase
                 }
             }
         }
+
+        $dirArr = array('Db', 'Cache');
+        $filename = $app->frameworkPath.$class.'.php';
+        if(file_exists($filename)){
+            require $filename;
+            if(!class_exists($class)){
+                exit('no '.$class);
+            }
+        }
+        foreach ($dirArr as $key => $dir) {
+            $filename = $app->frameworkPath.$dir.'/'.$class.'.php';
+            if(file_exists($filename)){
+                require $filename;
+                if(!class_exists($class)){
+                    exit('no '.$class);
+                }
+                break;
+            }
+        }
     }
 }
 

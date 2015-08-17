@@ -106,7 +106,7 @@ class Route
         if(file_exists($controller)){
             $this->className = $c;
             $this->actionName = $f;
-            require $controller;
+            // require $controller;
             if(class_exists($c)){
                 $cc = new $c;
                 if(method_exists($cc, $f)){

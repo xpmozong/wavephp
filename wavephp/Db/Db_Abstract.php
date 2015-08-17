@@ -11,16 +11,16 @@
  */
 
 /**
- * Wavephp Application Abstarct Class
+ * Wavephp Application Db_Abstract Class
  *
- * 数据库接口类
+ * 数据库抽象类
  *
  * @package         Wavephp
  * @subpackage      Db
  * @author          许萍
  *
  */
-abstract class Abstarct
+abstract class Db_Abstract
 {
     public      $sql;   // sql语句
 

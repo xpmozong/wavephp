@@ -31,10 +31,8 @@ class Core
     private static $baseUrl;            // 除域名外的根目录地址
     private static $import;             // 需要加载的文件夹
     private static $config;             // 配置项目
-    private static $database;           // 数据库连接对象
-    private static $memcache;           // memcache 缓存对象
-    private static $redis;              // redis 缓存对象
     private static $defaultControl;     // 默认控制层
+    
 
     /**
      * 初始化
@@ -70,9 +68,6 @@ class Core
         }
 
         $this->loadBase();
-        $this->loadDatabase();
-        $this->loadMemcache();
-        $this->loadRedis();
     }
 
     /**
@@ -128,74 +123,6 @@ class Core
     }
 
     /**
-     * 数据库连接
-     */
-    private function loadDatabase()
-    {
-        if(empty(self::$database)){
-            if(!empty(self::$config)){
-                if(isset(self::$config['database'])){
-                    if(!empty(self::$config['database'])){
-                        require self::$frameworkPath.'Db/Mysql.class.php';
-                        $ndb = array();
-                        foreach (self::$config['database'] as $key => $value) {
-                            $ndb[$key] = new Mysql($value);
-                        }
-                        self::$database = (object) $ndb;
-                        unset($ndb);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * memcache 连接
-     */
-    private function loadMemcache()
-    {
-        if(empty(self::$memcache)){
-            if(!empty(self::$config)){
-                if(isset(self::$config['memcache'])){
-                    if(!empty(self::$config['memcache'])){
-                        $cache = array();
-                        foreach (self::$config['memcache'] as $key => $value) {
-                            $cache[$key] = new Memcache();
-                            $cache[$key]->connect($value['host'], $value['port']) 
-                            or die ("Memcache Could not connect ".$value['host']);
-                        }
-                        self::$memcache = (object) $cache;
-                        unset($cache);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * redis 连接
-     */
-    private function loadRedis()
-    {
-        if(empty(self::$redis)){
-            if(!empty(self::$config)){
-                if(isset(self::$config['redis'])){
-                    if(!empty(self::$config['redis'])){
-                        $cache = array();
-                        foreach (self::$config['redis'] as $key => $value) {
-                            $cache[$key] = new Redis();
-                            $cache[$key]->connect($value['host'], $value['port']) 
-                            or die ("Redis Could not connect ".$value['host']);
-                        }
-                        self::$redis = (object) $cache;
-                        unset($cache);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * 一些公共参数，供项目调用的
      *
      * 例如在项目中输出除域名外的根目录地址 Wave::app()->homeUrl;
@@ -211,12 +138,9 @@ class Core
         $parameter['projectName']       = self::$projectName;
         $parameter['modelName']         = self::$modelName;
         $parameter['homeUrl']           = self::$homeUrl;
-        $parameter['database']          = self::$database;
-        $parameter['memcache']          = self::$memcache;
-        $parameter['redis']             = self::$redis;
-        $parameter['import']            = self::$import;
-        $parameter['config']            = self::$config;
         $parameter['defaultControl']    = self::$defaultControl;
+        $parameter['config']            = self::$config;
+        $parameter['import']            = self::$import;
         $request['hostInfo']            = self::$hostInfo;
         $request['pathInfo']            = self::$pathInfo;
         $request['baseUrl']             = self::$baseUrl;
@@ -235,9 +159,6 @@ class Core
         self::$projectPath      = '';
         self::$projectName      = '';
         self::$config           = '';
-        self::$database         = '';
-        self::$memcache         = '';
-        self::$redis            = '';
         self::$import           = '';
         self::$hostInfo         = '';
         self::$pathInfo         = '';
