@@ -1,14 +1,13 @@
 <?php
 $config = array(
     'projectName'           => 'protected',
+    'modelName'             => 'protected',
 
     'import'                => array(
         'controllers.*'
     ),
 
     'defaultController'     => 'site',
-    
-    'debuger'               => false,
 
     'smarty'=>array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
@@ -23,7 +22,9 @@ $config = array(
         'config_dir'        => 'templates/config',
         'compile_dir'       => 'templates_c'
     ),
-
+    
+    'debuger'=>false,       // 显示debug信息
+    
     'database'=>array(
         'db'=>array(
             'dbhost'        => '127.0.0.1',
@@ -36,29 +37,20 @@ $config = array(
             'table_prefix'  => ''
         )
     ),
-    'session'=>array(
-        'prefix'            => '',
-        'timeout'           => 86400
-    ),
-
-    // 'database'=>array(
-    //     'db'=>array(
-    //         'dbhost'        => 'localhost',
-    //         'dbport'        => '3306',
-    //         'dbuser'        => 'root',
-    //         'dbpasswd'      => '',
-    //         'dbname'        => 'wordpress',
-    //         'dbpconnect'    => 0,
-    //         'dbchart'       => 'utf8'
+    // 'session'=>array(
+    //     'prefix'            => '',
+    //     'timeout'           => 86400
+    // ),
+    // 'memcache'=>array(
+    //     array(
+    //         'host'          => 'localhost',
+    //         'port'          => 11211
     //     ),
-    //     'db2'=>array(
-    //         'dbhost'        => 'localhost',
-    //         'dbport'        => '3306',
-    //         'dbuser'        => 'root',
-    //         'dbpasswd'      => '',
-    //         'dbname'        => 'joke',
-    //         'dbpconnect'    => 0,
-    //         'dbchart'       => 'utf8'
+    // ),
+    // 'redis'=>array(
+    //     array(
+    //         'host'          => '127.0.0.1',
+    //         'port'          => 6379
     //     )
     // )
 );

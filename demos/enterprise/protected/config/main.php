@@ -41,17 +41,17 @@ $config = array(
         'prefix'            => '',
         'timeout'           => 86400
     ),
-    'memcache'=>array(
-        array(
-            'host'          => 'localhost',
-            'port'          => 11211
-        ),
-    ),
-    'redis'=>array(
-        array(
-            'host'          => '127.0.0.1',
-            'port'          => 6379
-        )
-    )
+    // 'memcache'=>array(
+    //     array(
+    //         'host'          => 'localhost',
+    //         'port'          => 11211
+    //     ),
+    // ),
+    // 'redis'=>array(
+    //     array(
+    //         'host'          => '127.0.0.1',
+    //         'port'          => 6379
+    //     )
+    // )
 );
 ?>

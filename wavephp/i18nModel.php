@@ -24,7 +24,7 @@ class i18nModel extends Model
 {
     public function __construct()
     {
-        $this->tableName = 'w_language';
+        $this->_tableName = 'w_language';
         if (empty(self::$db)) {
             if (Wave::app()->database) {
                 self::$db = Wave::app()->database->db;
@@ -38,13 +38,13 @@ class i18nModel extends Model
      */
     public function table()
     {
-        $tables = $this->getAll('show tables');
+        $tables = $this->queryAll('show tables');
         $tablesList = array();
         $dbName = Wave::app()->config['database']['db']['dbname'];
         foreach ($tables as $key => $value) {
             $tablesList[] = $value['Tables_in_'.$dbName];
         }
-        if (!in_array($this->tableName, $tablesList)) {
+        if (!in_array($this->_tableName, $tablesList)) {
             $sql = "CREATE TABLE `w_language` (
               `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '语言id',
               `lang_code` varchar(50) NOT NULL DEFAULT '' COMMENT '语言编码',
@@ -75,19 +75,15 @@ class i18nModel extends Model
         $filepath = $dir.'language_'.$lang.'.php';
         if (!is_file($filepath)) {
             $zhnew = array();
-            $zh = $this->select('lang_key,lang_value')
-                    ->from($this->tableName)
-                    ->where("lang_code='zh-cn'")
-                    ->getAll();
+            $zh = $this ->where(array('lang_code'=>'zh-cn'))
+                        ->getAll('lang_key,lang_value');
             
             foreach ($zh as $key => $val) {
                 $zhnew[$val['lang_key']] = $val['lang_value'];
             }
 
-            $foreign = $this->select('lang_key,lang_value')
-                            ->from($this->tableName)
-                            ->where("lang_code='$lang'")
-                            ->getAll();
+            $foreign = $this->where(array('lang_code'=>$lang))
+                            ->getAll('lang_key,lang_value');
             foreach ($foreign as $key => $val ) {
                 $zhcn = $zhnew[$val['lang_key']];
                 $i18n[$zhcn] = $val['lang_value'];
