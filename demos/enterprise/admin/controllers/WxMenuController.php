@@ -17,7 +17,7 @@ class WxmenuController extends CommonController
     {
         $this->list = $this->Common->getJoinDataList('gh_menu m', 
                     'm.*,a.gh_name', 0, 0, 'gh_manage a', 'm.gid=a.gid', 
-                    null, 'm.mid');
+                    null, null, null, 'm.mid');
     }
 
     /**

@@ -29,9 +29,9 @@ class NewsController extends CommonController
         $start = ($page - 1) * $pagesize;
 
         $this->list = $this->Common->getJoinDataList('articles a', 
-        'a.aid,a.title,a.add_date,c.c_name', $start, 
-        $pagesize, 'category c', 'a.cid=c.cid', 
-        $where, 'a.aid');
+                        'a.aid,a.title,a.add_date,c.c_name', $start, 
+                        $pagesize, 'category c', 'a.cid=c.cid', 
+                        $where, null, null, 'a.aid');
     
         $count = $this->Common->getFieldWhereCount('articles a', $where);
 

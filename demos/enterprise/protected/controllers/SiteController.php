@@ -16,8 +16,8 @@ class SiteController extends CommonController
     public function actionIndex()
     {
         $this->list = $this->Common->getJoinDataList('articles a', 
-        'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
-        'category c', 'a.cid=c.cid', null, 'a.aid');
+                    'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
+                    'category c', 'a.cid=c.cid', null, null, null, 'a.aid');
     }
 
     public function actionTestLang()

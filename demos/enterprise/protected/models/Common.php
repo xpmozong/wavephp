@@ -22,10 +22,10 @@ class Common extends Model
     /**
      * curl
      */
-    public function curl_get_contents($url = '', $method = "GET", $data = array()) 
+    public function curl($url = '', $method = "GET", $data = array()) 
     {
         $postdata = http_build_query($data, '', '&');
-        $ch = curl_init();
+        $ch   = curl_init();
         if(strtoupper($method) == 'GET' && $data){
             $url .= '?'.$postdata;
         } elseif (strtoupper($method) == 'POST' && $data){
@@ -184,6 +184,14 @@ class Common extends Model
         return $array;
     }
 
+    public function getFieldOneData($table, $allField, $where = null)
+    {
+        return $this->select($allField)
+                    ->from($table)
+                    ->where($where)
+                    ->getOne();
+    }
+
     /**
      * 有条件的获得所有数据
      * @param string $table     表名
@@ -283,15 +291,16 @@ class Common extends Model
      */
     public function getJoinDataList($table, 
                     $allfield, $start, $limit, $jsonTable, $joinOn, 
-                    $where = null, $in = null, 
-                    $order = '', $group = '')
+                    $where = null, $in = null, $like = null,
+                    $order = '', $orderBy = 'desc', $group = '')
     {
         return $this->select($allfield)
                     ->from($table)
                     ->join($jsonTable, $joinOn)
                     ->where($where)
                     ->in($in)
-                    ->order($order)
+                    ->like($like)
+                    ->order($order, $orderBy)
                     ->limit($start, $limit)
                     ->getAll();
     }
