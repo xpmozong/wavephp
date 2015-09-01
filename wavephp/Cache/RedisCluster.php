@@ -38,7 +38,7 @@ class RedisCluster {
      *
      * @param boolean $isUseCluster 是否采用 M/S 方案
      */
-    public function __construct($isUseCluster=false){
+    public function __construct($isUseCluster = false){
         $this->_isUseCluster = $isUseCluster;
     }
   
@@ -113,7 +113,7 @@ class RedisCluster {
         if($isMaster){
             return $this->_linkHandle['master'];
         }else{
-            return $slaveOne ? $this->_getSlaveRedis() : $this->_linkHandle['slave'];
+            return $slaveOne ? $this->_getSlaveRedis() : $this->_linkHandle['slave'][0];
         }
     }
   
@@ -331,10 +331,9 @@ class RedisCluster {
         $l = strlen($k);
         $b = bin2hex($k);
         $h = 0;
-        for($i = 0; $i < $l; $i++)
-        {
+        for($i = 0; $i < $l; $i++) {
             //相加模式HASH
-            $h += substr($b,$i*2,2);
+            $h += substr($b, $i*2, 2);
         }
         $hash = ($h * 1) % $m;
 
