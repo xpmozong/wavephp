@@ -38,6 +38,7 @@ $config = array(
         )
     ),
     // 'session'=>array(
+    //     'cache'             => 'memcache',
     //     'prefix'            => '',
     //     'timeout'           => 86400
     // ),

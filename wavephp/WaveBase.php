@@ -61,7 +61,7 @@ class WaveBase
             }
         }
 
-        $dirArr = array('Db', 'Cache');
+        $dirArr = array('Db', 'Cache', 'i18n', 'Session');
         $filename = $app->frameworkPath.$class.'.php';
         if(file_exists($filename)){
             require $filename;

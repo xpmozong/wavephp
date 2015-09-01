@@ -28,16 +28,14 @@ class Session
     protected $isread       = false;
     protected $cache;
     
-    public function __construct($pre, $timeout)
+    public function __construct($pre, $timeout, $che)
     {
         $this->prefix = $pre;
         $this->lifeTime = $timeout;
-        if (Wave::app()->redis) {
+        if ($che == 'redis') {
             $this->cache = Wave::app()->redis;
         }else{
-            if (Wave::app()->memcache) {
-                $this->cache = Wave::app()->memcache;
-            }
+            $this->cache = Wave::app()->memcache;
         }
     }
 

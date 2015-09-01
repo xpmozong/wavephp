@@ -10,21 +10,24 @@
 			Cache_Memcache.php
 			Cache_Redis.php
 			File.php
+			RedisCluster.php
 	    | Db
 	        Db_Abstarct.php
 	        Mysql.php
+		| i18n
+	        i18n.php
+	        i18nModel.php
 	    | Library
 	        | Captcha
 	        | Smarty
+		| Session
+			| Session.php
+			| SessionDb.php
 	    Controller.php
 	    Core.php
-		i18n.php
-		i18nModel.php
 	    Model.php
 		Request.php
 	    Route.php
-		Session.php
-		SessionDb.php
 		View.php
 	    Wave.php
 	    WaveBase.php
@@ -100,6 +103,7 @@
 	        )
 	    ),
 	    'session'=>array(
+			'cache'				=> 'memcache',
 	        'prefix'            => '',
 	        'timeout'           => 86400
 	    ),
@@ -108,13 +112,27 @@
 	        array(
 	            'host'          => 'localhost',
 	            'port'          => 11211
-	        ) 
+	        ),
+			array(
+	            'host'          => 'localhost',
+	            'port'          => 11212
+	        )
 	    ),
 	
 	    'redis'=>array(
-	        array(
+	        'master' => array(
 	            'host'          => '127.0.0.1',
 	            'port'          => 6379
+	        ),
+	        'slave' => array(
+	            array(
+	                'host'          => '127.0.0.1',
+	                'port'          => 63791
+	            ),
+	            array(
+	                'host'          => '127.0.0.1',
+	                'port'          => 63792
+	            )
 	        )
 	    )
 	);
@@ -260,7 +278,17 @@ $a 就是 aaa， $b 就是 bbb
 
 8、session
 
-session 怎么用？
+session 配置
+	
+	'session'=>array(
+		'cache'				=> 'memcache',
+        'prefix'            => '',
+        'timeout'           => 86400
+    )
+
+cache可以不填
+
+使用如下：
 
 存储：Wave::app()->session->setState('username', 'Ellen Xu');
 
@@ -282,7 +310,7 @@ session 怎么用？
 		array(
 	        'host'     		=> '192.168.1.1',
 	        'port'    		=> '11211'
-	    ),
+	    )
 	)
 
 可以多个集群
@@ -298,13 +326,23 @@ session 怎么用？
 配置文件
 	
 	'redis'=>array(
-        array(
+        'master' => array(
             'host'          => '127.0.0.1',
             'port'          => 6379
+        ),
+        'slave' => array(
+            array(
+                'host'          => '127.0.0.1',
+                'port'          => 63791
+            ),
+            array(
+                'host'          => '127.0.0.1',
+                'port'          => 63792
+            )
         )
     )
 
-可以多个
+可以配置一个redis主从服务器。slave可以不填。
 
 调用的时候
 

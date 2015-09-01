@@ -241,30 +241,6 @@ class Request
         return addslashes($realip);
     }
 
-    // CURL获取内容
-    public static function curl_get_contents($url = '', $method = "GET", $data = array()) {
-        $query  = array();
-        $curl   = curl_init();
-        foreach($data as $k=>$v){
-            $query[] = $k.'='.urlencode($v);
-        }
-        if(strtoupper($method) == 'GET' && $data){
-            $url .= '?'.implode('&', $query);
-        }elseif(strtoupper($method) == 'POST' && $data){
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, implode('&', $query));
-        }
-//        curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 1); // 从证书中检查SSL加密算法是否存在
-        curl_setopt($curl, CURLOPT_URL, $url);
-//        curl_setopt($curl, CURLOPT_TIMEOUT, 50);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($curl);
-        curl_close($curl);
-        return $output;
-    }
-
     // 获取主域名
     public function getDomain()
     {

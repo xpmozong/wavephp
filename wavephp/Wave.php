@@ -140,10 +140,11 @@ class Wave
                 }
 
                 $session = '';
-                if (empty(self::$app->memcache) && empty(self::$app->redis)) {
-                    $session = new SessionDb($prefix, $lifeTime);
+                if (isset(self::$app->config['session']['cache'])) {
+                    $cache = self::$app->config['session']['cache'];
+                    $session = new Session($prefix, $lifeTime, $cache);
                 }else{
-                    $session = new Session($prefix, $lifeTime);
+                    $session = new SessionDb($prefix, $lifeTime);
                 }
                 session_set_save_handler(array(&$session,"open"), 
                              array(&$session,"close"), 

@@ -38,6 +38,7 @@ $config = array(
         )
     ),
     'session'=>array(
+        // 'cache'             => 'memcache',
         'prefix'            => '',
         'timeout'           => 86400
     ),
@@ -48,9 +49,19 @@ $config = array(
     //     ),
     // ),
     // 'redis'=>array(
-    //     array(
+    //     'master' => array(
     //         'host'          => '127.0.0.1',
     //         'port'          => 6379
+    //     ),
+    //     'slave' => array(
+    //         array(
+    //             'host'          => '127.0.0.1',
+    //             'port'          => 63791
+    //         ),
+    //         array(
+    //             'host'          => '127.0.0.1',
+    //             'port'          => 63792
+    //         )
     //     )
     // )
 );
