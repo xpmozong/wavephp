@@ -265,12 +265,12 @@ class Common extends Model
      * @return array            结果数组
      */
     public function getFieldDataList($table, $allfield, $where, $like = null,
-                    $start, $limit, $order = null)
+                    $start, $limit, $order = null, $orderBy = 'desc')
     {
         return $this->select($allfield)
                     ->from($table)
                     ->where($where)
-                    ->order($order)
+                    ->order($order, $orderBy)
                     ->limit($start, $limit)
                     ->getAll();
     }
@@ -354,6 +354,7 @@ class Common extends Model
         $countArr = $this   ->select('count(*) count')
                             ->from($table)
                             ->where($where)
+                            ->like($like)
                             ->getOne();
         $count = $countArr['count'];
         

@@ -49,8 +49,7 @@ class i18n
         if (isset(i18n::$_cache[$lang])) {
             return i18n::$_cache[$lang];
         }
-
-        require Wave::app()->frameworkPath.'i18nModel.php';
+        
         $model = new i18nModel();
         $i18n = $model->getLanguage($lang);
 
