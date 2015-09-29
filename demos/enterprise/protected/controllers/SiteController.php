@@ -15,9 +15,13 @@ class SiteController extends CommonController
      */
     public function actionIndex()
     {
-        $this->list = $this->Common->getJoinDataList('articles a', 
-                    'a.aid,a.title,a.add_date,c.c_name', 0, 12, 
-                    'category c', 'a.cid=c.cid', null, null, null, 'a.aid');
+        $Articles = new Articles();
+        $this->list = $Articles ->select('a.aid,a.title,a.add_date,c.c_name')
+                                ->from('articles a')
+                                ->join('category c', 'a.cid=c.cid')
+                                ->limit(0, 12)
+                                ->order('a.aid', 'desc')
+                                ->getAll();
     }
 
     public function actionTestLang()
@@ -57,8 +61,8 @@ class SiteController extends CommonController
         if(empty($data['user_pass']))
             $this->Common->exportResult(false, '请输入密码！');
         
-        $array = $this->Common->getOneData('users', '*', 
-                                'user_login', $data['user_login']);
+        $Users = new Users();
+        $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userid', $array['userid']);
@@ -79,6 +83,7 @@ class SiteController extends CommonController
 
     public function actionRegisting()
     {
+        $Users = new Users();
         $data = $this->Common->getFilter($_POST);
         if(empty($data['user_login']))
             $this->Common->exportResult(false, '请输入用户名！');
@@ -87,7 +92,7 @@ class SiteController extends CommonController
             $this->Common->exportResult(false, '请输入密码！');
         
         $data['user_pass'] = md5($data['user_pass']);
-        if ($this->Common->getInsert('users', $data)) {
+        if ($Users->insert($data)) {
             $this->Common->exportResult(true, '注册成功！');
         }else{
             $this->Common->exportResult(false, '注册失败！');

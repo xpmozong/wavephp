@@ -40,7 +40,8 @@ class SiteController extends Controller
     {
         $Common = new Common();
         $data = $Common->getFilter($_POST);
-        $array = $Common->getOneData('users', '*', 'user_login', $data['user_login']);
+        $Users = new Users();
+        $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userid', $array['userid']);

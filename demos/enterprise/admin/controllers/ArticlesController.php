@@ -14,27 +14,38 @@ class ArticlesController extends CommonController
      */
     public function actionIndex()
     {
-        $data = $this->Common->getFilter($_GET);
-        $this->page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $Category = new Category();
+        $this->category = $Category->getAll();
+    }
+
+    /**
+     * 文章列表JSON
+     */
+    public function actionJsonlist()
+    {
+        $Articles = new Articles();
+        $start = (int)$_GET['iDisplayStart'];
+        $pagesize = (int)$_GET['iDisplayLength'];
+        $where = array();
         $this->cid = isset($_GET['cid']) ? (int)$_GET['cid'] : 1;
-        $pagesize = 15;
-        $start = ($this->page - 1) * $pagesize;
-
-        $where = array('cid'=>$this->cid);
-        $this->list = $this->Common->getFieldDataList('articles', 'aid,title', $where, null,
-                    $start, $pagesize, 'aid');
-        $count = $this->Common->getFieldCount('articles', 'cid', $this->cid);
-
-        $this->category = $this->Common->getFieldList('category', '*');
-
-        $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
-        if(empty($data['cid'])){
-            $url .= '?cid=1';
+        if ($this->cid) {
+            $where['cid'] = $this->cid;
         }
-        if(empty($data['page'])){
-            $url .= '&page=1';
+        $list = $Articles->where($where)->limit($start, $pagesize)->order('aid')->getAll();
+        $iTotal = $Articles->getCount('*', $where);
+        $output = array(
+            "sEcho" => $_GET['sEcho'],
+            "iTotalRecords" => $iTotal,
+            "iTotalDisplayRecords" => $iTotal,
+            "aaData" => array()
+        );
+        $homeUrl = Wave::app()->homeUrl.'articles/modify/';
+        foreach ($list as $key => $value) {
+            $list[$key]['operation'] = '<button type="button" class="btn btn-info btn-xs m-right20" onclick="javascript:location.href=\''.$homeUrl.$value['aid'].'\'">修改</button>';
+            $list[$key]['operation'] .= '<button type="button" class="btn btn-danger btn-xs" onclick="mdelete('.$value['aid'].')">删除</button>';
         }
-        $this->pagebar = $this->Common->getPageBar($url, $count, $pagesize, $this->page);
+        $output['aaData'] = $list;
+        echo json_encode($output);die;
     }
 
     /**
@@ -43,8 +54,15 @@ class ArticlesController extends CommonController
     public function actionModify($id)
     {
         $id = (int)$id;
-        $this->data = $this->Common->getOneData('articles', '*', 'aid', $id);
-        $this->category = $this->Common->getFieldList('category', '*');
+        $where = array('a.aid'=>$id);
+        $Articles = new Articles();
+        $Category = new Category();
+        $this->data = $Articles ->select('c.*,a.*')
+                                ->from('articles a')
+                                ->join('articles_content c', 'a.aid=c.aid')
+                                ->where($where)
+                                ->getOne();
+        $this->category = $Category->getAll();
     }
 
     /**
@@ -54,12 +72,25 @@ class ArticlesController extends CommonController
     {
         $data = $this->Common->getFilter($_POST);
         $aid = (int)$data['aid'];
-        unset($data['aid']);
+        $article = $data['aritcle'];
+        $content = $data['a_content'];
+        $Articles = new Articles();
+        $ArticlesContent = new ArticlesContent();
         if ($aid == 0) {
-            $data['add_date'] = $this->Common->getDate();
-            $this->Common->getInsert('articles', $data);
+            $article['add_date'] = $this->Common->getDate();
+            $content['aid'] = $Articles->insert($article);
+            $ArticlesContent->insert($content);
+            $article['aid'] = $content['aid'];
         }else{
-            $this->Common->getUpdate('articles', $data, 'aid', $aid);
+            $where = array('aid'=>$aid);
+            $Articles->update($article, $where);
+            $count = $ArticlesContent->getCount('*', $where);
+            if ($count > 0) {
+                $ArticlesContent->update($content, $where);
+            }else{
+                $content['aid'] = $aid;
+                $ArticlesContent->insert($content);
+            }
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'articles', 1);
@@ -70,25 +101,26 @@ class ArticlesController extends CommonController
      */
     public function actionUpload()
     {
+        $Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $this->Common->getCompleteUrl();
-        $imgTypeArr = $this->Common->getImageTypes();
+        $url = $Common->getCompleteUrl();
+        $imgTypeArr = $Common->getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
                 </script>';
         }else{
             $projectPath = Wave::app()->projectPath;
-            $uploadPath = $projectPath.'uploadfile/articles';
+            $uploadPath = $projectPath.'data/uploadfile/articles';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $this->Common->getYearMonth();
+            $ym = $Common->getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
             $imgType = strtolower(substr(strrchr($_FILES['upload']['name'],'.'),1));
             $imageName = time().'_'.rand().'.'.$imgType;
 
-            $file_abso = $url.'/uploadfile/articles/'.$ym.'/'.$imageName;
+            $file_abso = $url.'/data/uploadfile/articles/'.$ym.'/'.$imageName;
             $SimpleImage = new SimpleImage();
             $SimpleImage->load($_FILES['upload']['tmp_name']);
             $SimpleImage->resizeToWidth(800);
@@ -106,7 +138,11 @@ class ArticlesController extends CommonController
     public function actionDelete($id)
     {
         $id = (int)$id;
-        $this->Common->getDelete('articles', 'aid', $id);
+        $where = array('aid'=>$id);
+        $Articles = new Articles();
+        $Articles->delete($where);
+        $ArticlesContent = new ArticlesContent();
+        $ArticlesContent->delete($where);
         $this->Common->exportResult(true, '成功！');
     }
 }

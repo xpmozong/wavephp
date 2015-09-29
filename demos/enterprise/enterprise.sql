@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 07 月 09 日 14:44
+-- 生成日期: 2015 年 09 月 29 日 14:30
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -29,7 +29,6 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `articles` (
   `aid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `content` longtext COMMENT '内容',
   `cid` int(11) NOT NULL DEFAULT '0' COMMENT '文章分类id',
   `add_date` datetime DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`aid`)
@@ -39,14 +38,36 @@ CREATE TABLE IF NOT EXISTS `articles` (
 -- 转存表中的数据 `articles`
 --
 
-INSERT INTO `articles` (`aid`, `title`, `content`, `cid`, `add_date`) VALUES
-(1, '是打发斯蒂芬是打发', '<p>是打发斯蒂芬</p>\r\n\r\n<p>法规和是否更好的风格</p>\r\n\r\n<p>的发生的会计法是否就暗示的回复可见的发挥阿斯顿发哈萨克记得发货快世界东方航空阿斯顿发哈萨克记得发贺卡上几点回福建深刻的减肥哈时刻记得回复可见哈市的发生的开发计划法律上的看法是看得见弗兰克是的发生了肯德基方腊时看见对方是打发士大夫似的阿斯顿发士大夫撒地方就是大连科技阿斯顿发生了的发生可理解对方阿三的看法是可怜的妇科拉多少阿斯顿发生的会计法哈时间快点发货就卡死的回复就卡死的回复就卡死的回复就卡死的回复就卡上的房价肯定是地方哈时间快点回复就卡死的恢复健康是的话</p>\r\n\r\n<p><img alt="" src="http://127.0.0.1/enterprise/uploadfile/articles/201410/1414289918_11432.jpg" style="height:531px; width:800px" /></p>\r\n\r\n<p>实力的开发就爱是可怜的减肥快乐圣诞节阿里开始的交罚款了似的就付款了电视剧阿斯兰的开发就爱是可怜的福建凯立德实力的开发就拉上课的肌肤</p>\r\n\r\n<p>来对付是打发斯蒂芬阿士大夫</p>\r\n', 2, '2014-10-26 15:43:00'),
-(2, '是打发士大夫似的', '<p>的发生大幅度的叫法是肯定就发货爱神的箭飞洒的肌肤</p>\r\n\r\n<p>是打发拉屎的方式的健康</p>\r\n\r\n<p>的法律上的减肥路上的肌肤俩手机的覅圣诞节</p>\r\n\r\n<p>的房间爱死了打开肌肤开始的减肥快乐是大家分开了世界东方</p>\r\n\r\n<p>是理科的积分卡手机打开了房间爱的</p>\r\n\r\n<p><img alt="" src="http://127.0.0.1/enterprise/uploadfile/articles/201410/1414291060_21823.jpg" style="height:531px; width:800px" /></p>\r\n\r\n<p>是老大就发生了科技的付款进度实力肯定就发生开朗大方</p>\r\n\r\n<p>时间的房价阿士大夫加快了速度</p>\r\n\r\n<p>时间的弗拉开始交电费卡时间地方</p>\r\n\r\n<p>时间的方腊时可见分开了多久</p>\r\n', 1, '2014-10-26 15:43:00'),
-(3, 'linux小结', '<p>打发士大夫士大夫是打发斯蒂芬</p>\r\n\r\n<p>上的麻烦萨克的肌肤开始大家</p>\r\n\r\n<p>士大夫撒可点击付款啦手机的付款了进度</p>\r\n\r\n<p>时刻到了快解放啦手机的付款</p>\r\n\r\n<p><img alt="" src="http://127.0.0.1/enterprise/uploadfile/articles/201410/1414291114_11788.jpg" style="height:531px; width:800px" /></p>\r\n\r\n<p>喀什的离开房间萨克的肌肤奥斯卡的积分卡死了的九分裤按实际的弗拉斯柯达九分裤是打开就发生快乐大脚</p>\r\n\r\n<p>是的发生了科技的妇科类似的纠纷</p>\r\n', 3, '2014-10-26 15:43:00'),
-(4, '阿士大夫士大夫', '<p>是打发斯蒂芬</p>\r\n\r\n<p>是的减肥那时间的复活节</p>\r\n\r\n<p>是打发了深刻的九分裤</p>\r\n\r\n<p>是理科的房间阿里开始的减肥克里斯蒂</p>\r\n', 1, '2014-10-26 15:43:00'),
-(5, '开始计划的副科级阿士大夫', '<p>阿萨德尖峰时刻大姐夫是打发似的</p>\r\n\r\n<p>我而为我俄日我日我饿哦日哦额外我日我饿哦平</p>\r\n\r\n<p>哦ioiasdjfasdfj巍巍然了开始的开发受打击的加快立法SD卡</p>\r\n\r\n<p>开始的房间爱斯柯达</p>\r\n\r\n<p>卡死了都士大夫士大夫士大夫时刻打发士大夫</p>\r\n\r\n<p>快考试大法师打发打发阿士大夫的课文</p>\r\n', 1, '2014-10-26 15:43:00'),
-(6, '间距为', '<p>是打发斯蒂芬覆盖规划局规划局和肌肤更好</p>\r\n\r\n<p>工会经费骨灰级分工会经费骨灰级分工会经费骨灰级法规和解放后法规及回复该回家附件法规及回复该回家更符合股份合计分工会经费骨灰级分工会经费骨灰级腹股沟黄金分割积分骨灰级好几个回复该计划</p>\r\n\r\n<p>股份何健飞个放过机会骨灰级法规及 福建福建工会就感觉</p>\r\n\r\n<p>更好的法国恢复供货的法国恢复供货的法规和地方规划</p>\r\n\r\n<p>的法国恢复的规划法规和<br />\r\n&nbsp;</p>\r\n', 1, '2014-10-26 15:43:00'),
-(7, '色人体各瑞特人突然', '<p>尔特瑞特瑞特瑞特尔特瑞特让他</p>\r\n\r\n<p>师父问看看的飞机离开士大夫看是否及时的反馈</p>\r\n\r\n<p>。时刻的弗兰克打发时间的咖啡机阿萨德飞机啊历史课打飞机</p>\r\n\r\n<p>是打发文件看了就开发历史课打飞机了肯德基弗拉斯柯达</p>\r\n\r\n<p>温柔品味荣iwewwww</p>\r\n', 1, '2014-10-26 15:43:00');
+INSERT INTO `articles` (`aid`, `title`, `cid`, `add_date`) VALUES
+(1, '是打发斯蒂芬是打发', 2, '2014-10-26 15:43:00'),
+(2, '是打发士大夫似的', 1, '2014-10-26 15:43:00'),
+(3, 'linux小结', 3, '2014-10-26 15:43:00'),
+(4, '阿士大夫士大夫', 1, '2014-10-26 15:43:00'),
+(5, '开始计划的副科级阿士大夫', 1, '2014-10-26 15:43:00'),
+(6, '间距为', 1, '2014-10-26 15:43:00'),
+(7, '色人体各瑞特人突然', 1, '2014-10-26 15:43:00');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `articles_content`
+--
+
+CREATE TABLE IF NOT EXISTS `articles_content` (
+  `ac_id` int(11) NOT NULL AUTO_INCREMENT,
+  `aid` int(11) NOT NULL COMMENT '文章id',
+  `content` longtext,
+  `content2` longtext COMMENT '工作地点',
+  PRIMARY KEY (`ac_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+
+--
+-- 转存表中的数据 `articles_content`
+--
+
+INSERT INTO `articles_content` (`ac_id`, `aid`, `content`, `content2`) VALUES
+(24, 7, '<p>对分公司对分公司对分公司对分公司的风格</p>\r\n', NULL),
+(25, 6, '<p>深深地发士大夫撒地方</p>\r\n', NULL);
 
 -- --------------------------------------------------------
 
@@ -66,8 +87,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 INSERT INTO `category` (`cid`, `c_name`) VALUES
 (1, '行业资讯'),
-(2, '企业动态'),
-(3, '技术文章');
+(2, '企业动态');
 
 -- --------------------------------------------------------
 
@@ -161,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `links` (
 
 INSERT INTO `links` (`lid`, `url`, `title`) VALUES
 (1, 'http://www.baidu.com', '百度'),
-(2, 'https://github.com/', 'github');
+(2, 'https://github.com/1', 'github');
 
 -- --------------------------------------------------------
 
@@ -175,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `substance` (
   `content` longtext COMMENT '内容',
   `add_date` datetime DEFAULT NULL COMMENT '添加日期',
   PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='内容表' AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='内容表' AUTO_INCREMENT=18 ;
 
 --
 -- 转存表中的数据 `substance`
@@ -189,7 +209,7 @@ INSERT INTO `substance` (`sid`, `title`, `content`, `add_date`) VALUES
 (5, '客户案例', '<p>是打发斯蒂芬就是的合法会计师的附件是的话</p>\r\n\r\n<p>是开的房间爱死了的科技富士康的附件是看得见阿斯达克积分卡时间的分类看时间到了附近阿斯兰的房间爱是可怜的积分卡拉斯的见附件阿斯兰的剑法是可怜的减肥快乐驾驶的客服就爱是看得见开始交电费卡时间的付款链接阿什利会计法</p>\r\n\r\n<p>时刻的减肥了卡时间的咖啡机</p>\r\n\r\n<p>拉屎开的房间爱上是可怜的发生的纠纷是的肌肤的肌肤</p>\r\n\r\n<p>开始的房间爱斯柯达分历史的分开就是的看法</p>\r\n\r\n<p>开始的减肥死了打飞机是理科的副驾驶的空间是理科的肌肤可适当</p>\r\n\r\n<p>是开的房是理科的肌肤肯德基</p>\r\n\r\n<p>卡死了都发卡机是打发是打发斯蒂芬阿斯顿发士大夫是打发斯蒂芬是打发斯蒂芬</p>\r\n', NULL),
 (6, '桌面服务', '<p>时间的发货及时打飞机阿斯达克附件是肯定</p>\r\n\r\n<p>是打开房间爱时刻打飞机</p>\r\n\r\n<p>是打开房间爱时刻的肌肤开始打飞机是打开房间爱时刻打飞机</p>\r\n\r\n<p>看时间的分开就暗示的咖啡机</p>\r\n\r\n<p>了深刻的积分卡拉斯的肌肤可就是开朗大方</p>\r\n\r\n<p>离开时间的付款时间的付款时间的法律</p>\r\n\r\n<p>卢卡斯的肌肤克拉就是的开发阶段</p>\r\n\r\n<p>离开时间的分开就是打开了附件是老大副科级</p>\r\n', NULL),
 (7, '网络服务', '<p>是打开房间爱上的飞机打开士大夫撒打发士大夫</p>\r\n\r\n<p>是打发士大夫士大夫士大夫</p>\r\n\r\n<p>是打发士大夫士大夫是打发士大夫士大夫士大夫啊是打发士大夫士大夫士大夫是打发斯蒂芬</p>\r\n\r\n<p>是打发士大夫似的奋斗</p>\r\n\r\n<p>是打发是打发士大夫士大夫士大夫阿士大夫士大夫撒打发士大夫啊是打发士大夫似的士大夫撒打发士大夫</p>\r\n\r\n<p>是打发士大夫士大夫阿斯顿发送到</p>\r\n\r\n<p>是打发是打发士大夫似的是打发斯蒂芬</p>\r\n\r\n<p>是打发士大夫士大夫地方</p>\r\n', NULL),
-(8, '系统服务', '<p>是打发士大夫士大夫士大夫是打发斯蒂芬</p>\r\n\r\n<p>是打发是打发士大夫似的发送到fsadf</p>\r\n\r\n<p>是打发似的发是打发是打发士大夫似的发是打发是打发士大夫似的</p>\r\n\r\n<p>士大夫卡士大夫撒打发士大夫</p>\r\n\r\n<p>是打发士大夫似的发士大夫是打发是打发似的</p>\r\n\r\n<p>是打发是打发似的</p>\r\n', NULL),
+(8, '系统服务', '<p>是打发士大夫士大夫士大夫是打发斯蒂芬</p>\r\n\r\n<p>是打发是打发士大夫似的发送到fsadf</p>\r\n\r\n<p>是打发似的发是打发是打发士大夫似的发是打发是打发士大夫似的</p>\r\n\r\n<p>士大夫卡士大夫撒打发士大夫</p>\r\n\r\n<p>是打发士大夫似的发士大夫是打发是打发w似的</p>\r\n\r\n<p>是打发是打发似的wwww</p>\r\n', NULL),
 (9, '办公设备服务', '<p>是打发是打发士大夫士大夫阿士大夫士大夫士大夫</p>\r\n\r\n<p>是打发是打发士大夫士大夫</p>\r\n\r\n<p>是打发是打发士大夫士大夫士大夫士大夫的师傅是打发是打发士大夫士大夫第三方士大夫的方式的发生大幅度</p>\r\n\r\n<p>士大夫撒打发士大夫的</p>\r\n\r\n<p>地方是打发是打发士大夫士大夫士大夫</p>\r\n\r\n<p>是打发是打发士大夫士大夫士大夫士大夫的师傅是打发是打发士大夫士大夫第三方士大夫的方式的发生大幅度</p>\r\n\r\n<p>打发士大夫撒地方是打发士大夫士大夫地方第三方<br />\r\n&nbsp;</p>\r\n', NULL),
 (10, '数据安全', '<p>士大夫撒打发士大夫士大夫士大夫阿士大夫士大夫撒打发士大夫是打发斯蒂芬</p>\r\n\r\n<p>是打发士大夫士大夫是打发斯蒂芬</p>\r\n\r\n<p>发是打发是打发士大夫士大夫第三方</p>\r\n\r\n<p>实施打发打发打发士大夫撒打发似的</p>\r\n\r\n<p>温温热人味儿是打发是打发士大夫士大夫士大夫士大夫的师傅是打发是打发士大夫士大夫第三方士大夫的方式的发生大幅度</p>\r\n\r\n<p>士大夫撒打发士大夫</p>\r\n', NULL),
 (11, 'IT设备迁移', '<p>事发时的飞洒的方式发生的范德萨</p>\r\n\r\n<p>士大夫撒打发士大夫是打发是打发斯蒂芬</p>\r\n\r\n<p>是打发是打发士大夫士大夫士大夫士大夫的师傅是打发是打发士大夫士大夫第三方士大夫的方式的发生大幅度sdfasdf</p>\r\n\r\n<p>是打发士大夫士大夫是打发似的</p>\r\n\r\n<p>打发士大夫士大夫</p>\r\n\r\n<p>是打发是打发士大夫士大夫</p>\r\n\r\n<p>士大夫撒打发士大夫是打发</p>\r\n', NULL),
@@ -275,8 +295,8 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('0mo00bhq030bqs8q6v2dt4io26', 1436493987, '_userid_timeout|i:1436493987;_userid|s:1:"3";_username_timeout|i:1436493987;_username|s:8:"xpmozong";'),
-('m6rfqu132n1bj0blb5142159m3', 1436432472, '_userid_timeout|i:1436431504;_userid|s:1:"3";_username_timeout|i:1436431504;_username|s:8:"xpmozong";');
+('aqtotnc64vd27ac3rtvk6qmbd3', 1443594484, 'userid_timeout|i:1443591932;userid|s:1:"3";username_timeout|i:1443591932;username|s:8:"xpmozong";'),
+('rsrsd6j4ik66rhd4rfudh56vk6', 1443510026, 'userid_timeout|i:1443508603;userid|s:1:"3";username_timeout|i:1443508603;username|s:8:"xpmozong";');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

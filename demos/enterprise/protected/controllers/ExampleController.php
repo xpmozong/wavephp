@@ -15,7 +15,8 @@ class ExampleController extends CommonController
      */
     public function actionIndex()
     {
-        $this->data = $this->Common->getOneData('substance', '*', 'sid', 5);
+        $Substance = new Substance();
+        $this->data = $Substance->getOne('*', array('sid'=>5));
     }
 
 }

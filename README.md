@@ -25,6 +25,7 @@
 			| SessionDb.php
 	    Controller.php
 	    Core.php
+	    Database.php
 	    Model.php
 		Request.php
 	    Route.php
@@ -67,14 +68,14 @@
 	$config = array(
 	    'projectName'           => 'protected',
 	    'modelName'             => 'protected',
-	
-	    'import'				=> array(
+
+	    'import'                => array(
 	        'controllers.*'
 	    ),
-	
+
 	    'defaultController'     => 'site',
-	
-	    'smarty'=>array(
+
+	    'smarty'                => array(
 	        'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
 	        'left_delimiter'    => '{%',
 	        'right_delimiter'   => '%}',
@@ -83,56 +84,49 @@
 	        'cache_lifetime'    => 120,
 	        'compile_check'     => true,
 	        'template_dir'      => 'templates',
-	        'cache_dir'         => 'templates/cache',
 	        'config_dir'        => 'templates/config',
-	        'compile_dir'       => 'templates_c'
+	        'cache_dir'         => 'data/templates/cache/index',
+	        'compile_dir'       => 'data/templates/compile/index'
 	    ),
 	    
-	    'debuger'				=> false,	// 显示debug信息
+	    'debuger'               => false,       // 显示debug信息
 	    
-	    'database'=>array(
-	        'db'=>array(
+	    'database'              => array(
+	        'driver'            => 'mysql',
+	        'master'            => array(
 	            'dbhost'        => '127.0.0.1',
-	            'dbport'        => '3306',
-	            'dbuser'        => 'root',
-	            'dbpasswd'      => '',
+	            'username'      => 'root',
+	            'password'      => '',
 	            'dbname'        => 'enterprise',
-	            'dbpconnect'    => 0,
-	            'dbchart'       => 'utf8',
-	            'table_prefix'  => ''
+	            'charset'       => 'utf8',
+	            'table_prefix'  => '',
+	            'pconnect'      => false
+	        ),
+	        'slave'            => array(
+	            'dbhost'        => '127.0.0.1',
+	            'username'      => 'root',
+	            'password'      => '',
+	            'dbname'        => 'enterprise',
+	            'charset'       => 'utf8',
+	            'table_prefix'  => '',
+	            'pconnect'      => false
 	        )
 	    ),
 	    'session'=>array(
-			'cache'				=> 'memcache',
+	        'cache'             => 'memcache',
 	        'prefix'            => '',
 	        'timeout'           => 86400
 	    ),
-	    
 	    'memcache'=>array(
 	        array(
 	            'host'          => 'localhost',
 	            'port'          => 11211
 	        ),
-			array(
-	            'host'          => 'localhost',
-	            'port'          => 11212
-	        )
 	    ),
-	
 	    'redis'=>array(
-	        'master' => array(
+	        array(
 	            'host'          => '127.0.0.1',
 	            'port'          => 6379
-	        ),
-	        'slave' => array(
-	            array(
-	                'host'          => '127.0.0.1',
-	                'port'          => 63791
-	            ),
-	            array(
-	                'host'          => '127.0.0.1',
-	                'port'          => 63792
-	            )
 	        )
 	    )
 	);
@@ -222,49 +216,42 @@ $a 就是 aaa， $b 就是 bbb
 	 */
 	class TestModel
 	{
-	    public function __construct()
-	    {
-	        if (empty(self::$db)) {
-	            self::$db = Wave::app()->database->db;
-	        }
-	        $this->_tableName = 't_sys_mod_relation';
-	
-	        $this->cache = Wave::app()->redis;
+	    protected function init() {
+	        $this->_tableName = self::$_tablePrefix.'articles';
+	        $this->cache = Wave::app()->memcache;
 	    }
-	
-	    public function getList()
-	    {
+
+	    public function getList() {
 	        $like = array();
 	        $like['content'] = '是';
 	        $array = $this  ->select('*')
-	                        ->from('articles')
 	                        ->like($like)
 	                        ->limit(0, 2)
 	                        ->group('aid')
 	                        ->order('aid')
 	                        ->getAll();
-	
+
 	        $where = array('aid'=>2);
 	        $array = $this  ->select('*')
-	                        ->from('articles')
 	                        ->where($where)
 	                        ->getAll();
-	
+
 	        $in = array('aid' => '2,3,4');
 	        $array = $this  ->select('*')
-	                        ->from('articles')
 	                        ->in($in)
 	                        ->getAll();
-	
+
 	        $array = $this  ->select('*')
 	                        ->from('articles a')
 	                        ->join('category c', 'a.cid=c.cid')
 	                        ->getAll();
-	
-	        $array = $this  ->getAll();
+
+	        $array = $this ->getAll();
+
 	        // 数据缓存
-	        $array = $this ->getAll('*', null, 'parent_code', 60);
-	
+	        $array = $this->getAll('*', null, 'articles', 60);
+
+
 	        $data = array('c_name'=>'测试4');
 	        var_dump($this->insert($data));
 	        $where = array('cid'=>4);

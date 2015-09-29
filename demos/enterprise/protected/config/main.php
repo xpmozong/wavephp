@@ -9,7 +9,7 @@ $config = array(
 
     'defaultController'     => 'site',
 
-    'smarty'=>array(
+    'smarty'                => array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
         'left_delimiter'    => '{%',
         'right_delimiter'   => '%}',
@@ -18,23 +18,32 @@ $config = array(
         'cache_lifetime'    => 120,
         'compile_check'     => true,
         'template_dir'      => 'templates',
-        'cache_dir'         => 'templates/cache',
         'config_dir'        => 'templates/config',
-        'compile_dir'       => 'templates_c'
+        'cache_dir'         => 'data/templates/cache/index',
+        'compile_dir'       => 'data/templates/compile/index'
     ),
     
-    'debuger'=>false,       // 显示debug信息
+    'debuger'               =>false ,       // 显示debug信息
     
-    'database'=>array(
-        'db'=>array(
+    'database'              => array(
+        'driver'            => 'mysql',
+        'master'            => array(
             'dbhost'        => '127.0.0.1',
-            'dbport'        => '3306',
-            'dbuser'        => 'root',
-            'dbpasswd'      => '',
+            'username'      => 'root',
+            'password'      => '',
             'dbname'        => 'enterprise',
-            'dbpconnect'    => 0,
-            'dbchart'       => 'utf8',
-            'table_prefix'  => ''
+            'charset'       => 'utf8',
+            'table_prefix'  => '',
+            'pconnect'      => false
+        ),
+        'slave'            => array(
+            'dbhost'        => '127.0.0.1',
+            'username'      => 'root',
+            'password'      => '',
+            'dbname'        => 'enterprise',
+            'charset'       => 'utf8',
+            'table_prefix'  => '',
+            'pconnect'      => false
         )
     ),
     'session'=>array(
@@ -42,12 +51,12 @@ $config = array(
         'prefix'            => '',
         'timeout'           => 86400
     ),
-    // 'memcache'=>array(
-    //     array(
-    //         'host'          => 'localhost',
-    //         'port'          => 11211
-    //     ),
-    // ),
+    'memcache'=>array(
+        array(
+            'host'          => 'localhost',
+            'port'          => 11211
+        ),
+    ),
     // 'redis'=>array(
     //     'master' => array(
     //         'host'          => '127.0.0.1',

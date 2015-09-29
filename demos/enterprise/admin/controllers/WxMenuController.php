@@ -15,9 +15,12 @@ class WxmenuController extends CommonController
      */
     public function actionIndex()
     {
-        $this->list = $this->Common->getJoinDataList('gh_menu m', 
-                    'm.*,a.gh_name', 0, 0, 'gh_manage a', 'm.gid=a.gid', 
-                    null, null, null, 'm.mid');
+        $GhMenu = new GhMenu();
+        $this->list = $GhMenu   ->select('m.*,a.gh_name')
+                                ->from('gh_menu m')
+                                ->join('gh_manage a', 'm.gid=a.gid')
+                                ->order('m.mid', 'desc')
+                                ->getAll();
     }
 
     /**
@@ -26,13 +29,17 @@ class WxmenuController extends CommonController
     public function actionModify($id)
     {
         $id = (int)$id;
-        $this->data = $this->Common->getJoinData('gh_menu m', 'm.*,a.gh_name', 
-                        'gh_manage a', 'm.gid=a.gid', array('m.mid'=>$id));
-        $this->wxdata = $this->Common->select('gid,gh_name')
-                        ->from('gh_manage')
-                        ->where('userid='.$this->userid)
-                        ->notin('gid NOT IN(SELECT gid FROM gh_menu)')
-                        ->getAll();
+        $GhMenu = new GhMenu();
+        $this->data = $GhMenu   ->select('m.*,a.gh_name')
+                                ->from('gh_menu m')
+                                ->join('gh_manage a', 'm.gid=a.gid')
+                                ->where(array('m.mid'=>$id))
+                                ->getAll();
+        $GhManage = new GhManage();
+        $this->wxdata = $GhManage   ->select('gid,gh_name')
+                                    ->where('userid='.$this->userid)
+                                    ->notin('gid NOT IN(SELECT gid FROM gh_menu)')
+                                    ->getAll();
     }
 
     /**
@@ -43,10 +50,11 @@ class WxmenuController extends CommonController
         $data = $this->Common->getFilter($_POST);
         $id = (int)$data['mid'];
         unset($data['mid']);
+        $GhMenu = new GhMenu();
         if ($id == 0) {
-            $this->Common->getInsert('gh_menu', $data);
+            $GhMenu->insert($data);
         }else{
-            $this->Common->getUpdate('gh_menu', $data, 'mid', $id);
+            $GhMenu->update($data, array('mid'=>$id));
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'wxmenu', 1);

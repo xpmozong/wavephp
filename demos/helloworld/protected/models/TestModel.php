@@ -4,22 +4,15 @@
  */
 class TestModel
 {
-    public function __construct()
-    {
-        if (empty(self::$db)) {
-            self::$db = Wave::app()->database->db;
-        }
-        $this->_tableName = 't_sys_mod_relation';
-
-        $this->cache = Wave::app()->redis;
+    protected function init() {
+        $this->_tableName = self::$_tablePrefix.'articles';
+        $this->cache = Wave::app()->memcache;
     }
 
-    public function getList()
-    {
+    public function getList() {
         $like = array();
         $like['content'] = '是';
         $array = $this  ->select('*')
-                        ->from('articles')
                         ->like($like)
                         ->limit(0, 2)
                         ->group('aid')
@@ -28,13 +21,11 @@ class TestModel
 
         $where = array('aid'=>2);
         $array = $this  ->select('*')
-                        ->from('articles')
                         ->where($where)
                         ->getAll();
 
         $in = array('aid' => '2,3,4');
         $array = $this  ->select('*')
-                        ->from('articles')
                         ->in($in)
                         ->getAll();
 
@@ -43,9 +34,11 @@ class TestModel
                         ->join('category c', 'a.cid=c.cid')
                         ->getAll();
 
-        $array = $this  ->getAll();
+        $array = $this ->getAll();
+
         // 数据缓存
-        $array = $this ->getAll('*', null, 'parent_code', 60);
+        $array = $this->getAll('*', null, 'articles', 60);
+
 
         $data = array('c_name'=>'测试4');
         var_dump($this->insert($data));

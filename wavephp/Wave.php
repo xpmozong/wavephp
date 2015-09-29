@@ -59,34 +59,12 @@ class Wave
      */
     public function run()
     {
-        $this->loadDatabase();
         $this->loadMemcache();
         $this->loadRedis();
         $this->loadSession();
         self::$Route = new Route();
         self::$Route->route();
         $this->Core->clear();
-    }
-
-    /**
-     * 数据库连接
-     */
-    private function loadDatabase()
-    {
-        if(empty(self::$app->database)){
-            if(!empty(self::$app->config)){
-                if(isset(self::$app->config['database'])){
-                    if(!empty(self::$app->config['database'])){
-                        $ndb = array();
-                        foreach (self::$app->config['database'] as $key => $value) {
-                            $ndb[$key] = new Mysql($value);
-                        }
-                        self::$app->database = (object) $ndb;
-                        unset($ndb);
-                    }
-                }
-            }
-        }
     }
 
     /**

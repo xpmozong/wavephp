@@ -26,17 +26,12 @@ class SessionDb extends Model
     protected $prefix       = '';       // session前缀
     protected $lifeTime     = 86400;    // 生存周期
     protected $isread       = false;
-    
-    public function __construct($pre, $timeout)
-    {
-        $this->prefix = $pre;
-        $this->lifeTime = $timeout;
+
+    protected function init() {
+        $option = Wave::app()->config['session'];
+        $this->prefix = $option['prefix'];
+        $this->lifeTime = $option['timeout'];
         $this->_tableName = 'w_sessions';
-        if (empty(self::$db)) {
-            if (Wave::app()->database) {
-                self::$db = Wave::app()->database->db;
-            }
-        }
     }
 
     /**
@@ -105,28 +100,24 @@ class SessionDb extends Model
     }
 
     function open($savePath, $sessName) {
-        if (empty(self::$db)){
-            die('未配置数据库连接');
-        }else{
-            $tables = $this->queryAll('show tables');
-            $tablesList = array();
-            $dbName = Wave::app()->config['database']['db']['dbname'];
-            foreach ($tables as $key => $value) {
-                $tablesList[] = $value['Tables_in_'.$dbName];
-            }
-            if (!in_array($this->_tableName, $tablesList)) {
-                $sql = "CREATE TABLE `".$this->_tableName."` (
-                    `session_id` varchar(255) CHARACTER 
-                    SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-                    `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
-                    `session_data` text,
-                    PRIMARY KEY (`session_id`)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-                $this->sqlQuery($sql);
-            }
-
-            $this->isread = true;
+        $tables = $this->queryAll('show tables');
+        $tablesList = array();
+        $dbName = Wave::app()->config['database']['master']['dbname'];
+        foreach ($tables as $key => $value) {
+            $tablesList[] = $value['Tables_in_'.$dbName];
         }
+        if (!in_array($this->_tableName, $tablesList)) {
+            $sql = "CREATE TABLE `".$this->_tableName."` (
+                `session_id` varchar(255) CHARACTER 
+                SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+                `session_expires` int(10) unsigned NOT NULL DEFAULT '0',
+                `session_data` text,
+                PRIMARY KEY (`session_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+            $this->sqlQuery($sql);
+        }
+
+        $this->isread = true;
         
         return true; 
     }

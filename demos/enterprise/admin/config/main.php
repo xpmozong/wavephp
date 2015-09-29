@@ -11,7 +11,7 @@ $config = array(
 
     'debuger'               => false,
 
-    'smarty'=>array(
+    'smarty'                => array(
         'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
         'left_delimiter'    => '{%',
         'right_delimiter'   => '%}',
@@ -20,21 +20,30 @@ $config = array(
         'cache_lifetime'    => 120,
         'compile_check'     => true,
         'template_dir'      => 'templates',
-        'cache_dir'         => 'templates/cache',
         'config_dir'        => 'templates/config',
-        'compile_dir'       => 'admin/templates_c'
+        'cache_dir'         => 'data/templates/cache/admin',
+        'compile_dir'       => 'data/templates/compile/admin'
     ),
     
-    'database'=>array(
-        'db'=>array(
+    'database'              => array(
+        'driver'            => 'mysql',
+        'master'            => array(
             'dbhost'        => '127.0.0.1',
-            'dbport'        => '3306',
-            'dbuser'        => 'root',
-            'dbpasswd'      => '',
+            'username'      => 'root',
+            'password'      => '',
             'dbname'        => 'enterprise',
-            'dbpconnect'    => 0,
-            'dbchart'       => 'utf8',
-            'table_prefix'  => ''
+            'charset'       => 'utf8',
+            'table_prefix'  => '',
+            'pconnect'      => false
+        ),
+        'slave'            => array(
+            'dbhost'        => '127.0.0.1',
+            'username'      => 'root',
+            'password'      => '',
+            'dbname'        => 'enterprise',
+            'charset'       => 'utf8',
+            'table_prefix'  => '',
+            'pconnect'      => false
         )
     ),
     'session'=>array(

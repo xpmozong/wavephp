@@ -15,7 +15,8 @@ class CategoriesController extends CommonController
      */
     public function actionIndex()
     {
-        $this->list = $this->Common->getFieldList('category', '*');   
+        $Category = new Category();
+        $this->list = $Category->getAll();
     }
 
     /**
@@ -24,7 +25,8 @@ class CategoriesController extends CommonController
     public function actionModify($cid)
     {
         $cid = (int)$cid;
-        $this->data = $this->Common->getOneData('category', '*', 'cid', $cid);
+        $Category = new Category();
+        $this->data = $Category->getOne('*', array('cid'=>$cid));
     }
 
     /**
@@ -32,13 +34,14 @@ class CategoriesController extends CommonController
      */
     public function actionModified()
     {
+        $Category = new Category();
         $data = $this->Common->getFilter($_POST);
         $cid = (int)$data['cid'];
         unset($data['cid']);
         if ($cid == 0) {
-            $this->Common->getInsert('category', $data);
+            $Category->insert($data);
         }else{
-            $this->Common->getUpdate('category', $data, 'cid', $cid);
+            $Category->update($data, array('cid'=>$cid));
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'categories', 1);
@@ -50,7 +53,8 @@ class CategoriesController extends CommonController
     public function actionDelete($id)
     {
         $id = (int)$id;
-        $this->Common->getDelete('category', 'cid', $id);
+        $Category = new Category();
+        $Category->delete(array('cid'=>$id));
         $this->Common->exportResult(true, '成功！');
     }
 

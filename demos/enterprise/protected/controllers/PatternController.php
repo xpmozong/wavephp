@@ -15,7 +15,8 @@ class PatternController extends CommonController
      */
     public function actionIndex($sid)
     {
-        $this->data = $this->Common->getOneData('substance', '*', 'sid', $sid);
+        $Substance = new Substance();
+        $this->data = $Substance->getOne('*', array('sid'=>$sid));
     }
 
 }

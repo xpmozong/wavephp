@@ -22,47 +22,37 @@
  */
 class Mysql extends Db_Abstract
 {
-    private     $dbhost;            // 数据库地址
-    private     $dbport;            // 数据库端口
-    private     $dbuser;            // 数据库用户名
-    private     $dbpasswd;          // 数据库密码
-    private     $dbpconnect = 0;    // 数据库长连接
-    private     $dbname;            // 数据库名称
-    private     $dbchart;           // 数据库链接编码
-    private     $dblink;            // 数据库连接对象
     private     $errno;             // 错误信息
     
+    public function __construct($config) {
+        $this->config = $config;
+    }
+
     /**
      * 初始化
      *
      * @param array $dbConfig
      *
      */
-    protected function _connect($dbConfig)
+    protected function _connect($tag)
     {
-        $this->dbhost       = $dbConfig['dbhost'];
-        $this->dbport       = isset($dbConfig['dbport']) ? $dbConfig['dbport'] : 3306;
-        $this->dbuser       = $dbConfig['dbuser'];
-        $this->dbpasswd     = $dbConfig['dbpasswd'];
-        $this->dbpconnect   = isset($dbConfig['dbpconnect']) ? $dbConfig['dbpconnect'] : 0;
-        $this->dbname       = $dbConfig['dbname'];
-        $this->dbchart      = isset($dbConfig['dbchart']) ? $dbConfig['dbchart'] : 'utf8';
-        if($this->dbpconnect) {
-            $this->dblink = mysql_pconnect($this->dbhost.':'.$this->dbport,
-                                            $this->dbuser,
-                                            $this->dbpasswd,
-                                            1) 
-            or die('can not connect to mysql database!');
+        if ($this->config[$tag]['pconnect']) {
+            return @mysql_pconnect( $this->config[$tag]['dbhost'], 
+                                    $this->config[$tag]['username'], 
+                                    $this->config[$tag]['password']);
         } else {
-            $this->dblink = mysql_connect($this->dbhost.':'.$this->dbport,
-                                            $this->dbuser,
-                                            $this->dbpasswd,
-                                            1) 
-            or die('can not connect to mysql database!');
+            return @mysql_connect(  $this->config[$tag]['dbhost'], 
+                                    $this->config[$tag]['username'], 
+                                    $this->config[$tag]['password']);
         }
-        mysql_query('set names '.$this->dbchart, $this->dblink);
-        mysql_select_db($this->dbname, $this->dblink);
-        unset($dbConfig);
+    }
+
+    protected function db_select($tag) {
+        return @mysql_select_db($this->config[$tag]['dbname'], $this->conn[$tag]);
+    }
+
+    protected function db_set_charset($tag) {
+        return @mysql_query("SET character_set_connection=".$this->config[$tag]['charset'].", character_set_results=".$this->config[$tag]['charset'].", character_set_client=".$this->config[$tag]['charset']."", $this->conn[$tag]);
     }
  
     /**
@@ -71,13 +61,13 @@ class Mysql extends Db_Abstract
      * @return blooean
      *
      */
-    protected function _query($sql, $die_msg = 1)
+    protected function _query($sql, $conn_id)
     {
         if (Wave::app()->config['debuger']) {
             $start_time = microtime(TRUE);
         }
         
-        $result = @mysql_query($sql, $this->dblink);
+        $result = @mysql_query($sql, $conn_id);
         // 可以用自定义错误信息的方法，就要压制本身的错误信息
         if($result == true) {
             if (Wave::app()->config['debuger']) {
@@ -86,13 +76,9 @@ class Mysql extends Db_Abstract
             return $result;
         }else{
             // 有错误发生
-            $this->errno = mysql_error($this->dblink);
-            if($die_msg == 1) {
-                // 强制报错并且die
-                $this->msg();
-            }else{
-                return false;
-            }
+            $this->errno = mysql_error($conn_id);
+            // 强制报错并且die
+            $this->msg();
         }
     }
 
@@ -109,13 +95,13 @@ class Mysql extends Db_Abstract
     {
         $tbcolumn = $tbvalue = '';
         foreach($array  as $key=>$value){
+            $value = $this->escape($value);
             $tbcolumn .= '`'.$key.'`'.",";
-            $tbvalue  .= "'".$value."',";
+            $tbvalue  .= ''.$value.',';
         }
         $tbcolumn = "(".trim($tbcolumn,',').")";
         $tbvalue = "(".trim($tbvalue,',').")";
         $sql = "INSERT INTO `".$table."` ".$tbcolumn." VALUES ".$tbvalue;
-        
         return $this->query($sql);
     }
 
@@ -125,11 +111,9 @@ class Mysql extends Db_Abstract
      * @return int id
      *
      */
-    protected function _insertId()
+    protected function _insertId($conn_id)
     {
-        // return ($id = mysql_insert_id($this->dblink)) >= 0 ? $id : 
-        //     $this->result($this->query('SELECT last_insert_id()'), 0);
-        return mysql_insert_id($this->dblink);
+        return mysql_insert_id($conn_id);
     }
 
     /**
@@ -146,11 +130,11 @@ class Mysql extends Db_Abstract
     {
         $update = array();
         foreach ($array as $key => $value){
-            $update[] = '`'.$key.'` = '."'".$value."'";
+            $value = $this->escape($value);
+            $update[] = "`$key`=$value";
         }
         $update = implode(",", $update);
         $sql = 'UPDATE `'.$table.'` SET '.$update.' WHERE '.$conditions;
-        
         return $this->query($sql);
     }
 
@@ -171,9 +155,9 @@ class Mysql extends Db_Abstract
      * @return array
      *
      */
-    protected function _getOne() 
+    protected function _getOne($sql) 
     {
-        $res = $this->query($this->sql);
+        $res = $this->query($sql);
         return mysql_fetch_assoc($res);
     }
  
@@ -183,9 +167,9 @@ class Mysql extends Db_Abstract
      * @return array
      *
      */
-    protected function _getAll()
+    protected function _getAll($sql)
     {
-        $res = $this->query($this->sql);
+        $res = $this->query($sql);
         $arr = array();
         while($row = mysql_fetch_assoc($res)) {
             $arr[] = $row;
@@ -211,47 +195,39 @@ class Mysql extends Db_Abstract
     }
 
     /**
-     * 取得结果数据
-     *
-     * @param resource $query
-     *
-     * @return string
-     *
+     * table 加 `
      */
-    protected function result($query, $row) 
-    {
-        $query = @mysql_result($query, $row);
-        return $query;
+    protected function _table($table) {
+        return '`' .$table. '`';
     }
 
     /**
-     * 关闭数据库连接，当您使用持续连接时该功能失效
-     *
-     * @return blooean
-     *
+     * table list
      */
-    protected function _close() 
-    {
-        return mysql_close($this->dblink);
+    protected function _list_tables() {
+        $sql = 'SHOW TABLES FROM `'.$this->dbname.'`';
+
+        return $this->_getAll($sql);
     }
- 
+
     /**
-     * 显示自定义错误
+     * table columns
      */
-    protected function msg() 
-    {
-        if($this->errno) {
-            $errMsg = mysql_error();
-            echo "<div style='color:red;'>\n";
-                echo "<h4>数据库操作错误</h4>\n";
-                echo "<h5>错误代码：".$this->errno."</h5>\n";
-                echo "<h5>错误信息：".$errMsg."</h5>\n";
-            echo "</div>";
-            unset($msgArr);
-            die;
-        }
+    protected function _list_columns($table) {
+        $sql = 'SHOW COLUMNS FROM '.$this->_table($table);
+
+        return $this->getAll($sql);
     }
-    
+
+    /**
+     * 清空表
+     */
+    protected function _truncate($table) {
+        $sql = 'TRUNCATE '.$this->_table($table);
+
+        return $this->query($sql);
+    }
+
     /**
      * mysql limit
      */
@@ -266,6 +242,17 @@ class Mysql extends Db_Abstract
     }
 
     /**
+     * 关闭数据库连接，当您使用持续连接时该功能失效
+     *
+     * @return blooean
+     *
+     */
+    protected function _close() 
+    {
+        return mysql_close($this->dblink);
+    }
+
+    /**
      * mysql escape
      */
     protected function _escape_str($str) {
@@ -277,10 +264,30 @@ class Mysql extends Db_Abstract
             return $str;
         }
 
+        return addslashes($str);
+        
         if (function_exists('mysql_real_escape_string')) {
             return mysql_real_escape_string($str);
         } else {
             return addslashes($str);
+        }
+    }
+
+
+    /**
+     * 显示自定义错误
+     */
+    protected function msg() 
+    {
+        if($this->errno) {
+            $errMsg = mysql_error();
+            echo "<div style='color:red;'>\n";
+                echo "<h4>数据库操作错误</h4>\n";
+                echo "<h5>错误代码：".$this->errno."</h5>\n";
+                echo "<h5>错误信息：".$errMsg."</h5>\n";
+            echo "</div>";
+            unset($msgArr);
+            die;
         }
     }
 }

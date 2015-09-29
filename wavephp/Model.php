@@ -21,8 +21,9 @@
  */
 class Model
 {
-    protected static $db;
     public $cache;
+    protected static $db            = null;
+    protected static $_tablePrefix  = '';
     protected $_select              = array();
     protected $_from                = '';
     protected $_join                = array();
@@ -35,6 +36,24 @@ class Model
     protected $_group               = array();
     protected $_order               = array();
     protected $_tableName           = '';
+
+    /**
+     * 构造函数
+     */
+    public function __construct() {
+        // 表前缀
+        if (empty(self::$_tablePrefix)) {
+            $configs = Wave::app()->config['database'];
+            self::$_tablePrefix = $configs['master']['table_prefix'];
+        }
+        if(self::$db == null){
+            self::$db = Database::factory();
+        }
+
+        $this->init();
+    }
+
+    protected function init(){}
 
     /**
      * 查询字段
@@ -518,12 +537,13 @@ class Model
             }
         }
 
+        $sql = '';
         if (count($this->_select)) {
-            self::$db->sql = $this->where($where)->compileSelect();
+            $sql = $this->where($where)->compileSelect();
         }else{
-            self::$db->sql = $this->select($field)->where($where)->compileSelect();
+            $sql = $this->select($field)->where($where)->compileSelect();
         }
-        $rs = self::$db->getAll();
+        $rs = self::$db->getAll($sql);
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
@@ -539,9 +559,7 @@ class Model
      */
     public function queryAll($sql)
     {
-        self::$db->sql = $sql;
-
-        return self::$db->getAll();
+        return self::$db->getAll($sql);
     }
 
     /**
@@ -562,12 +580,13 @@ class Model
             }
         }
 
+        $sql = '';
         if (count($this->_select)) {
-            self::$db->sql = $this->where($where)->compileSelect();
+            $sql = $this->where($where)->compileSelect();
         }else{
-            self::$db->sql = $this->select($field)->where($where)->compileSelect();
+            $sql = $this->select($field)->where($where)->compileSelect();
         }
-        $rs = self::$db->getOne();
+        $rs = self::$db->getOne($sql);
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
@@ -583,9 +602,7 @@ class Model
      */
     public function queryOne($sql)
     {
-        self::$db->sql = $sql;
-
-        return self::$db->getOne();
+        return self::$db->getOne($sql);
     }
 
     /**
@@ -695,6 +712,9 @@ class Model
         return $this;
     }
 
+    /**
+     * 统计
+     */
     public function getCount($col = '*', $where = array(), $cache_key = '', $exp = 3600)
     {
         if (!empty($cache_key) && is_object($this->cache)) {
@@ -705,8 +725,8 @@ class Model
             }
         }
         
-        self::$db->sql = $this->count($col)->where($where)->compileSelect();
-        $arr = self::$db->getOne();
+        $sql = $this->count($col)->where($where)->compileSelect();
+        $arr = self::$db->getOne($sql);
         $res = $arr['count'];
         if (!empty($cache_key) && is_object($this->cache)) {
             $this->cache->set($cache_key, $res, $exp);
@@ -714,5 +734,30 @@ class Model
 
         return $res;
     }
+
+    /**
+     * 获得表列表
+     */
+    public function listTables()
+    {
+        return self::$db->list_tables();
+    }
+
+    /**
+     * 获得表结构
+     */
+    public function listColumns($table)
+    {
+        return self::$db->list_columns($table);
+    }
+
+    /**
+     * 清空表
+     */
+    public function truncate($table)
+    {
+        return self::$db->truncate($table);
+    }
+
 }
 ?>

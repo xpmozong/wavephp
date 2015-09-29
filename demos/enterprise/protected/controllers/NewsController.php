@@ -19,21 +19,23 @@ class NewsController extends CommonController
         $this->cid = (int)$cid;
         $where = array();
         $this->category = array();
+        $Category = new Category();
         if ($cid != 0) {
-            $where['a.cid'] = $cid;
-            $this->category = $this->Common->getOneData('category',
-                            '*', 'cid', $cid);
+            $where['cid'] = $cid;
+            $this->category = $Category->getOne('*', $where);
         }
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagesize = 15;
         $start = ($page - 1) * $pagesize;
-
-        $this->list = $this->Common->getJoinDataList('articles a', 
-                        'a.aid,a.title,a.add_date,c.c_name', $start, 
-                        $pagesize, 'category c', 'a.cid=c.cid', 
-                        $where, null, null, 'a.aid');
-    
-        $count = $this->Common->getFieldWhereCount('articles a', $where);
+        $Articles = new Articles();
+        $this->list = $Articles ->select('a.aid,a.title,a.add_date,c.c_name')
+                                ->from('articles a')
+                                ->join('category c', 'a.cid=c.cid')
+                                ->where($where)
+                                ->limit($start, $pagesize)
+                                ->order('a.aid', 'desc')
+                                ->getAll();
+        $count = $Articles->getCount('*', $where);
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){
@@ -49,9 +51,10 @@ class NewsController extends CommonController
     public function actionArticle($aid)
     {
         $aid = (int)$aid;
-        $this->data = $this->Common->getOneData('articles', '*', 'aid', $aid);
-        $this->category = $this->Common->getOneData('category', '*', 
-                                    'cid', $this->data['cid']);
+        $Articles = new Articles();
+        $Category = new Category();
+        $this->data = $Articles->getOne('*', array('aid'=>$aid));
+        $this->category = $Category->getOne('*', array('cid'=>$this->data['cid']));
         $this->cid = $this->data['cid'];
     }
 

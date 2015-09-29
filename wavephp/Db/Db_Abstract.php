@@ -22,17 +22,28 @@
  */
 abstract class Db_Abstract
 {
-    public      $sql;   // sql语句
+    public      $config = array();
+    public      $conn   = array();
 
     /**
-     * 初始化
-     *
-     * @param array $dbConfig
-     *
+     * 选数据库
      */
-    public function __construct($dbConfig)
-    {
-        $this->_connect($dbConfig);
+    public function init($tag) {
+        if (isset($this->conn[$tag])) {
+            return true;
+        }
+        $this->conn[$tag] = $this->_connect($tag);
+        if (!$this->conn[$tag]) {
+            die('Can not connect to MySQL server:'.$this->config[$tag]['dbhost']);
+        }
+
+        if (!$this->db_set_charset($tag)) {
+            die('Unable to set database connection charset:'.$this->config[$tag]['charset']);
+        }
+
+        if (!$this->db_select($tag)) {
+            die('Cannot use database:'.$this->config[$tag]['dbname']);
+        }
     }
 
     /**
@@ -41,9 +52,30 @@ abstract class Db_Abstract
      * @return blooean
      *
      */
-    public function query($sql, $die_msg = 1)
+    public function query($sql, $tag = false)
     {
-        return $this->_query($sql, $die_msg);
+        if($tag || $this->is_write($sql)) {
+            $this->init('master');
+            return $this->_query($sql, $this->conn['master']);
+        } else {
+            $this->init('slave');
+            return $this->_query($sql, $this->conn['slave']);
+        }
+    }
+
+    /**
+     * 判断是不是写语句
+     *
+     * @return bool
+     *
+     */
+    public function is_write($sql) 
+    {
+        if (!preg_match('/^\s*"?(SET|INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|LOAD DATA|COPY|ALTER|GRANT|REVOKE|LOCK|UNLOCK)\s+/i', $sql)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -68,7 +100,7 @@ abstract class Db_Abstract
      */
     public function insertId() 
     {
-        return $this->_insertId();
+        return $this->_insertId($this->conn['master']);
     }
 
     /**
@@ -102,9 +134,9 @@ abstract class Db_Abstract
      * @return array
      *
      */
-    public function getOne()
+    public function getOne($sql)
     {
-        return $this->_getOne();
+        return $this->_getOne($sql);
     }
 
     /**
@@ -113,9 +145,9 @@ abstract class Db_Abstract
      * @return array
      *
      */
-    public function getAll()
+    public function getAll($sql)
     {
-        return $this->_getAll();
+        return $this->_getAll($sql);
     }
 
     /**
@@ -130,6 +162,40 @@ abstract class Db_Abstract
     public function delete($table, $fields)
     {
         return $this->_delete($table, $fields);
+    }
+
+    /**
+     * table list
+     */
+    public function list_tables() {
+        return $this->_list_tables();
+    }
+
+    /**
+     * table columns
+     */
+    public function list_columns($table) {
+        return $this->_list_columns($table);
+    }
+
+    /**
+     * 清空表
+     */
+    public function truncate($table) {
+        return $this->_truncate($table);
+    }
+
+    /**
+     * 查询条数
+     *
+     * @param int $offset       第几条
+     * @param int $limit        多少条数据
+     * 
+     * @return $this
+     *
+     */
+    public function limit($offset, $limit) {
+        return $this->_limit($offset, $limit);
     }
 
     /**
@@ -158,19 +224,6 @@ abstract class Db_Abstract
         }
 
         return true;
-    }
-
-    /**
-     * 查询条数
-     *
-     * @param int $offset       第几条
-     * @param int $limit        多少条数据
-     * 
-     * @return $this
-     *
-     */
-    public function limit($offset, $limit) {
-        return $this->_limit($offset, $limit);
     }
 
     /**

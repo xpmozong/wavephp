@@ -15,7 +15,8 @@ class WxController extends CommonController
      */
     public function actionIndex()
     {
-        $this->list = $this->Common->getFieldList('gh_manage', '*');
+        $GhManage = new GhManage();
+        $this->list = $GhManage->getAll();
         foreach ($this->list as $key => $value) {
             switch ((int)$value['gh_type']) {
                 case 1:
@@ -41,8 +42,9 @@ class WxController extends CommonController
      */
     public function actionModify($id)
     {
+        $GhManage = new GhManage();
         $id = (int)$id;
-        $this->data = $this->Common->getOneData('gh_manage', '*', 'gid', $id);
+        $this->data = $GhManage->getOne('*', array('gid'=>$id));
         if ($this->data['gh_key']) {
             $this->data['gh_key'] = $this->data['gh_key'];
         }
@@ -61,12 +63,12 @@ class WxController extends CommonController
         $data['gh_key'] = substr($md5, 16);
         $data['gh_token'] = substr($md5, 8, 8);
         $data['gh_enaeskey'] = $md5.substr($md5, 21);
-
+        $GhManage = new GhManage();
         if ($id == 0) {
             $data['userid'] = $this->userid;
-            $this->Common->getInsert('gh_manage', $data);
+            $GhManage->insert('gh_manage', $data);
         }else{
-            $this->Common->getUpdate('gh_manage', $data, 'gid', $id);
+            $GhManage->update($data, array('gid'=>$id));
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'wx', 1);

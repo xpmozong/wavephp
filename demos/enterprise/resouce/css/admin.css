@@ -5,7 +5,10 @@ a:focus {
 } 
 /* 登录 */
 .con-login{ margin: 100px auto; width: 300px;}
-
+.pagination {
+    float: right;
+    margin: 0;
+}
 /*
  * Global add-ons
  */

@@ -22,15 +22,8 @@
  */
 class i18nModel extends Model
 {
-    public function __construct()
-    {
+    protected function init() {
         $this->_tableName = 'w_language';
-        if (empty(self::$db)) {
-            if (Wave::app()->database) {
-                self::$db = Wave::app()->database->db;
-            }
-        }
-        $this->table();
     }
 
     /**
@@ -68,7 +61,7 @@ class i18nModel extends Model
     public function getLanguage($lang)
     {
         $i18n = array();
-        $dir = Wave::app()->projectPath.'/caches/';
+        $dir = Wave::app()->projectPath.'/data/caches/';
         if (!is_dir($dir)) {
             mkdir($dir);
         }

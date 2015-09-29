@@ -15,7 +15,8 @@ class LinksController extends CommonController
      */
     public function actionIndex()
     {
-        $this->list = $this->Common->getFieldList('links', '*');   
+        $Links = new Links();
+        $this->list = $Links->getAll();   
     }
 
     /**
@@ -23,8 +24,9 @@ class LinksController extends CommonController
      */
     public function actionModify($id)
     {
+        $Links = new Links();
         $id = (int)$id;
-        $this->data = $this->Common->getOneData('links', '*', 'lid', $id);
+        $this->data = $Links->getOne('*', array('lid'=>$id));
     }
 
     /**
@@ -32,13 +34,14 @@ class LinksController extends CommonController
      */
     public function actionModified()
     {
+        $Links = new Links();
         $data = $this->Common->getFilter($_POST);
         $id = (int)$data['lid'];
         unset($data['lid']);
         if ($id == 0) {
-            $this->Common->getInsert('links', $data);
+            $Links->insert($data);
         }else{
-            $this->Common->getUpdate('links', $data, 'lid', $id);
+            $Links->update($data, array('lid'=>$id));
         }
 
         $this->jumpBox('成功！', Wave::app()->homeUrl.'links', 1);
@@ -50,9 +53,8 @@ class LinksController extends CommonController
     public function actionDelete($id)
     {
         $id = (int)$id;
-        
-        $this->Common->getDelete('links', 'lid', $id);
-
+        $Links = new Links();
+        $Links->delete(array('lid'=>$id));
         $this->Common->exportResult(true, '成功！');
     }
 

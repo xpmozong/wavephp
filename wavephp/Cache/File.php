@@ -90,7 +90,9 @@ class File
         readfile($file);
     }
 
-    // 获取附件类型
+    /**
+     * 获取附件类型
+     */
     public static function getType($type) {
         if (is_numeric($type)) {
             $typeid = $type;
@@ -113,8 +115,8 @@ class File
     }
 
     /**
-    * 友好格式显示文件大小
-    */
+     * 友好格式显示文件大小
+     */
     public static function getSize($filesize) {
         if (is_file($filesize)) {
             $filesize = filesize($filesize);
