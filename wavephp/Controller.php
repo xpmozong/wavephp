@@ -37,8 +37,8 @@ class Controller
     {
         $this->app = Wave::app();
         if (isset($this->app->config['smarty'])) {
-            if (isset($this->app->config['smarty']['isOn'])) {
-                $this->isSmarty = $this->app->config['smarty']['isOn'];
+            if (isset($this->app->config['smarty']['is_on'])) {
+                $this->isSmarty = $this->app->config['smarty']['is_on'];
             }
         }
         if ($this->isSmarty) {

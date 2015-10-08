@@ -116,14 +116,10 @@ class Wave
                 if(!empty(self::$app->config['session']['prefix'])){
                     $prefix = self::$app->config['session']['prefix'];
                 }
-
-                $session = '';
-                if (isset(self::$app->config['session']['cache'])) {
-                    $cache = self::$app->config['session']['cache'];
-                    $session = new Session($prefix, $lifeTime, $cache);
-                }else{
-                    $session = new SessionDb($prefix, $lifeTime);
-                }
+                
+                $driver = self::$app->config['session']['driver'];
+                $class = 'Session_'.ucfirst($driver);
+                $session = new $class(self::$app->config['session']);
                 session_set_save_handler(array(&$session,"open"), 
                              array(&$session,"close"), 
                              array(&$session,"read"), 

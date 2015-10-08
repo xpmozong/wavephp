@@ -10,7 +10,7 @@ $config = array(
     'defaultController'     => 'site',
 
     'smarty'                => array(
-        'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+        'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
         'left_delimiter'    => '{%',
         'right_delimiter'   => '%}',
         'debugging'         => false,
@@ -36,7 +36,7 @@ $config = array(
             'table_prefix'  => '',
             'pconnect'      => false
         ),
-        'slave'            => array(
+        'slave'             => array(
             'dbhost'        => '127.0.0.1',
             'username'      => 'root',
             'password'      => '',
@@ -46,32 +46,31 @@ $config = array(
             'pconnect'      => false
         )
     ),
-    'session'=>array(
-        // 'cache'             => 'memcache',
-        'prefix'            => '',
+    'session'               => array(
+        'driver'            => 'db',
         'timeout'           => 86400
     ),
-    'memcache'=>array(
+    'memcache'              => array(
         array(
             'host'          => 'localhost',
             'port'          => 11211
         ),
     ),
-    // 'redis'=>array(
-    //     'master' => array(
-    //         'host'          => '127.0.0.1',
-    //         'port'          => 6379
-    //     ),
-    //     'slave' => array(
-    //         array(
-    //             'host'          => '127.0.0.1',
-    //             'port'          => 63791
-    //         ),
-    //         array(
-    //             'host'          => '127.0.0.1',
-    //             'port'          => 63792
-    //         )
-    //     )
-    // )
+    'redis'                 => array(
+        'master'            => array(
+            'host'          => '127.0.0.1',
+            'port'          => 6379
+        ),
+        'slave'             => array(
+            array(
+                'host'      => '127.0.0.1',
+                'port'      => 63791
+            ),
+            array(
+                'host'      => '127.0.0.1',
+                'port'      => 63792
+            )
+        )
+    )
 );
 ?>

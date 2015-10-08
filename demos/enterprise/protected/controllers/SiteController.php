@@ -45,7 +45,8 @@ class SiteController extends CommonController
     
     public function actionLogin()
     {
-        if(Wave::app()->session->getState('userid')){
+        $userinfo = Wave::app()->session->getState('userinfo');
+        if(!empty($userinfo)){
             $this->redirect(Wave::app()->homeUrl);
         }else{
             
@@ -65,8 +66,7 @@ class SiteController extends CommonController
         $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
-                Wave::app()->session->setState('userid', $array['userid']);
-                Wave::app()->session->setState('username', $array['user_login']);
+                Wave::app()->session->setState('userinfo', $array);
                 $this->Common->exportResult(true, '登录成功！');
             }else{
                 $this->Common->exportResult(false, '用户名或密码错误！');
@@ -101,7 +101,7 @@ class SiteController extends CommonController
 
     public function actionLogout()
     {
-        Wave::app()->session->logout();
+        Wave::app()->session->logout('userinfo');
         $this->jumpBox('退出成功！', Wave::app()->homeUrl.'site', 1);
     }
 
@@ -109,10 +109,11 @@ class SiteController extends CommonController
     public function actionUserinfo()
     {
         $array = array();
-        if (Wave::app()->session->getState('userid')) {
+        $userinfo = Wave::app()->session->getState('userinfo');
+        if (!empty($userinfo)) {
             $array['success'] = true;
-            $array['userid'] = Wave::app()->session->getState('userid');
-            $array['username'] = Wave::app()->session->getState('username');
+            $array['userid'] = $userinfo['userid'];
+            $array['username'] = $userinfo['user_login'];
         }else{
             $array['success'] = false;
         }

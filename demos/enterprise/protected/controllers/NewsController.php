@@ -21,8 +21,8 @@ class NewsController extends CommonController
         $this->category = array();
         $Category = new Category();
         if ($cid != 0) {
-            $where['cid'] = $cid;
-            $this->category = $Category->getOne('*', $where);
+            $where['a.cid'] = $cid;
+            $this->category = $Category->from('category a')->getOne('*', $where);
         }
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagesize = 15;
@@ -35,7 +35,7 @@ class NewsController extends CommonController
                                 ->limit($start, $pagesize)
                                 ->order('a.aid', 'desc')
                                 ->getAll();
-        $count = $Articles->getCount('*', $where);
+        $count = $Articles->from('articles a')->getCount('*', $where);
 
         $url = 'http://'.Wave::app()->request->hostInfo.$_SERVER['REQUEST_URI'];
         if(empty($data['page'])){

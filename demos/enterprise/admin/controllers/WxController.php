@@ -65,7 +65,7 @@ class WxController extends CommonController
         $data['gh_enaeskey'] = $md5.substr($md5, 21);
         $GhManage = new GhManage();
         if ($id == 0) {
-            $data['userid'] = $this->userid;
+            $data['userid'] = $this->userinfo['userid'];
             $GhManage->insert('gh_manage', $data);
         }else{
             $GhManage->update($data, array('gid'=>$id));

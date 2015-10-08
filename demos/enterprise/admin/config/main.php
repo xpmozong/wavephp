@@ -12,7 +12,7 @@ $config = array(
     'debuger'               => false,
 
     'smarty'                => array(
-        'isOn'              => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+        'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
         'left_delimiter'    => '{%',
         'right_delimiter'   => '%}',
         'debugging'         => false,
@@ -47,8 +47,7 @@ $config = array(
         )
     ),
     'session'=>array(
-        // 'cache'             => 'memcache',
-        'prefix'            => '',
+        'driver'            => 'db',
         'timeout'           => 86400
     ),
     // 'memcache'=>array(

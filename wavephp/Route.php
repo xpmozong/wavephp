@@ -37,8 +37,8 @@ class Route
     {
         $app = Wave::app();
         if (isset($app->config['smarty'])) {
-            if (isset($app->config['smarty']['isOn'])) {
-                $this->isSmarty = $app->config['smarty']['isOn'];
+            if (isset($app->config['smarty']['is_on'])) {
+                $this->isSmarty = $app->config['smarty']['is_on'];
             }
         }
         if (isset($app->config['debuger'])) {

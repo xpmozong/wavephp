@@ -16,7 +16,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if(!Wave::app()->session->getState('userid')){
+        $userinfo = Wave::app()->session->getState('userinfo');
+        if(empty($userinfo)){
             $this->redirect(Wave::app()->homeUrl.'site/login');
         }else{
             
@@ -28,7 +29,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if(Wave::app()->session->getState('userid')){
+        $userinfo = Wave::app()->session->getState('userinfo');
+        if(!empty($userinfo)){
             $this->redirect(Wave::app()->homeUrl);
         }
     }
@@ -44,8 +46,7 @@ class SiteController extends Controller
         $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
         if(!empty($array)){
             if ($array['user_pass'] == md5($data['user_pass'])) {
-                Wave::app()->session->setState('userid', $array['userid']);
-                Wave::app()->session->setState('username', $array['user_login']);
+                Wave::app()->session->setState('userinfo', $array);
                 $this->jumpBox('登录成功！', Wave::app()->homeUrl, 1);
             }else{
                 $this->jumpBox('用户名或密码错误！', Wave::app()->homeUrl, 1);
@@ -60,7 +61,7 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Wave::app()->session->logout();
+        Wave::app()->session->logout('userinfo');
         $this->redirect(Wave::app()->homeUrl);
     }
 
@@ -77,7 +78,8 @@ class SiteController extends Controller
     public function actionRight()
     {
         $Common = new Common();
-        $this->username = Wave::app()->session->getState('username');
+        $userinfo = Wave::app()->session->getState('userinfo');
+        $this->username = $userinfo['user_login'];
     }
 
     /**

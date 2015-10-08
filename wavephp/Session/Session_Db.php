@@ -21,17 +21,18 @@
  *
  */
 
-class SessionDb extends Model
+class Session_Db extends Model
 {
-    protected $prefix       = '';       // session前缀
     protected $lifeTime     = 86400;    // 生存周期
     protected $isread       = false;
+    protected $sess_id;
 
     protected function init() {
         $option = Wave::app()->config['session'];
-        $this->prefix = $option['prefix'];
         $this->lifeTime = $option['timeout'];
         $this->_tableName = 'w_sessions';
+        @session_start();
+        $this->sess_id = session_id();
     }
 
     /**
@@ -41,19 +42,15 @@ class SessionDb extends Model
      * @param string $val       session值
      *
      */
-    public function setState($key, $val, $timeout = null)
+    public function setState($key, $val)
     {
         if(!isset($_SESSION)) {
             session_start(); 
         }
 
-        if(!empty($timeout)) {
-            $_SESSION[$this->prefix.$key.'_timeout'] = time()+$timeout;
-        }else{
-            $_SESSION[$this->prefix.$key.'_timeout'] = time()+$this->lifeTime;
-        }
+        $_SESSION[$this->sess_id.$key.'_timeout'] = time()+$this->lifeTime;
 
-        $_SESSION[$this->prefix.$key] = $val;
+        $_SESSION[$this->sess_id.$key] = $val;
     }
 
     /**
@@ -70,13 +67,13 @@ class SessionDb extends Model
             session_start();
         }
 
-        if(isset($_SESSION[$this->prefix.$key])){
-            if(time() > $_SESSION[$this->prefix.$key.'_timeout']) {
-                unset($_SESSION[$this->prefix.$key.'_timeout']);
-                unset($_SESSION[$this->prefix.$key]);
+        if(isset($_SESSION[$this->sess_id.$key])){
+            if(time() > $_SESSION[$this->sess_id.$key.'_timeout']) {
+                unset($_SESSION[$this->sess_id.$key.'_timeout']);
+                unset($_SESSION[$this->sess_id.$key]);
                 $txt = '';
             }else {
-                $txt = $_SESSION[$this->prefix.$key];
+                $txt = $_SESSION[$this->sess_id.$key];
             }
         }else{
             $txt = '';
@@ -87,15 +84,14 @@ class SessionDb extends Model
     /**
      * 清除SESSION
      */
-    public function logout()
+    public function logout($key)
     {
         if(!isset($_SESSION)) {
             session_start();
         }
-        foreach ($_SESSION as $key => $value) {
-            unset($_SESSION[$this->prefix.$key.'_timeout']);
-            unset($_SESSION[$this->prefix.$key]);
-        }
+        unset($_SESSION[$this->sess_id.$key.'_timeout']);
+        unset($_SESSION[$this->sess_id.$key]);
+        
         session_destroy();
     }
 
@@ -146,7 +142,6 @@ class SessionDb extends Model
         // new session-expire-time 
         $newExp = time() + $this->lifeTime; 
         // is a session with this id in the database? 
-        // echo $sessData."<br>";
         $where = array('session_id'=>$sessID);
         $row = $this->where($where)
                     ->getOne('session_data');

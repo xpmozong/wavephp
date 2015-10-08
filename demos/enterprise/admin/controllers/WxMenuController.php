@@ -37,7 +37,7 @@ class WxmenuController extends CommonController
                                 ->getAll();
         $GhManage = new GhManage();
         $this->wxdata = $GhManage   ->select('gid,gh_name')
-                                    ->where('userid='.$this->userid)
+                                    ->where('userid='.$this->userinfo['userid'])
                                     ->notin('gid NOT IN(SELECT gid FROM gh_menu)')
                                     ->getAll();
     }

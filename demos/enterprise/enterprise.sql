@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 09 月 29 日 14:30
+-- 生成日期: 2015 年 10 月 08 日 10:48
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -87,7 +87,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 INSERT INTO `category` (`cid`, `c_name`) VALUES
 (1, '行业资讯'),
-(2, '企业动态');
+(2, '企业动态'),
+(3, '技术文章');
 
 -- --------------------------------------------------------
 
@@ -195,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `substance` (
   `content` longtext COMMENT '内容',
   `add_date` datetime DEFAULT NULL COMMENT '添加日期',
   PRIMARY KEY (`sid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='内容表' AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='内容表' AUTO_INCREMENT=17 ;
 
 --
 -- 转存表中的数据 `substance`
@@ -295,8 +296,8 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('aqtotnc64vd27ac3rtvk6qmbd3', 1443594484, 'userid_timeout|i:1443591932;userid|s:1:"3";username_timeout|i:1443591932;username|s:8:"xpmozong";'),
-('rsrsd6j4ik66rhd4rfudh56vk6', 1443510026, 'userid_timeout|i:1443508603;userid|s:1:"3";username_timeout|i:1443508603;username|s:8:"xpmozong";');
+('30nb4j2puoid80at0cv9rpjur2', 1443610281, 'userid_timeout|i:1443610280;userid|s:1:"3";username_timeout|i:1443610280;username|s:8:"xpmozong";'),
+('63fsdv03c6hnr86svlgguit284', 1443611577, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
