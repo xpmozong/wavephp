@@ -16,7 +16,7 @@
  * 缓存File类
  *
  * @package         Wavephp
- * @subpackage      Db
+ * @subpackage      Cache
  * @author          许萍
  *
  */

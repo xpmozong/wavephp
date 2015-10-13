@@ -16,7 +16,7 @@
  * 多语言类
  *
  * @package         Wavephp
- * @subpackage      Web
+ * @subpackage      i18n
  * @author          许萍
  *
  */

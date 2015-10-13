@@ -16,7 +16,7 @@
  * 缓存Redis类
  *
  * @package         Wavephp
- * @subpackage      Db
+ * @subpackage      Cache
  * @author          许萍
  *
  */

@@ -16,7 +16,7 @@
  * SESSION DB类
  *
  * @package         Wavephp
- * @subpackage      Web
+ * @subpackage      Session
  * @author          许萍
  *
  */

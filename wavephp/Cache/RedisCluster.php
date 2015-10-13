@@ -15,7 +15,7 @@
  * Redis 操作，支持 Master/Slave 的负载集群
  *
  * @package         Wavephp
- * @subpackage      Db
+ * @subpackage      Cache
  * @author          许萍
  *
  */

@@ -16,7 +16,7 @@
  * SESSION Memcache类
  *
  * @package         Wavephp
- * @subpackage      Web
+ * @subpackage      Session
  * @author          许萍
  *
  */
