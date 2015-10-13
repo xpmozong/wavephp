@@ -11,9 +11,9 @@
  */
 
 /**
- * Wavephp Application Session Class
+ * Wavephp Application Session_Memcache Class
  *
- * SESSION类
+ * SESSION Memcache类
  *
  * @package         Wavephp
  * @subpackage      Web

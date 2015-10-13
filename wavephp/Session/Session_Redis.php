@@ -11,9 +11,9 @@
  */
 
 /**
- * Wavephp Application Session Class
+ * Wavephp Application Session_Redis Class
  *
- * SESSION类
+ * SESSION Redis类
  *
  * @package         Wavephp
  * @subpackage      Web

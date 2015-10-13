@@ -11,9 +11,9 @@
  */
 
 /**
- * Wavephp Application Session Class
+ * Wavephp Application Session_Db Class
  *
- * SESSION类
+ * SESSION DB类
  *
  * @package         Wavephp
  * @subpackage      Web
