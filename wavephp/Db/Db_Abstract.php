@@ -22,8 +22,9 @@
  */
 abstract class Db_Abstract
 {
-    public      $config = array();
-    public      $conn   = array();
+    public $config = array();
+    public $conn   = array();
+    public $is_single = true;  
 
     /**
      * 选数据库
@@ -52,9 +53,9 @@ abstract class Db_Abstract
      * @return blooean
      *
      */
-    public function query($sql, $tag = false)
+    public function query($sql)
     {
-        if($tag || $this->is_write($sql)) {
+        if($this->is_write($sql)) {
             $this->init('master');
             return $this->_query($sql, $this->conn['master']);
         } else {
