@@ -23,20 +23,11 @@ $config = array(
         'compile_dir'       => 'data/templates/compile/index'
     ),
     
-    'debuger'               =>false ,       // 显示debug信息
+    'debuger'               => false,       // 显示debug信息
     
     'database'              => array(
         'driver'            => 'mysql',
         'master'            => array(
-            'dbhost'        => '127.0.0.1',
-            'username'      => 'root',
-            'password'      => '',
-            'dbname'        => 'enterprise',
-            'charset'       => 'utf8',
-            'table_prefix'  => '',
-            'pconnect'      => false
-        ),
-        'slave'             => array(
             'dbhost'        => '127.0.0.1',
             'username'      => 'root',
             'password'      => '',
@@ -50,27 +41,27 @@ $config = array(
         'driver'            => 'db',
         'timeout'           => 86400
     ),
-    'memcache'              => array(
-        array(
-            'host'          => 'localhost',
-            'port'          => 11211
-        ),
-    ),
-    'redis'                 => array(
-        'master'            => array(
-            'host'          => '127.0.0.1',
-            'port'          => 6379
-        ),
-        'slave'             => array(
-            array(
-                'host'      => '127.0.0.1',
-                'port'      => 63791
-            ),
-            array(
-                'host'      => '127.0.0.1',
-                'port'      => 63792
-            )
-        )
-    )
+    // 'memcache'              => array(
+    //     array(
+    //         'host'          => 'localhost',
+    //         'port'          => 11211
+    //     ),
+    // ),
+    // 'redis'                 => array(
+    //     'master'            => array(
+    //         'host'          => '127.0.0.1',
+    //         'port'          => 6379
+    //     ),
+    //     'slave'             => array(
+    //         array(
+    //             'host'      => '127.0.0.1',
+    //             'port'      => 63791
+    //         ),
+    //         array(
+    //             'host'      => '127.0.0.1',
+    //             'port'      => 63792
+    //         )
+    //     )
+    // )
 );
 ?>

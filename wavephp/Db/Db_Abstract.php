@@ -55,7 +55,7 @@ abstract class Db_Abstract
      */
     public function query($sql)
     {
-        if($this->is_write($sql)) {
+        if($this->is_single || $this->is_write($sql)) {
             $this->init('master');
             return $this->_query($sql, $this->conn['master']);
         } else {

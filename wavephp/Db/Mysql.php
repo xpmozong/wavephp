@@ -25,6 +25,9 @@ class Mysql extends Db_Abstract
     private     $errno;             // 错误信息
     
     public function __construct($config) {
+        if (!isset($config['slave'])) {
+            $this->is_single = true;
+        }
         $this->config = $config;
     }
 
