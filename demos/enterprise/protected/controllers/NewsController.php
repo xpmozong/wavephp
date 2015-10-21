@@ -53,7 +53,14 @@ class NewsController extends CommonController
         $aid = (int)$aid;
         $Articles = new Articles();
         $Category = new Category();
-        $this->data = $Articles->getOne('*', array('aid'=>$aid));
+        $where = array('a.aid'=>$aid);
+        $this->data = $Articles ->select('c.*,a.*')
+                                ->from('articles a')
+                                ->join('articles_content c', 'a.aid=c.aid')
+                                ->where($where)
+                                ->getOne();
+        $this->data['content'] = stripslashes($this->data['content']);
+        $this->title = $this->data['title'];
         $this->category = $Category->getOne('*', array('cid'=>$this->data['cid']));
         $this->cid = $this->data['cid'];
     }

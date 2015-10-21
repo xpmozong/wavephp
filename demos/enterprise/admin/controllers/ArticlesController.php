@@ -62,6 +62,7 @@ class ArticlesController extends CommonController
                                 ->join('articles_content c', 'a.aid=c.aid')
                                 ->where($where)
                                 ->getOne();
+        $this->data['content'] = stripslashes($this->data['content']);
         $this->category = $Category->getAll();
     }
 
