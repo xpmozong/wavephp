@@ -28,11 +28,12 @@ class Cache_Memcache implements Cache_Interface {
     public $connection;
 
     public function __construct(array $options) {
-        if (extension_loaded('memcache') == false ) {
-            throw new Exception('extension memcache not found!');
+        if (extension_loaded('memcached') == false ) {
+            throw new Exception('extension memcached not found!');
         }
         $this->hosts = $options;
-        $this->connection = new Memcache();
+        $this->connection = new Memcached();
+        $this->connection->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
         $this->connect();
     }
 
@@ -45,7 +46,7 @@ class Cache_Memcache implements Cache_Interface {
             //                     ':'.$value['port'].' connection faild.');
             //     }
             // } else {
-            //     $this->connection->addServer($value['host'], $value['port']);
+                
             // }
             // $i++;
             $this->connection->addServer($value['host'], $value['port']);

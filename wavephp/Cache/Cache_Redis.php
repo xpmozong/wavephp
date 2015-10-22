@@ -24,6 +24,9 @@ class Cache_Redis implements Cache_Interface {
     public $redis;
 
     public function __construct(array $options) {
+        if (extension_loaded('redis') == false ) {
+            throw new Exception('extension redis not found!');
+        }
         $this->hosts = $options;
         if (isset($this->hosts['slave'])) {
             $this->redis = new RedisCluster(true);
