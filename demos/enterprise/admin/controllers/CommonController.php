@@ -3,6 +3,7 @@
 class CommonController extends Controller
 {
     protected $Common;
+    protected $Log;
     public $userinfo;
 
     public function __construct()
@@ -10,6 +11,7 @@ class CommonController extends Controller
         parent::__construct();
 
         $this->Common = new Common();
+        $this->Log = new Log();
         $this->userinfo = Wave::app()->session->getState('userinfo');
         if(empty($this->userinfo)){
             $this->redirect(Wave::app()->homeUrl.'site/login');

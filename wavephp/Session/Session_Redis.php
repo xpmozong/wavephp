@@ -24,15 +24,12 @@
 class Session_Redis
 {
     protected $lifeTime     = 86400;    // 生存周期
-    protected $isread       = false;
     protected $sess_id;
     protected $cache;
-    
-    public function __construct($option)
-    {
+
+    public function __construct() {
+        $option = Wave::app()->config['session'];
         $this->lifeTime = $option['timeout'];
-        @session_start();
-        $this->sess_id = session_id();
         $this->cache = Wave::app()->redis;
     }
 
@@ -45,7 +42,11 @@ class Session_Redis
      */
     public function setState($key, $val)
     {
-        $this->cache->set($this->sess_id.$key, json_encode($val), $this->lifeTime);
+        if(!isset($_SESSION)) {
+            session_start(); 
+        }
+
+        $_SESSION[$this->sess_id.$key] = $val;
     }
 
     /**
@@ -58,19 +59,30 @@ class Session_Redis
      */
     public function getState($key)
     {
-        $data = $this->cache->get($this->sess_id.$key);
-        if (empty($data)) {
-            return array();
+        if(!isset($_SESSION)) {
+            session_start();
         }
 
-        return json_decode($data, true);
+        $txt = '';
+        if(isset($_SESSION[$this->sess_id.$key])){
+            $txt = $_SESSION[$this->sess_id.$key];
+        }
+
+        return $txt;
     }
 
     /**
      * 清除SESSION
      */
-    public function logout($key) {
-        $this->cache->delete($this->sess_id.$key);
+    public function logout($key)
+    {
+        if(!isset($_SESSION)) {
+            session_start();
+        }
+        $_SESSION[$this->sess_id.$key] = '';
+        unset($_SESSION[$this->sess_id.$key]);
+
+        session_destroy();
     }
 
     function open($savePath, $sessName) {
@@ -83,15 +95,23 @@ class Session_Redis
     }
 
     function read($sessID) {
-        return '';
+        $this->sess_id = $sessID;
+        $sessData = $this->cache->get($this->sess_id);
+        if (!empty($sessData)) {
+            return $sessData;
+        }else{
+            return '';
+        }
     }
 
     function write($sessID, $sessData) {
+        $this->cache->set($this->sess_id, $sessData, $this->lifeTime);
         return true;
     }
 
     function destroy($sessID) { 
         // delete session-data
+        $this->cache->delete($this->sess_id);
         return true;
     } 
 

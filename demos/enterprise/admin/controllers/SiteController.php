@@ -17,6 +17,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $userinfo = Wave::app()->session->getState('userinfo');
+        // echo "<pre>";
+        // print_r($userinfo);die;
         if(empty($userinfo)){
             $this->redirect(Wave::app()->homeUrl.'site/login');
         }else{
@@ -43,15 +45,19 @@ class SiteController extends Controller
         $Common = new Common();
         $data = $Common->getFilter($_POST);
         $Users = new Users();
-        $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
+        $array = $Users->getOne('*', array('email'=>$data['user_login']));
+        $Log = new Log();
         if(!empty($array)){
-            if ($array['user_pass'] == md5($data['user_pass'])) {
+            if ($array['password'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userinfo', $array);
+                $Log->saveLogs('用户登录', 1, $data);
                 $this->jumpBox('登录成功！', Wave::app()->homeUrl, 1);
             }else{
+                $Log->saveLogs('用户登录', 0, $data);
                 $this->jumpBox('用户名或密码错误！', Wave::app()->homeUrl, 1);
             }
         }else{
+            $Log->saveLogs('用户登录', 0, $data);
             $this->jumpBox('没有该用户！', Wave::app()->homeUrl, 1);
         }
     }
@@ -79,7 +85,7 @@ class SiteController extends Controller
     {
         $Common = new Common();
         $userinfo = Wave::app()->session->getState('userinfo');
-        $this->username = $userinfo['user_login'];
+        $this->username = $userinfo['username'];
     }
 
     /**
@@ -90,12 +96,12 @@ class SiteController extends Controller
         $Common = new Common();
         $this->list = array();
         $this->list[0]['title'] = '后台管理';
+        $this->list[0]['list'][] = array('permission_name'=>'用户列表', 
+                                    'permission_url'=>'users');
         $this->list[0]['list'][] = array('permission_name'=>'文章列表', 
                                     'permission_url'=>'articles');
         $this->list[0]['list'][] = array('permission_name'=>'分类列表', 
                                     'permission_url'=>'categories');
-        $this->list[0]['list'][] = array('permission_name'=>'内容列表', 
-                                    'permission_url'=>'substance');
         $this->list[0]['list'][] = array('permission_name'=>'友情链接', 
                                     'permission_url'=>'links');
 
@@ -111,7 +117,9 @@ class SiteController extends Controller
         $this->list[1]['list'][] = array('permission_name'=>'自动回复', 
                                     'permission_url'=>'links');
         
-
+        $this->list[3]['title'] = '操作日志';
+        $this->list[3]['list'][] = array('permission_name'=>'日志列表', 
+                                    'permission_url'=>'logs');
     }
 
 }

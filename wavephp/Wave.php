@@ -126,18 +126,9 @@ class Wave
     {
         if(!empty(self::$app->config)){
             if(isset(self::$app->config['session'])){
-                $lifeTime   = 3600;
-                $prefix     = '';
-                if(!empty(self::$app->config['session']['timeout'])){
-                    $lifeTime = self::$app->config['session']['timeout'];
-                }
-                if(!empty(self::$app->config['session']['prefix'])){
-                    $prefix = self::$app->config['session']['prefix'];
-                }
-                
                 $driver = self::$app->config['session']['driver'];
                 $class = 'Session_'.ucfirst($driver);
-                $session = new $class(self::$app->config['session']);
+                $session = new $class();
                 session_set_save_handler(array(&$session,"open"), 
                              array(&$session,"close"), 
                              array(&$session,"read"), 

@@ -1,0 +1,83 @@
+{%include file="layout/header.html"%}
+<style type="text/css">
+.form-inline .form-control {
+    width: 100%;
+}
+</style>
+<script type="text/javascript">
+var resultDataTable;
+var getData = function(url) {
+    if (resultDataTable) {
+        $(".datatable").dataTable().fnDestroy();
+    }
+    $(".datatable tbody").html('<tr><td colspan="5">正在加载中...</td></tr>');
+
+    resultDataTable = $(".datatable").dataTable({
+        "sAjaxSource"       : url,
+        "bFilter"           : false,            //是否显示搜索
+        "bProcessing"       : false,
+        "bServerSide"       : true,
+        "bLengthChange"     : false,
+        "sPaginationType"   : "full_numbers",
+        "iDisplayLength"    : 10,
+        "bSort"             : false,
+        "iDisplayStart"     : 0,
+        "bAutoWidth"        :false,
+        "aoColumns"         : [
+            { "mDataProp": "description"},
+            { "mDataProp": "username" },
+            { "mDataProp": "parameters" },
+            { "mDataProp": "remark" },
+            { "mDataProp": "time" }
+        ],
+        "oLanguage" : {
+            "sProcessing"   : "正在加载中......",
+            "sZeroRecords"  : "没有数据！",
+            "sEmptyTable"   : "表中无数据存在！",
+            "sInfo"         : "第 _START_ 至 _END_ 条 (共 _TOTAL_ 条)",
+            "sInfoEmpty"    : "显示0到0条记录",
+            "oPaginate"     : {
+                "sFirst"    : "第一页",
+                "sPrevious" : "上一页",
+                "sNext"     : "下一页",
+                "sLast"     : "最后一页"
+            }
+        }
+    });
+}
+
+$(document).ready(function(){
+    url = '{%$app->homeUrl%}logs/jsonlist';
+    getData(url);
+});
+
+var searchData = function() {
+    var cid = $("#cid").val();
+    url = '{%$app->homeUrl%}logs/jsonlist';
+    getData(url);
+}
+</script>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">日志列表
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>动作</th>
+                        <th>用户</th>
+                        <th>参数</th>
+                        <th>备注</th>
+                        <th>时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{%include file="layout/footer.html"%}

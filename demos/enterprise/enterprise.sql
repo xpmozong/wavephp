@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2015 年 10 月 08 日 10:48
+-- 生成日期: 2015 年 10 月 26 日 13:59
 -- 服务器版本: 5.5.25a
 -- PHP 版本: 5.4.4
 
@@ -19,6 +19,81 @@ SET time_zone = "+00:00";
 --
 -- 数据库: `enterprise`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `admin_log`
+--
+
+CREATE TABLE IF NOT EXISTS `admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` char(10) NOT NULL DEFAULT '' COMMENT '用户名',
+  `query_uri` varchar(512) NOT NULL DEFAULT '' COMMENT '访问链接',
+  `description` varchar(2000) NOT NULL DEFAULT '' COMMENT '操作描述',
+  `parameters` text,
+  `remark` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-成功 0-失败',
+  `client_ip` char(15) NOT NULL DEFAULT '' COMMENT 'IP地址',
+  `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=155 ;
+
+--
+-- 转存表中的数据 `admin_log`
+--
+
+INSERT INTO `admin_log` (`id`, `username`, `query_uri`, `description`, `parameters`, `remark`, `client_ip`, `time`) VALUES
+(104, '', '', '用户登录', 'user_login=xpmozong | user_pass=123456 | ', 0, '', 1445828732),
+(105, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445828778),
+(106, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445829233),
+(107, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445834730),
+(108, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445835184),
+(109, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445835190),
+(110, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445835936),
+(111, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836160),
+(112, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836253),
+(113, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836383),
+(114, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836622),
+(115, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836628),
+(116, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836912),
+(117, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445836984),
+(118, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837015),
+(119, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837230),
+(120, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837473),
+(121, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837535),
+(122, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837547),
+(123, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837598),
+(124, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837606),
+(125, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837623),
+(126, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837627),
+(127, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837650),
+(128, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837662),
+(129, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837722),
+(130, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837766),
+(131, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445837811),
+(132, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838101),
+(133, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838181),
+(134, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838194),
+(135, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838230),
+(136, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838246),
+(137, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838270),
+(138, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838283),
+(139, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838288),
+(140, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838294),
+(141, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838303),
+(142, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838315),
+(143, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838320),
+(144, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838355),
+(145, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838518),
+(146, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838655),
+(147, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838709),
+(148, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838757),
+(149, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838763),
+(150, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838771),
+(151, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838777),
+(152, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838949),
+(153, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838954),
+(154, 'xpmozong', '', '用户登录', 'user_login=361131953@qq.com | user_pass=123456 | ', 1, '', 1445838991);
 
 -- --------------------------------------------------------
 
@@ -228,10 +303,12 @@ INSERT INTO `substance` (`sid`, `title`, `content`, `add_date`) VALUES
 
 CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
-  `user_login` varchar(255) NOT NULL,
-  `user_pass` varchar(32) NOT NULL,
-  `true_name` varchar(255) DEFAULT NULL,
-  `id_number` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '0' COMMENT '激活 0-否 1-是',
+  `add_date` datetime DEFAULT NULL,
+  `last_login_date` datetime DEFAULT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -239,8 +316,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- 转存表中的数据 `users`
 --
 
-INSERT INTO `users` (`userid`, `user_login`, `user_pass`, `true_name`, `id_number`) VALUES
-(3, 'xpmozong', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL);
+INSERT INTO `users` (`userid`, `username`, `password`, `email`, `is_active`, `add_date`, `last_login_date`) VALUES
+(3, 'xpmozong', 'e10adc3949ba59abbe56e057f20f883e', '361131953@qq.com', 1, '2015-07-17 17:08:19', '2015-10-08 10:14:08');
 
 -- --------------------------------------------------------
 
@@ -296,8 +373,11 @@ CREATE TABLE IF NOT EXISTS `w_sessions` (
 --
 
 INSERT INTO `w_sessions` (`session_id`, `session_expires`, `session_data`) VALUES
-('30nb4j2puoid80at0cv9rpjur2', 1443610281, 'userid_timeout|i:1443610280;userid|s:1:"3";username_timeout|i:1443610280;username|s:8:"xpmozong";'),
-('63fsdv03c6hnr86svlgguit284', 1443611577, '');
+('1ntucmivdhel6l752kiecql3t5', 1445915637, '1ntucmivdhel6l752kiecql3t5userinfo_timeout|i:1445915633;1ntucmivdhel6l752kiecql3t5userinfo|a:7:{s:6:"userid";s:1:"3";s:8:"username";s:8:"xpmozong";s:8:"password";s:32:"e10adc3949ba59abbe56e057f20f883e";s:5:"email";s:16:"361131953@qq.com";s:9:"is_active";s:1:"1";s:8:"add_date";s:19:"2015-07-17 17:08:19";s:15:"last_login_date";s:19:"2015-10-08 10:14:08";}'),
+('28un0vc7f81gsqt9noe6mlhto6', 1445914908, ''),
+('cs161hc5788p5g10563ueqtqq2', 1445925399, ''),
+('luj0116pju4nm2jklpas8e1923', 1445914906, ''),
+('vsbbf17cgqt0s61feseqb4gbg6', 1445925434, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

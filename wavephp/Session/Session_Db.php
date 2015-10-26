@@ -24,15 +24,12 @@
 class Session_Db extends Model
 {
     protected $lifeTime     = 86400;    // 生存周期
-    protected $isread       = false;
     protected $sess_id;
 
     protected function init() {
         $option = Wave::app()->config['session'];
         $this->lifeTime = $option['timeout'];
         $this->_tableName = 'w_sessions';
-        @session_start();
-        $this->sess_id = session_id();
     }
 
     /**
@@ -47,8 +44,6 @@ class Session_Db extends Model
         if(!isset($_SESSION)) {
             session_start(); 
         }
-
-        $_SESSION[$this->sess_id.$key.'_timeout'] = time()+$this->lifeTime;
 
         $_SESSION[$this->sess_id.$key] = $val;
     }
@@ -67,17 +62,11 @@ class Session_Db extends Model
             session_start();
         }
 
+        $txt = '';
         if(isset($_SESSION[$this->sess_id.$key])){
-            if(time() > $_SESSION[$this->sess_id.$key.'_timeout']) {
-                unset($_SESSION[$this->sess_id.$key.'_timeout']);
-                unset($_SESSION[$this->sess_id.$key]);
-                $txt = '';
-            }else {
-                $txt = $_SESSION[$this->sess_id.$key];
-            }
-        }else{
-            $txt = '';
+            $txt = $_SESSION[$this->sess_id.$key];
         }
+
         return $txt;
     }
 
@@ -89,7 +78,7 @@ class Session_Db extends Model
         if(!isset($_SESSION)) {
             session_start();
         }
-        unset($_SESSION[$this->sess_id.$key.'_timeout']);
+        $_SESSION[$this->sess_id.$key] = '';
         unset($_SESSION[$this->sess_id.$key]);
         
         session_destroy();
@@ -112,8 +101,6 @@ class Session_Db extends Model
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
             $this->sqlQuery($sql);
         }
-
-        $this->isread = true;
         
         return true; 
     }
@@ -124,15 +111,12 @@ class Session_Db extends Model
     }
 
     function read($sessID) {
-        if ($this->isread) {
-            $where = array('session_id'=>$sessID, 'session_expires>'=> time());
-            $row = $this->where($where)
-                        ->getOne('session_data');
-            if ($row) {
-                return $row['session_data'];
-            }else{
-                return '';
-            }
+        $this->sess_id = $sessID;
+        $where = array('session_id'=>$sessID, 'session_expires>'=> time());
+        $row = $this->where($where)
+                    ->getOne('session_data');
+        if ($row) {
+            return $row['session_data'];
         }else{
             return '';
         }
