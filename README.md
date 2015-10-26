@@ -8,6 +8,7 @@
             Cache_File.php
             Cache_Interface.php
             Cache_Memcache.php
+            Cache_Memcached.php
             Cache_Redis.php
             File.php
             RedisCluster.php
@@ -21,8 +22,10 @@
             | Captcha
             | Smarty
         | Session
-            | Session.php
-            | SessionDb.php
+            | Session_Db.php
+            | Session_Memcache.php
+            | Session_Memcached.php
+            | Session_Redis.php
         Controller.php
         Core.php
         Database.php
@@ -49,7 +52,6 @@
                 | site
                     index.php
         index.php
-
 
 3、入口 index.php 内容：
 
@@ -282,8 +284,6 @@ session 配置
         'timeout'           => 86400
     )
 
-cache可以不填
-
 使用如下：
 
 存储：Wave::app()->session->setState('userinfo', $data);
@@ -305,13 +305,24 @@ cache可以不填
         )
     )
 
-可以多个集群
+多个集群最好用memcached
+
+    'memcached'=>array(
+        array(
+            'host'            => 'localhost',
+            'port'             => '11211'
+        ),
+        array(
+            'host'             => '192.168.1.1',
+            'port'            => '11211'
+        )
+    )
 
 调用的时候 
 
-存储：Wave::app()->memcache->set('key', $tmp_object, 30)
+存储：Wave::app()->memcache->set('key', $tmp_object, 30) | Wave::app()->memcached->set('key', $tmp_object, 30)
 
-获得：Wave::app()->memcache->get('key')
+获得：Wave::app()->memcache->get('key') | Wave::app()->memcached->get('key')
 
 11、redis
 
