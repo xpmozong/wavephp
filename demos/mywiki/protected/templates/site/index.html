@@ -1,0 +1,84 @@
+{%include file="layout/header.html"%}
+<nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">wiki</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{%$app->homeUrl%}">游戏管理后台wiki</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                {%foreach from=$categorys item="cate" key="a" %}
+                    <li {%if $cid==$cate.id%}class="active"{%/if%}>
+                        <a href="{%$app->homeUrl%}site?cid={%$cate.id%}">
+                        {%$cate.name%}
+                        </a>
+                    </li>
+                {%/foreach%}
+            </ul>
+            {%if $isLogin%}
+            <form class="navbar-form navbar-right">
+                <a href="{%$app->homeUrl%}site/add" class="btn btn-info">添加</a>
+                <a href="{%$app->homeUrl%}site/logout" class="btn btn-warning">退出</a>
+            </form>
+            {%else%}
+            <form class="navbar-form navbar-right" method="POST" action="{%$app->homeUrl%}site/loging">
+                <div class="form-group">
+                    <input type="text" placeholder="邮箱" class="form-control" name="user_login">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="密码" class="form-control" name="user_pass">
+                </div>
+                <button type="submit" class="btn btn-success">登录</button>
+            </form>
+            {%/if%}
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</nav><!-- /.navbar -->
+
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+            <div class="list-group">
+                {%foreach from=$blogList item="blog" key="a" %}
+                <a href="{%$app->homeUrl%}site?cid={%$blog.category[0].id%}&blogId={%$blog.blogId%}" class="list-group-item {%if $blogId==$blog.blogId%}active{%/if%}">
+                    {%$blog.title%}
+                </a>
+                {%/foreach%}
+            </div>
+        </div><!--/.sidebar-offcanvas-->
+        <div class="col-xs-12 col-sm-9">
+            <div class="row">
+                <header class="post-header">
+                    <h2 class="post-title">{%$nowblog.title%}</h2>
+                    <p class="post-meta">
+                        {%$nowblog.date%} • {%$nowblog.author%} 
+                    </p>
+                    {%if $isLogin%}
+                    <p class="post-meta">
+                        <a href="{%$app->homeUrl%}site/modify?blogId={%$nowblog.blogId%}" class="btn btn-xs btn-success">编辑</a> | 
+                        <a href="{%$app->homeUrl%}site/delete?blogId={%$nowblog.blogId%}" onclick="return confirm('请确认是否删除')"  class="btn btn-xs btn-danger">删除</a>
+                    </p>
+                    {%/if%}
+                </header>
+                <article class="post-content">
+                    {%$nowblog.content%}
+                </article>
+            </div><!--/row-->
+        </div><!--/.col-xs-12.col-sm-9-->
+    </div><!--/row-->
+    <hr>
+    <footer>
+        <p>&copy; Company 2015</p>
+    </footer>
+</div><!--/.container-->
+<script type="text/javascript">
+$(function(){
+    $("table").addClass('table table-bordered');
+})
+</script>
+{%include file="layout/footer.html"%}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>游戏管理后台wiki - 编辑</title>
+        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/style.css" />
+        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/editormd.css" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <form method="post" action="{%$app->homeUrl%}site/modified">
+                <div id="test-editormd" style="margin-top:20px;">
+                    <textarea style="display:none;">{%$fileContent%}</textarea>
+                </div>
+                <div style="width:90%;margin: 10px auto;">
+                    <input type="hidden" name="fileName" value="{%$fileName%}">
+                    <input type="hidden" name="cid" value="{%$cid%}">
+                    <input type="hidden" name="blogId" value="{%$blogId%}">
+                    <button type="button" style="padding: 5px;" onclick="javascript:history.back(-1)">返回</button>
+                    <input type="submit" name="submit" value="提交表单" style="padding: 5px;"/>
+                </div>               
+            </form>
+        </div>        
+        <script src="{%$app->request->baseUrl%}/resouce/js/jquery.min.js"></script>
+        <script src="{%$app->request->baseUrl%}/resouce/js/editormd.js"></script>   
+        <script type="text/javascript">
+            $(function() {
+                // var testEditor = editormd("test-editormd", {
+                //     width  : "90%",
+                //     height : 640,
+                //     path   : "{%$app->request->baseUrl%}/resouce/lib/",
+                //     saveHTMLToTextarea : true,
+                //     codeFold : true,
+                //     searchReplace : true,
+                //     saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+                //     //watch : false,
+                //     htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+                //     emoji : true,
+                //     taskList : true,
+                //     tocm            : true,         // Using [TOCM]
+                //     //tex : true,                     // 开启科学公式 TeX 语言支持，默认关闭
+                //     //previewCodeHighlight : false,  // 关闭预览窗口的代码高亮，默认开启
+                //     flowChart : true,  
+                //     sequenceDiagram : true,         // 同上
+                //     onload : function() {
+                //         console.log("onload =>", this, this.id, this.settings);
+                //     }
+                // });
+                var testEditor = editormd("test-editormd", {
+                    width  : "90%",
+                    height : 640,
+                    path   : "{%$app->request->baseUrl%}/resouce/lib/",
+                    saveHTMLToTextarea : true
+                });
+                //testEditor.getMarkdown();       // 获取 Markdown 源码
+                //testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+                //testEditor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+            });
+        </script>
+    </body>
+</html>

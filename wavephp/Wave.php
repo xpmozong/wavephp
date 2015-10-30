@@ -199,7 +199,18 @@ class Wave
         flock($fp, LOCK_UN);
         fclose($fp);
     }
-    
+
+    /**
+     * 读缓存文件
+     */
+    public static function readCache($filepath)
+    {
+        if (file_exists($filepath)) {
+            return file_get_contents($filepath);
+        }
+        
+        return false;
+    }
 }
 
 ?>

@@ -1,0 +1,32 @@
+{%if $debuger%}
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Debug messages</h3>
+        </div>
+        <div class="panel-body" style="word-break: break-all; word-wrap:break-word;">
+            <p>Session:</p>
+            {%$debug.session|@print_r%}
+            <br><br><p>Loaded Class:</p>
+            {%foreach from=$debug.files item="value" key="a" %}
+                <p>{%$value%}</p>
+            {%/foreach%}
+            <br><p>Database:</p>
+            {%foreach from=$debug.database item="value" key="a" %}
+                <p>
+                    [ Log time: {%$value.log_time%} ]
+                    [ Expend time: {%$value.expend_time%} ]
+                    {%$value.message%}
+                </p>
+            {%/foreach%}
+            <br>
+            <p>
+                Escape time: {%$escapetime%}, 
+                4 queries, 
+                PHP Memory usage: {%$memuse%} KB, 
+                Server time: {%$smarty.now|date_format:'%Y-%m-%d %H:%M:%S'%}
+            </p>
+        </div>
+    </div>
+</div>
+{%/if%}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>游戏管理后台wiki - 添加</title>
+        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/style.css" />
+        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/editormd.css" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <form method="post" action="{%$app->homeUrl%}site/add">
+                <div id="test-editormd" style="margin-top:20px;">
+                    <textarea style="display:none;"><!--
+author: 琳琳
+head: http://pingodata.qiniudn.com/jockchou-avatar.jpg
+date: 2015-10-30
+title: 寻宝系统统计
+tags: 运营分析
+category: 运营分析
+status: publish
+summary: 游戏管理后台wiki
+--></textarea>
+                </div>
+                <div style="width:90%;margin: 10px auto;">
+                    <button type="button" style="padding: 5px;" onclick="javascript:history.back(-1)">返回</button>
+                    <input type="submit" name="submit" value="提交表单" style="padding: 5px;"/>
+                </div>               
+            </form>
+        </div>        
+        <script src="{%$app->request->baseUrl%}/resouce/js/jquery.min.js"></script>
+        <script src="{%$app->request->baseUrl%}/resouce/js/editormd.js"></script>   
+        <script type="text/javascript">
+            $(function() {
+                var testEditor = editormd("test-editormd", {
+                    width  : "90%",
+                    height : 640,
+                    path   : "{%$app->request->baseUrl%}/resouce/lib/",
+                    saveHTMLToTextarea : true
+                });
+            });
+        </script>
+    </body>
+</html>
