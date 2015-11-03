@@ -15,7 +15,9 @@ class Log extends Model
     {
         $data = array();
         $userinfo = Wave::app()->session->getState('userinfo');
-        $data['username'] = $userinfo['username'];
+        if (!empty($userinfo)) {
+            $data['username'] = $userinfo['username'];
+        }
         $data['time'] = time();
         $data['description'] = $description;
         $data['remark'] = $remark;

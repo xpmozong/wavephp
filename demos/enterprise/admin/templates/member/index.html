@@ -1,0 +1,63 @@
+{%include file="layout/header.html"%}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">个人设置</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" method="POST" action="{%$app->homeUrl%}member/setpwd" onsubmit="return checkForm()">
+                <div class="form-group">
+                    <label for="password1" class="col-sm-2 control-label">原密码</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password1" name="pwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password2" class="col-sm-2 control-label">新密码</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password2" name="newpwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password3" class="col-sm-2 control-label">确认密码</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password3" name="confirmpwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+var checkForm = function() {
+    var password1 = $("#password1").val();
+    if (!password1) {
+        alert('请输入原密码');
+        return false;
+    }
+
+    var password2 = $("#password2").val();
+    if (!password2) {
+        alert('请输入新密码');
+        return false;
+    }
+
+    var password3 = $("#password3").val();
+    if (!password3) {
+        alert('请输入确认密码');
+        return false;
+    }
+    if (password2 != password3) {
+        alert('两次密码输入不一样');
+        return false;
+    }
+
+    return true;
+}
+</script>
+{%include file="layout/footer.html"%}

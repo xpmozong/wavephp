@@ -26,6 +26,14 @@ a:focus {
   border: 0;
 }
 
+.znav{ width: 100%; background-color: #222;border-color: #080808; line-height: 50px; height: 50px;}
+.znav-title a{ font-size: 22px; margin-left: 10px;}
+.zmenu ul{ list-style: none;}
+.zmenu ul li{ float: left; margin-right: 20px;}
+.znav a{ color: #fff;}
+.znav a:hover{ color: #ccc; text-decoration: none;}
+.znav a:focus{ text-decoration: none;}
+
 /*
  * Sidebar
  */
