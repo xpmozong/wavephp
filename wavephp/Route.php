@@ -144,7 +144,7 @@ class Route
      */
     public function getClassName() 
     {
-        return $this->className;
+        return strtolower(str_replace('Controller', '', $this->className));
     }
 
     /**
@@ -152,7 +152,7 @@ class Route
      */
     public function getActionName()
     {
-        return $this->actionName;
+        return strtolower(str_replace('action', '', $this->actionName));
     }
 
 }

@@ -90,10 +90,8 @@ class View
      *
      */
     private function getDefaultScript(){
-        $classname = strtolower(str_replace('Controller', '', 
-                    Wave::getClassName()));
-        $actionname = strtolower(str_replace('action', '', 
-                    Wave::getActionName()));
+        $classname = Wave::getClassName();
+        $actionname = Wave::getActionName();
 
         return $classname.'/'.$actionname;
     }

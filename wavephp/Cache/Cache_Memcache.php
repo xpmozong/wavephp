@@ -53,7 +53,7 @@ class Cache_Memcache implements Cache_Interface {
     }
 
     public function set($key, $value, $lifetime = 3600) {
-        $lifetime = $lifetime > 0 ? $lifetime : $this->lifetime;
+        $lifetime = $lifetime >= 0 ? $lifetime : $this->lifetime;
         return $this->connection->set($key, $value, false, $lifetime);
     }
 
