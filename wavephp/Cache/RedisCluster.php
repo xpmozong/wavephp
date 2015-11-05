@@ -124,13 +124,14 @@ class RedisCluster {
      * @param string $value 缓存值
      * @param int $expire 过期时间， 0:表示无过期时间
      */
-    public function set($key, $value, $expire=0){
+    public function set($key, $value, $expire = 0){
         // 永不超时
         if($expire == 0){
             $ret = $this->getRedis()->set($key, $value);
         }else{
             $ret = $this->getRedis()->setex($key, $expire, $value);
         }
+
         return $ret;
     }
   
@@ -151,6 +152,77 @@ class RedisCluster {
         // 使用了 M/S
         return $this->_getSlaveRedis()->{$func}($key);
     }
+
+    /**
+     * 插入一个值到列表中,如果列表不存在,新建一个列表
+     * @param string $key
+     * @param string $value
+     */
+    public function lpush($key, $value){
+        $ret = $this->getRedis()->lPush($key, $value);
+        
+        return $ret;
+    }
+
+    /**
+     * 删除列表的第一个值并返回它
+     * @param string $key
+     */
+    public function lpop($key){
+        $func = 'lPop';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
+    }
+
+    /**
+     * 插入一个值到列表中,如果列表不存在,新建一个列表
+     * @param string $key
+     * @param string $value
+     */
+    public function rpush($key, $value){
+        $ret = $this->getRedis()->rPush($key, $value);
+        
+        return $ret;
+    }
+
+    /**
+     * 删除并返回列表的最后一个值
+     * @param string $key
+     */
+    public function rpop($key){
+        $func = 'rPop';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
+    }
+
+    /**
+     * 从列表中返回指定位置的值
+     */
+    public function lget($key, $index = 0){
+        $func = 'lGet';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key, $index);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key, $index);
+    }
+
+    
   
     /**
      * 条件形式设置缓存，如果 key 不存时就设置，存在时设置失败
