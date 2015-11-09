@@ -222,7 +222,20 @@ class RedisCluster {
         return $this->_getSlaveRedis()->{$func}($key, $index);
     }
 
-    
+    /**
+     * 获得列表的长度
+     */
+    public function llen($key){
+        $func = 'lLen';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
+    }
   
     /**
      * 条件形式设置缓存，如果 key 不存时就设置，存在时设置失败

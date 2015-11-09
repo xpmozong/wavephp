@@ -74,6 +74,10 @@ class Cache_Redis implements Cache_Interface {
         return $this->redis->lget($key, $index);
     }
 
+    public function llen($key) {
+        return $this->redis->llen($key);
+    }
+
     public function increment($key, $step = 1) {
         return $this->redis->incr($key, $step);
     }
