@@ -25,7 +25,10 @@ class Cache_File implements Cache_Interface {
     public $lifetime = 3600;
 
     public function __construct() {
-        $this->path = Wave::app()->projectPath.'/caches/file/';
+        $this->path = Wave::app()->projectPath.'/data/files/';
+        if (!is_dir($this->path)) {
+            mkdir($this->path);
+        }
     }
 
     public function set($key, $value, $lifetime = 3600) {
