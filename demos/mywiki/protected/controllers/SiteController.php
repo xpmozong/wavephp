@@ -43,8 +43,8 @@ class SiteController extends Controller
             $filePath = ROOT_PATH.'/data/md/'.time().'.md';
             $markText = $_POST["test-editormd-markdown-doc"];
             Wave::writeCache($filePath, $markText);
-            $Common = new Common();
-            $Common->rmdirs(ROOT_PATH.'/data/caches');
+            $FileClass = new FileClass();
+            $FileClass->rmdirs(ROOT_PATH.'/data/caches');
             $this->jumpBox('添加成功！', Wave::app()->homeUrl, 1);
         }
     }
@@ -77,8 +77,8 @@ class SiteController extends Controller
             $filePath = ROOT_PATH.'/data/md/'.$_POST['fileName'];
             $markText = $_POST["test-editormd-markdown-doc"];
             Wave::writeCache($filePath, $markText);
-            $Common = new Common();
-            $Common->rmdirs(ROOT_PATH.'/data/caches');
+            $FileClass = new FileClass();
+            $FileClass->rmdirs(ROOT_PATH.'/data/caches');
             $this->jumpBox('编辑成功！', Wave::app()->homeUrl, 1);
         }
     }
@@ -98,8 +98,8 @@ class SiteController extends Controller
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
-            $Common = new Common();
-            $Common->rmdirs(ROOT_PATH.'/data/caches');
+            $FileClass = new FileClass();
+            $FileClass->rmdirs(ROOT_PATH.'/data/caches');
             $this->jumpBox('删除成功！', Wave::app()->homeUrl, 1);
         }else{
             $this->jumpBox('请选择文档！', Wave::app()->homeUrl, 1);
@@ -111,8 +111,7 @@ class SiteController extends Controller
      */
     public function actionLoging()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = $_POST;
         $Users = new Users();
         $array = $Users->getOne('*', array('email'=>$data['user_login']));
         if(!empty($array)){

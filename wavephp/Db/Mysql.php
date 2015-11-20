@@ -256,28 +256,6 @@ class Mysql extends Db_Abstract
     }
 
     /**
-     * mysql escape
-     */
-    protected function _escape_str($str) {
-        if (is_array($str)) {
-            foreach ($str as $key => $val) {
-                $str[$key] = $this->escape_str($val);
-            }
-
-            return $str;
-        }
-
-        return addslashes($str);
-        
-        if (function_exists('mysql_real_escape_string')) {
-            return mysql_real_escape_string($str);
-        } else {
-            return addslashes($str);
-        }
-    }
-
-
-    /**
      * 显示自定义错误
      */
     protected function msg() 

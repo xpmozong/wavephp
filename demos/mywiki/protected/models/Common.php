@@ -121,28 +121,7 @@ class Common extends Model
         $json_array['msg'] = $msg;
         echo json_encode($json_array);
         unset($json_array);die;
-    }
-
-    public function rmdirs($dir){
-        //error_reporting(0);    函数会返回一个状态,我用error_reporting(0)屏蔽掉输出
-        //rmdir函数会返回一个状态,我用@屏蔽掉输出
-        $dir_arr = scandir($dir);
-        foreach($dir_arr as $key => $val){
-            if($val == '.' || $val == '..'){
-
-            }else {
-                if(is_dir($dir.'/'.$val)){                            
-                    if(@rmdir($dir.'/'.$val) == 'true'){
-
-                    }else{
-                        rmdirs($dir.'/'.$val);
-                    }                   
-                }else{               
-                    unlink($dir.'/'.$val);
-                }
-            }
-        }
-    }    
+    }   
 
     /**
      * 分页

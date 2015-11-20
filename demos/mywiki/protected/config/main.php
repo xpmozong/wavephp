@@ -22,24 +22,10 @@ $config = array(
         'cache_dir'         => 'data/templates/cache/index',
         'compile_dir'       => 'data/templates/compile/index'
     ),
-    
     'debuger'               => false,       // 显示debug信息
-    
-    'database'              => array(
-        'driver'            => 'mysql',
-        'master'            => array(
-            'dbhost'        => '127.0.0.1',
-            'username'      => 'root',
-            'password'      => '',
-            'dbname'        => 'mywiki',
-            'charset'       => 'utf8',
-            'table_prefix'  => '',
-            'pconnect'      => false
-        )
-    ),
     'session'=>array(
-        'driver'            => 'db',
+        'driver'            => 'file',
         'timeout'           => 86400
-    ),
+    )
 );
 ?>
