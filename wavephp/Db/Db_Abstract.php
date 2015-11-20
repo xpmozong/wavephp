@@ -235,7 +235,7 @@ abstract class Db_Abstract
      */
     public function escape($str) {
         switch (gettype($str)) {
-            case 'string'   :   $str = $str;
+            case 'string'   :   $str = "'".$str."'";
                 break;
             case 'boolean'  :   $str = ($str === FALSE) ? 0 : 1;
                 break;

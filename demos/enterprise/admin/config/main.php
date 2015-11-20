@@ -45,7 +45,17 @@ $config = array(
     //     array(
     //         'host'          => 'localhost',
     //         'port'          => 11211
+    //     )
+    // ),
+    // 'memcached'=>array(
+    //     array(
+    //         'host'          => 'localhost',
+    //         'port'          => 11211
     //     ),
+    //     array(
+    //         'host'          => 'localhost',
+    //         'port'          => 11211
+    //     )
     // ),
     // 'redis'=>array(
     //     'master' => array(

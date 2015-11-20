@@ -23,6 +23,7 @@
             | Smarty
         | Session
             | Session_Db.php
+			| Session_File.php
             | Session_Memcache.php
             | Session_Memcached.php
             | Session_Redis.php
@@ -39,6 +40,11 @@
 2、项目目录结构
 
     helloworld
+		| data
+			| caches
+			| templates
+				| compile
+					| index
         | protected
             | config
                 main.php
@@ -46,11 +52,10 @@
                 SiteController.php
             | models
                 TestModel.php
-            | views
-                | layout
-                    main.php
+            | templates
                 | site
-                    index.php
+                    index.html
+		define.php
         index.php
 
 3、入口 index.php 内容：
@@ -67,82 +72,59 @@
 
 4、配置文件 config/main.php
 
-    <?php
-        $config = array(
-            'projectName'           => 'protected',
-            'modelName'             => 'protected',
-
-            'import'                => array(
-                'controllers.*'
-            ),
-
-            'defaultController'     => 'site',
-
-            'smarty'                => array(
-                'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
-                'left_delimiter'    => '{%',
-                'right_delimiter'   => '%}',
-                'debugging'         => false,
-                'caching'           => false,
-                'cache_lifetime'    => 120,
-                'compile_check'     => true,
-                'template_dir'      => 'templates',
-                'config_dir'        => 'templates/config',
-                'cache_dir'         => 'data/templates/cache/index',
-                'compile_dir'       => 'data/templates/compile/index'
-            ),
-            
-            'debuger'               =>false ,       // 显示debug信息
-            
-            'database'              => array(
-                'driver'            => 'mysql',
-                'master'            => array(
-                    'dbhost'        => '127.0.0.1',
-                    'username'      => 'root',
-                    'password'      => '',
-                    'dbname'        => 'enterprise',
-                    'charset'       => 'utf8',
-                    'table_prefix'  => '',
-                    'pconnect'      => false
-                ),
-                'slave'             => array(
-                    'dbhost'        => '127.0.0.1',
-                    'username'      => 'root',
-                    'password'      => '',
-                    'dbname'        => 'enterprise',
-                    'charset'       => 'utf8',
-                    'table_prefix'  => '',
-                    'pconnect'      => false
-                )
-            ),
-            'session'               => array(
-                'driver'            => 'db',
-                'timeout'           => 86400
-            ),
-            'memcache'              => array(
-                array(
-                    'host'          => 'localhost',
-                    'port'          => 11211
-                ),
-            ),
-            'redis'                 => array(
-                'master'            => array(
-                    'host'          => '127.0.0.1',
-                    'port'          => 6379
-                ),
-                'slave'             => array(
-                    array(
-                        'host'      => '127.0.0.1',
-                        'port'      => 63791
-                    ),
-                    array(
-                        'host'      => '127.0.0.1',
-                        'port'      => 63792
-                    )
-                )
-            )
-        );
-    ?>
+    $config = array(
+	    'projectName'           => 'protected',
+	    'modelName'             => 'protected',
+	
+	    'import'                => array(
+	        'controllers.*'
+	    ),
+	
+	    'defaultController'     => 'site',
+	
+	    'smarty'                => array(
+	        'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+	        'left_delimiter'    => '{%',
+	        'right_delimiter'   => '%}',
+	        'debugging'         => false,
+	        'caching'           => false,
+	        'cache_lifetime'    => 120,
+	        'compile_check'     => true,
+	        'template_dir'      => 'templates',
+	        'config_dir'        => 'templates/config',
+	        'cache_dir'         => 'data/templates/cache/index',
+	        'compile_dir'       => 'data/templates/compile/index'
+	    ),
+	    
+	    'debuger'               => false,       // 显示debug信息
+	    
+	    'database'              => array(
+	        'driver'            => 'mysql',
+	        'master'            => array(
+	            'dbhost'        => '127.0.0.1',
+	            'username'      => 'root',
+	            'password'      => '',
+	            'dbname'        => 'enterprise',
+	            'charset'       => 'utf8',
+	            'table_prefix'  => '',
+	            'pconnect'      => false
+	        ),
+	        'slave'             => array(
+	            'dbhost'        => '127.0.0.1',
+	            'username'      => 'root',
+	            'password'      => '',
+	            'dbname'        => 'enterprise',
+	            'charset'       => 'utf8',
+	            'table_prefix'  => '',
+	            'pconnect'      => false
+	        )
+	    ),
+	    
+	    'session'=>array(
+	        'driver'            => 'file',
+	        'timeout'           => 86400
+	    )
+	);
 
 5、默认控制层文件controllers/SiteController.php 调用默认方法actionIndex
 
@@ -163,55 +145,52 @@
         public function actionIndex()
         {
             // 多语言使用，要连数据库，表为w_language，参看enterprise数据库
-            // 按规定填入数据
-            // 使用方式
-            i18n::$lang = 'vi-vn';
-            echo i18n::get('平台管理');
-            // smarty模板使用方式
-            {%i18n var=平台管理%}
-    
-            // 项目路径
-            echo Wave::app()->projectPath;
-            //当前域名
-            echo Wave::app()->request->hostInfo;
-            //除域名外以及index.php
-            echo Wave::app()->request->pathInfo;
-            //除域名外的地址
-            echo Wave::app()->homeUrl;
-            //除域名外的根目录地址
-            echo Wave::app()->request->baseUrl;
-    
-            // 关闭自动加载
-            // spl_autoload_unregister(array('WaveBase','loader'));
-            // 开启自动加载
-            // spl_autoload_register(array('WaveBase','loader'));
-    
-            $User = new User();
-            echo "User model 加载成功！";
-    
-            $username = 'Ellen';
-            // 然后查看 views/site/index.php 文件 输出 <?=$username?>
-            $this->render('layout/header');
-            $this->render('site/index', array('username'=>$username));
-            $this->render('layout/footer');
-    
-            // mecache使用
-            Wave::app()->memcache->set('key', '11111', 30);
-            echo "Store data in the cache (data will expire in 30 seconds)";
-            $get_result = Wave::app()->memcache->get('key');
-            echo " Memcache Data from the cache:$get_result";
-    
-            // redis使用
-            Wave::app()->redis->set('key', '11111', 30);
-            echo "Store data in the cache (data will expire in 30 seconds)";
-            $get_result = Wave::app()->redis->get('key');
-            echo " Redis Data from the cache:$get_result";
-    
+			// 按规定填入数据
+			// 使用方式
+			i18n::$lang = 'vi-vn';
+			echo i18n::get('平台管理');
+			// smarty模板使用方式
+			// {%i18n var=平台管理%}
+			
+			// 项目路径
+			echo Wave::app()->projectPath;
+			//当前域名
+			echo Wave::app()->request->hostInfo;
+			//除域名外以及index.php
+			echo Wave::app()->request->pathInfo;
+			//除域名外的地址
+			echo Wave::app()->homeUrl;
+			//除域名外的根目录地址
+			echo Wave::app()->request->baseUrl;
+			
+			// 关闭自动加载
+			spl_autoload_unregister(array('WaveBase','loader'));
+			// 开启自动加载
+			spl_autoload_register(array('WaveBase','loader'));
+			
+			$User = new User();
+			echo "User model 加载成功！";
+			
+			$this->username = 'Ellen';
+			// 然后查看 templates/site/index.html 文件
+			输出 {%$username%}
+			
+			// mecache使用
+			Wave::app()->memcache->set('key', '11111', 30);
+			echo "Store data in the cache (data will expire in 30 seconds)";
+			$get_result = Wave::app()->memcache->get('key');
+			echo " Memcache Data from the cache:$get_result";
+			
+			// redis使用
+			Wave::app()->redis->set('key', '11111', 30);
+			echo "Store data in the cache (data will expire in 30 seconds)";
+			$get_result = Wave::app()->redis->get('key');
+			echo " Redis Data from the cache:$get_result";
         }
     }
 
 
-6、解析URL 比如说我 要调用 类似这样的URL /blog/index.php/site/index
+6、解析URL 比如解析这样的URL /blog/index.php/site/index
 
 index.php 可以通过rewrite去掉，这里就不讲了。
 
@@ -223,7 +202,6 @@ $a 就是 aaa， $b 就是 bbb
 
 7、数据库 仅支持mysql数据库，参看TestModel.php的sql用法，继承Model，有问题可以改Model这个文件
     
-    <?php
     /**
      * 测试模型
      */
@@ -274,7 +252,6 @@ $a 就是 aaa， $b 就是 bbb
             return $array;
         }
     }
-    ?>
 
 8、session
 

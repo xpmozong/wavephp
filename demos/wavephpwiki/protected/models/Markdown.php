@@ -375,6 +375,7 @@ class Markdown {
         );
         if ($isGetContent) {
             $blogProp['content'] = (string)$this->parseMarkdown($subject);
+            // echo $blogProp['content'];die;
         }
         
         preg_match($pattern1, $subject, $matches);
@@ -565,7 +566,7 @@ class Markdown {
             array_push($this->blogs, $blog);
         }
         
-        $this->sortBlogs($this->blogs, 'date');
+        // $this->sortBlogs($this->blogs, 'date');
         
         //缓存全局数据
         $this->globalDataCacheWrite();

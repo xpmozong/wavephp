@@ -15,43 +15,48 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // 多语言使用，要连数据库，表为w_language，参看enterprise数据库
+        // 按规定填入数据
+        // 使用方式
         i18n::$lang = 'vi-vn';
-        echo i18n::get('平台管理')."<br>";
+        echo i18n::get('平台管理');
+        // smarty模板使用方式
+        // {%i18n var=平台管理%}
 
-        // echo 'Hello world !';
-        // $arr = Wave::app()->database->db->getOne("select user_login from wp_users");
-        // print_r($arr);
+        // // 项目路径
+        // echo Wave::app()->projectPath;
+        // //当前域名
+        // echo Wave::app()->request->hostInfo;
+        // //除域名外以及index.php
+        // echo Wave::app()->request->pathInfo;
+        // //除域名外的地址
+        // echo Wave::app()->homeUrl;
+        // //除域名外的根目录地址
+        // echo Wave::app()->request->baseUrl;
 
-        // echo "<br>";
-
-        // $arr2 = Wave::app()->database->db2->getOne("select username from joke_user");
-        // print_r($arr2);
-
-        // echo "<br>";
-
-        // echo Wave::app()->projectPath."<br>";
-
-        // echo Wave::app()->request->hostInfo."<br>";
-
-        // echo Wave::app()->request->pathInfo."<br>";
-
-        // echo Wave::app()->homeUrl."<br>";
-
-        // echo Wave::app()->request->baseUrl."<br>";
-
-        // // spl_autoload_unregister(array('WaveBase','loader'));
-        // // spl_autoload_register(array('WaveBase','loader'));
+        // 关闭自动加载
+        // spl_autoload_unregister(array('WaveBase','loader'));
+        // 开启自动加载
+        // spl_autoload_register(array('WaveBase','loader'));
 
         // $User = new User();
+        // echo "User model 加载成功！";
 
-        // echo "User model 加载成功！<br>";
+        $this->username = 'Ellen';
+        // 然后查看 templates/site/index.html 文件
+        // 输出 {%$username%}
 
-        // $username = Wave::app()->user->getState('username');
+        // mecache使用
+        // Wave::app()->memcache->set('key', '11111', 30);
+        // echo "Store data in the cache (data will expire in 30 seconds)";
+        // $get_result = Wave::app()->memcache->get('key');
+        // echo " Memcache Data from the cache:$get_result";
 
-        // $this->render('layout/header');
-        // $this->render('site/index', array('username'=>$username));
-        // $this->footer();
-        // 也可以选择使用smarty模板
+        // redis使用
+        // Wave::app()->redis->set('key', '11111', 30);
+        // echo "Store data in the cache (data will expire in 30 seconds)";
+        // $get_result = Wave::app()->redis->get('key');
+        // echo " Redis Data from the cache:$get_result";
 
     }
 
@@ -76,7 +81,7 @@ class SiteController extends Controller
 
     public function actionExportCode()
     {
-        echo Wave::app()->session->getState('verifycode');
+        echo Wave::app()->session->getState('verifycode');die;
     }
 
 }

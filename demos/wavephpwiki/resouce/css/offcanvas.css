@@ -62,3 +62,8 @@ h1, .h1, h2, .h2, h3, .h3 {
     margin-bottom: 10px;
     margin-top: 0;
 }
+h2, .h2{ font-size: 22px;}
+.post-content{ margin-top: 30px;}
+p{ line-height: 25px;}
+.r-main{ padding: 0 10px;}
+h5,.h5{ font-weight: 600;}

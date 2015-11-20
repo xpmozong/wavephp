@@ -45,6 +45,11 @@ $config = array(
             'table_prefix'  => '',
             'pconnect'      => false
         )
+    ),
+    
+    'session'=>array(
+        'driver'            => 'file',
+        'timeout'           => 86400
     )
 );
 ?>
