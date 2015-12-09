@@ -1,5 +1,5 @@
 {%include file="layout/header.html"%}
-<nav class="navbar navbar-fixed-top navbar-inverse">
+<nav class="navbar navbar-top navbar-inverse">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -54,7 +54,7 @@
         <div class="col-xs-12 col-sm-9">
             <div class="row r-main">
                 <header class="post-header">
-                    <h2 class="post-title">{%$nowblog.title%}</h2>
+                    <div class="post-title">{%$nowblog.title%}</div>
                     <p class="post-meta">
                         {%$nowblog.date%} • {%$nowblog.author%} 
                     </p>

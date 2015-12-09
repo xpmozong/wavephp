@@ -343,8 +343,26 @@ class Markdown {
         if (!$this->globalDataCacheRead()) {
             //列出所有文件，可能包含非markdown文件
             $mdfiles = get_dir_file_info($postPath, FALSE);
+            $mdfiles = $this->sortMdFiles($mdfiles, 'name');
+            // echo "<pre>";
+            // print_r($mdfiles);die;
             $this->readAllPostInfo($mdfiles, $postPath);
         }
+    }
+
+    //对所有博客排序
+    private function sortMdFiles($mdfiles, $sortKey) {
+        if (count($mdfiles) <= 0) return $mdfiles;
+        
+        $newArr = null;
+        
+        foreach ($mdfiles as $key => $row) {
+            $newArr[$key] = $row[$sortKey];
+        }
+        
+        array_multisort($newArr, SORT_ASC, $mdfiles);
+
+        return $mdfiles;
     }
     
     //读取博客的基本信息

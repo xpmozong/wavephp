@@ -9,7 +9,7 @@ class Users
     public function __construct() {
         $this->manages = array('361131953@qq.com'=>
                                     array(  'email'=>'361131953@qq.com', 
-                                            'password'=>'e10adc3949ba59abbe56e057f20f883e')
+                                            'password'=>'5d9e5edd8a4d08fac2b4d29139a8cbfb')
 
                             );
     }
