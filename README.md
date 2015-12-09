@@ -1,5 +1,5 @@
 # wavephp
-轻量PHP框架
+轻量PHP框架，[Wavephp框架 wiki](http://www.37study.com "Wavephp框架 wiki")
 
 1、框架目录结构
 
