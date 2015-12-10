@@ -22,9 +22,10 @@
  */
 abstract class Db_Abstract
 {
-    public $config = array();
-    public $conn   = array();
-    public $is_single = true;  
+    public $config      = array();
+    public $conn        = array();
+    public $is_single   = true;
+    protected $lastSql  = '';  
 
     /**
      * 选数据库
@@ -55,6 +56,7 @@ abstract class Db_Abstract
      */
     public function query($sql)
     {
+        $this->lastSql = $sql;
         if($this->is_single || $this->is_write($sql)) {
             $this->init('master');
             return $this->_query($sql, $this->conn['master']);
@@ -62,6 +64,17 @@ abstract class Db_Abstract
             $this->init('slave');
             return $this->_query($sql, $this->conn['slave']);
         }
+    }
+
+    /**
+     * 获取最后一条sql语句
+     *
+     * @return string
+     *
+     */
+    public function getLastSql()
+    {
+        return $this->lastSql;
     }
 
     /**

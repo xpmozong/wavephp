@@ -260,15 +260,17 @@ class Mysql extends Db_Abstract
      */
     protected function msg() 
     {
-        if($this->errno) {
+        if($this->errno && !empty(Wave::app()->config['crash_show_sql'])) {
+            echo $this->getLastSql()."<br>";
             $errMsg = mysql_error();
             echo "<div style='color:red;'>\n";
                 echo "<h4>数据库操作错误</h4>\n";
                 echo "<h5>错误代码：".$this->errno."</h5>\n";
                 echo "<h5>错误信息：".$errMsg."</h5>\n";
             echo "</div>";
-            unset($msgArr);
             die;
+        }else{
+            exit('数据库操作错误');
         }
     }
 }

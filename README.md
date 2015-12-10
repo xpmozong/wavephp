@@ -83,7 +83,7 @@
 	    'defaultController'     => 'site',
 	
 	    'smarty'                => array(
-	        'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+	        'is_on'             => true,    // 是否使用smarty模板
 	        'left_delimiter'    => '{%',
 	        'right_delimiter'   => '%}',
 	        'debugging'         => false,
@@ -97,6 +97,7 @@
 	    ),
 	    
 	    'debuger'               => false,       // 显示debug信息
+        'crash_show_sql'        => true,        // 输出错误sql
 	    
 	    'database'              => array(
 	        'driver'            => 'mysql',
@@ -242,7 +243,12 @@ $a 就是 aaa， $b 就是 bbb
             // 数据缓存
             $array = $this->getAll('*', null, 'articles', 60);
 
+            // 直接执行sql
+            $this->sqlQuery($sql);
 
+            // 获取最后一条sql语句
+            echo $this->lastSql();
+            
             $data = array('c_name'=>'测试4');
             var_dump($this->insert($data));
             $where = array('cid'=>4);

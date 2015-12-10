@@ -84,6 +84,17 @@ class Model
     }
 
     /**
+     * 获取最后一条sql语句
+     *
+     * @return string
+     *
+     */
+    public function lastSql()
+    {
+        return $this->getDb()->getLastSql();
+    }
+
+    /**
      * 查询字段
      *
      * @param string $field 字段
