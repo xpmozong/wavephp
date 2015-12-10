@@ -11,6 +11,22 @@ footer {
   padding: 30px 0;
 }
 
+#back-top {
+    bottom: 30px;
+    position: fixed;
+    right: 30px;
+    text-align: center;
+    z-index: 9999;
+}
+#back-top a {
+    background: rgba(0, 0, 0, 0) url("../images/top-link.png") repeat scroll 0 0;
+    display: block;
+    height: 45px;
+    text-decoration: none;
+    transition: all 2s ease 0s;
+    width: 45px;
+}
+
 /*
  * Off Canvas
  * --------------------------------------------------

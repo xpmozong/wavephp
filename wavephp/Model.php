@@ -22,8 +22,9 @@
 class Model
 {
     public $cache;
-    protected static $db            = null;
-    protected static $_tablePrefix  = '';
+    protected $dbname               = '';   // 数据库
+    protected $dbArray              = array();
+    protected $tablePrefixArray     = array();
     protected $_select              = array();
     protected $_from                = '';
     protected $_join                = array();
@@ -41,19 +42,46 @@ class Model
      * 构造函数
      */
     public function __construct() {
-        // 表前缀
-        if (empty(self::$_tablePrefix)) {
-            $configs = Wave::app()->config['database'];
-            self::$_tablePrefix = $configs['master']['table_prefix'];
-        }
-        if(self::$db == null){
-            self::$db = Database::factory();
-        }
+        $this->minit();
+    }
 
+    public function minit($db = '') {
+        // 表前缀
+        $this->dbname = 'database';
+        if (!empty($db)) {
+            $this->dbname = $db;
+        }
+        if (empty($this->tablePrefixArray[$this->dbname])) {
+            $configs = Wave::app()->config[$this->dbname];
+            $this->tablePrefixArray[$this->dbname] = $configs['master']['table_prefix'];
+        }
+        if(empty($this->dbArray[$this->dbname])){
+            $this->dbArray[$this->dbname] = Database::factory($this->dbname);
+        }
         $this->init();
     }
 
     protected function init(){}
+
+    /**
+     * 选择是哪个数据库
+     *
+     * @return object
+     *
+     */
+    public function getDb() {
+        return $this->dbArray[$this->dbname];
+    }
+
+    /**
+     * 选择是哪个前缀
+     *
+     * @return string
+     *
+     */
+    public function getTablePrefix() {
+        return $this->tablePrefixArray[$this->dbname];
+    }
 
     /**
      * 查询字段
@@ -212,7 +240,7 @@ class Model
                 $arr = array();
                 $values = explode(',', $v);
                 foreach ($values as $value) {
-                    $arr[] = self::$db->escape($value);
+                    $arr[] = $this->getDb()->escape($value);
                 }
 
                 $this->_where[] = $prefix . $k . $not . " IN (" . implode(", ", $arr) . ") ";
@@ -248,14 +276,14 @@ class Model
         if (!empty($where) && is_array($where)) {
             foreach ($where as $k => $v) {
                 $prefix = (count($this->_where) == 0) ? '' : $type.' ';
-                if ( !self::$db->_parse($k) && is_null($v) ) {
+                if ( !$this->getDb()->_parse($k) && is_null($v) ) {
                     $k .= ' IS NULL';
                 }
-                if ( !self::$db->_parse($k)) {
+                if ( !$this->getDb()->_parse($k)) {
                     $k .= ' =';
                 }
                 if (!is_null($v)) {
-                    $v = self::$db->escape($v);
+                    $v = $this->getDb()->escape($v);
                 }
                 if ( !empty($type2) ){
                     $_where[] = $k.' '.$v;
@@ -338,7 +366,7 @@ class Model
                 $v = str_replace("+", " ", $v);
                 $values = explode( ' ', $v );
                 foreach ( $values as $value ) {
-                    $arr[] =  'INSTR('.$k.', '.self::$db->escape($value).')';
+                    $arr[] =  'INSTR('.$k.', '.$this->getDb()->escape($value).')';
                 }
                 $this->_instr[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
             }
@@ -464,7 +492,7 @@ class Model
         }
 
         if (is_numeric($this->_limit) && $this->_limit > 0) {
-            $sql .= self::$db->limit($this->_offset, $this->_limit);
+            $sql .= $this->getDb()->limit($this->_offset, $this->_limit);
         }
 
         // echo $sql."<br>";
@@ -516,7 +544,7 @@ class Model
      */
     public function sqlQuery($sql)
     {
-        return self::$db->query($sql);
+        return $this->getDb()->query($sql);
     }
 
     /**
@@ -543,7 +571,7 @@ class Model
         }else{
             $sql = $this->select($field)->where($where)->compileSelect();
         }
-        $rs = self::$db->getAll($sql);
+        $rs = $this->getDb()->getAll($sql);
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
@@ -559,7 +587,7 @@ class Model
      */
     public function queryAll($sql)
     {
-        return self::$db->getAll($sql);
+        return $this->getDb()->getAll($sql);
     }
 
     /**
@@ -586,7 +614,7 @@ class Model
         }else{
             $sql = $this->select($field)->where($where)->compileSelect();
         }
-        $rs = self::$db->getOne($sql);
+        $rs = $this->getDb()->getOne($sql);
         $this->resetSelect();
 
         if (!empty($cache_key) && is_object($this->cache)) {
@@ -602,7 +630,7 @@ class Model
      */
     public function queryOne($sql)
     {
-        return self::$db->getOne($sql);
+        return $this->getDb()->getOne($sql);
     }
 
     /**
@@ -628,8 +656,8 @@ class Model
     public function insert($data)
     {
         $tableName = $this->getTableName();
-        if(self::$db->insertdb($tableName, $data)){
-            return self::$db->insertId();
+        if($this->getDb()->insertdb($tableName, $data)){
+            return $this->getDb()->insertId();
         }else{
             return false;
         }
@@ -655,10 +683,10 @@ class Model
         $this->where($where);
         $conditions = implode(' ', $this->_where);
 
-        self::$db->updatedb($tableName, $data, $conditions);
+        $this->getDb()->updatedb($tableName, $data, $conditions);
         $this->resetSelect();
 
-        return self::$db->affectedRows();
+        return $this->getDb()->affectedRows();
     }
 
     /**
@@ -669,7 +697,7 @@ class Model
      */
     public function insertId()
     {
-        return self::$db->insertId();
+        return $this->getDb()->insertId();
     }
 
     /**
@@ -687,10 +715,10 @@ class Model
         }
         $this->where($where);
         $conditions = implode(' ', $this->_where);
-        self::$db->delete($tableName, $conditions);
+        $this->getDb()->delete($tableName, $conditions);
         $this->resetSelect();
 
-        return self::$db->affectedRows();
+        return $this->getDb()->affectedRows();
     }
 
     /**
@@ -726,7 +754,7 @@ class Model
         }
         
         $sql = $this->count($col)->where($where)->compileSelect();
-        $arr = self::$db->getOne($sql);
+        $arr = $this->getDb()->getOne($sql);
         $res = $arr['count'];
         if (!empty($cache_key) && is_object($this->cache)) {
             $this->cache->set($cache_key, $res, $exp);
@@ -740,7 +768,7 @@ class Model
      */
     public function listTables()
     {
-        return self::$db->list_tables();
+        return $this->getDb()->list_tables();
     }
 
     /**
@@ -748,7 +776,7 @@ class Model
      */
     public function listColumns($table)
     {
-        return self::$db->list_columns($table);
+        return $this->getDb()->list_columns($table);
     }
 
     /**
@@ -756,7 +784,7 @@ class Model
      */
     public function truncate($table)
     {
-        return self::$db->truncate($table);
+        return $this->getDb()->truncate($table);
     }
 
 }

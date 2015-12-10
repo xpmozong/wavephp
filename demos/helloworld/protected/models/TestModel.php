@@ -5,7 +5,7 @@
 class TestModel
 {
     protected function init() {
-        $this->_tableName = self::$_tablePrefix.'articles';
+        $this->_tableName = $this->getTablePrefix().'articles';
         $this->cache = Wave::app()->memcache;
     }
 

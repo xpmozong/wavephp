@@ -23,16 +23,16 @@
 abstract class Database {
     public static $db;
 
-    public static function factory() {
-        $option = Wave::app()->config['database'];
+    public static function factory($dbname = '') {
+        $option = Wave::app()->config[$dbname];
         
         $driver = isset($option['driver']) ? $option['driver'] : 'mysql';
-        if (is_object(self::$db[$driver])) {
-            return self::$db[$driver];
+        if (isset(self::$db[$dbname]) && is_object(self::$db[$dbname])) {
+            return self::$db[$dbname];
         }
         
         $class = ucfirst($driver);
-        $db = self::$db[$driver] = new $class($option);
+        $db = self::$db[$dbname] = new $class($option);
         
         return $db;
     }

@@ -208,7 +208,7 @@ $a 就是 aaa， $b 就是 bbb
     class TestModel
     {
         protected function init() {
-            $this->_tableName = self::$_tablePrefix.'articles';
+            $this->_tableName = $this->getTablePrefix().'articles';
             $this->cache = Wave::app()->memcache;
         }
 

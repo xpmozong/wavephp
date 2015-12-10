@@ -13,4 +13,6 @@ define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0755);
 
+ini_set('session.cookie_domain', '.37study.com');
+
 ?>
