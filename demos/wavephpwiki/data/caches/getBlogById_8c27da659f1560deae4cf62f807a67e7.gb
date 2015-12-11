@@ -1,0 +1,16 @@
+a:16:{s:6:"blogId";s:32:"8c27da659f1560deae4cf62f807a67e7";s:8:"fileName";s:5:"01.md";s:10:"serverPath";s:55:"D:/xampp/htdocs/wavephp/demos/wavephpwiki/data/md/01.md";s:5:"mtime";s:19:"2015-12-11 18:01:37";s:5:"ctime";s:19:"2015-12-09 13:56:52";s:6:"author";s:6:"许萍";s:4:"head";s:0:"";s:4:"date";s:10:"2015-11-20";s:5:"title";s:6:"序言";s:7:"summary";s:71:"<p>Wavephp框架，轻量PHP框架，MVC分离，快速开发项目</p>";s:8:"keywords";s:12:"基本介绍";s:6:"images";a:0:{}s:4:"tags";a:1:{i:0;a:2:{s:2:"id";i:498823404;s:4:"name";s:12:"基本介绍";}}s:8:"category";a:1:{i:0;a:2:{s:2:"id";i:498823404;s:4:"name";s:12:"基本介绍";}}s:6:"status";s:7:"publish";s:7:"content";s:593:"<!--
+author: 许萍
+date: 2015-11-20
+title: 序言
+tags: 基本介绍
+category: 基本介绍
+status: publish
+summary: Wavephp框架，轻量PHP框架，MVC分离，快速开发项目
+-->
+<h2>一. 版本说明</h2>
+<p><a href="https://github.com/xpmozong/wavephp" title="Version 1.0">Version 1.0</a></p>
+<h2>二. 升级指南</h2>
+<p>github最新，只更新框架里的内容，项目尽量不用改。</p>
+<h2>三. 贡献指南</h2>
+<p>框架开发者：<a href="https://github.com/xpmozong" title="寞踪">寞踪</a></p>
+<p>欢迎其他开发者进行改进，bug提交，反馈意见。</p>";}

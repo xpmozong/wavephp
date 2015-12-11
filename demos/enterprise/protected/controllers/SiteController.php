@@ -63,9 +63,9 @@ class SiteController extends CommonController
             $this->Common->exportResult(false, '请输入密码！');
         
         $Users = new Users();
-        $array = $Users->getOne('*', array('user_login'=>$data['user_login']));
+        $array = $Users->getOne('*', array('email'=>$data['user_login']));
         if(!empty($array)){
-            if ($array['user_pass'] == md5($data['user_pass'])) {
+            if ($array['password'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userinfo', $array);
                 $this->Common->exportResult(true, '登录成功！');
             }else{
@@ -85,13 +85,14 @@ class SiteController extends CommonController
     {
         $Users = new Users();
         $data = $this->Common->getFilter($_POST);
-        if(empty($data['user_login']))
-            $this->Common->exportResult(false, '请输入用户名！');
+        if(empty($data['email']))
+            $this->Common->exportResult(false, '请输入邮箱！');
 
-        if(empty($data['user_pass']))
+        if(empty($data['password']))
             $this->Common->exportResult(false, '请输入密码！');
-        
-        $data['user_pass'] = md5($data['user_pass']);
+
+        $data['add_date'] = $this->Common->getDate();
+        $data['password'] = md5($data['password']);
         if ($Users->insert($data)) {
             $this->Common->exportResult(true, '注册成功！');
         }else{
@@ -113,7 +114,7 @@ class SiteController extends CommonController
         if (!empty($userinfo)) {
             $array['success'] = true;
             $array['userid'] = $userinfo['userid'];
-            $array['username'] = $userinfo['user_login'];
+            $array['username'] = $userinfo['email'];
         }else{
             $array['success'] = false;
         }

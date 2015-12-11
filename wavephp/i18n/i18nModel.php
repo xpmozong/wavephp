@@ -61,7 +61,7 @@ class i18nModel extends Model
     public function getLanguage($lang)
     {
         $i18n = array();
-        $dir = Wave::app()->projectPath.'/data/caches/';
+        $dir = Wave::app()->projectPath.'data/caches/';
         if (!is_dir($dir)) {
             mkdir($dir);
         }

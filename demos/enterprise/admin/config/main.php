@@ -10,9 +10,10 @@ $config = array(
     'defaultController'     => 'site',
 
     'debuger'               => false,
+    'crash_show_sql'        => true,        // 是否显示错误sql
 
     'smarty'                => array(
-        'is_on'             => true,    // 是否使用smarty模板 参考demo下的enterprise2项目
+        'is_on'             => true,    // 是否使用smarty模板
         'left_delimiter'    => '{%',
         'right_delimiter'   => '%}',
         'debugging'         => false,
