@@ -102,7 +102,7 @@
 	    'database'              => array(
 	        'driver'            => 'mysql',
 	        'master'            => array(
-	            'dbhost'        => '127.0.0.1',
+	            'dbhost'        => '127.0.0.1:3306', // 数据库端口可以直接在ip后加
 	            'username'      => 'root',
 	            'password'      => '',
 	            'dbname'        => 'enterprise',
