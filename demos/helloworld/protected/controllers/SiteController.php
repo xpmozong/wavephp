@@ -18,10 +18,10 @@ class SiteController extends Controller
         // 多语言使用，要连数据库，表为w_language，参看enterprise数据库
         // 按规定填入数据
         // 使用方式
-        i18n::$lang = 'vi-vn';
-        echo i18n::get('平台管理');
+        I18n::$lang = 'vi-vn';
+        echo I18n::get('平台管理');
         // smarty模板使用方式
-        // {%i18n var=平台管理%}
+        // {%I18n var=平台管理%}
 
         // // 项目路径
         // echo Wave::app()->projectPath;
@@ -35,9 +35,9 @@ class SiteController extends Controller
         // echo Wave::app()->request->baseUrl;
 
         // 关闭自动加载
-        // spl_autoload_unregister(array('WaveBase','loader'));
+        // spl_autoload_unregister(array('WaveLoader','loader'));
         // 开启自动加载
-        // spl_autoload_register(array('WaveBase','loader'));
+        // spl_autoload_register(array('WaveLoader','loader'));
 
         // $User = new User();
         // echo "User model 加载成功！";

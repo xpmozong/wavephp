@@ -13,39 +13,6 @@ class Common extends Model
     }
 
     /**
-     * curl
-     */
-    public function curl($url = '', $method = "GET", $data = array()) 
-    {
-        $postdata = http_build_query($data, '', '&');
-        $ch   = curl_init();
-        if(strtoupper($method) == 'GET' && $data){
-            $url .= '?'.$postdata;
-        } elseif (strtoupper($method) == 'POST' && $data){
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-        } elseif(strtoupper($method) == 'JSON' && $data) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type:application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        }
-
-        curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            exit(curl_errno($ch).' : '.curl_error($ch).$url);
-        } else {
-            curl_close($ch);
-        }
-
-        return $response;
-    }
-
-    /**
      * 获得日期
      * @return string 日期
      */
