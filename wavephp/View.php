@@ -4,7 +4,7 @@
  * 
  * @package         Wavephp
  * @author          许萍
- * @copyright       Copyright (c) 2013
+ * @copyright       Copyright (c) 2015
  * @link            https://github.com/xpmozong/wavephp
  * @since           Version 1.0
  *
