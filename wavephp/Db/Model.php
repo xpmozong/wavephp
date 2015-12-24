@@ -37,6 +37,7 @@ class Model
     protected $_group               = array();
     protected $_order               = array();
     protected $_tableName           = '';
+    protected $_having              = array();
 
     /**
      * 构造函数
@@ -311,6 +312,34 @@ class Model
     }
 
 
+    public function having($where, $type = 'AND', $type2 = '')
+    {
+        if (!empty($where) && is_array($where)) {
+            foreach ($where as $k => $v) {
+                $prefix = (count($this->_having) == 0) ? '' : $type.' ';
+                if ( !$this->getDb()->_parse($k) && is_null($v) ) {
+                    $k .= ' IS NULL';
+                }
+                if ( !$this->getDb()->_parse($k)) {
+                    $k .= ' =';
+                }
+                if (!is_null($v)) {
+                    $v = $this->getDb()->escape($v);
+                }
+                if ( !empty($type2) ){
+                    $_having[] = $k.' '.$v;
+                }else{
+                    $this->_having[] = $prefix.$k.' '.$v;
+                }
+            }
+            if ( !empty($type2) && !empty($_having)){
+                $this->_having[] = $prefix .'('.  implode(" $type2 ", $_having) . ') ';
+            }
+        }
+
+        return $this;
+    }
+
     public function orlike($where, $not = false, $like='all') {
         return $this->like($where, $not, 'OR', $like);
     }
@@ -497,6 +526,11 @@ class Model
             $sql .= implode(', ', $this->_group);
         }
 
+        if (count($this->_having) > 0) {
+            $sql .= ' HAVING ';
+            $sql .= implode(' ', $this->_having);
+        }
+
         if (count($this->_order) > 0) {
             $sql .= ' ORDER BY ';
             $sql .= implode(', ', $this->_order);
@@ -506,7 +540,7 @@ class Model
             $sql .= $this->getDb()->limit($this->_offset, $this->_limit);
         }
 
-        // echo $sql."<br>";
+        //echo $sql."<br>";
 
         $this->resetSelect();
 
@@ -529,7 +563,8 @@ class Model
             '_order'    => array(),
             '_distinct' => false,
             '_limit'    => false,
-            '_offset'   => false
+            '_offset'   => false,
+            '_having'   => array()
         );
 
         $this->resetRun($vars);
