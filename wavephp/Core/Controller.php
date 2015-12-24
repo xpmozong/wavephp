@@ -25,10 +25,6 @@ class Controller
 
     public $app;
     public $view;
-    public $title;
-    public $css             = array();
-    public $js              = array();
-    public $meta            = array();
 
     /**
      * 初始化

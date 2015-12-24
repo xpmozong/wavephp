@@ -65,7 +65,11 @@ class Common extends Model
             if(!empty($value)){
                 if(is_array($value)){
                     foreach ($value as $k => $v) {
-                        $data[$key][$k] = addslashes($v);
+                        if (is_array($v)) {
+                            $data[$key][$k] = $this->getFilter($v);
+                        }else{
+                            $data[$key][$k] = addslashes($v);
+                        }
                     }
                 }else{
                     $data[$key] = addslashes($value);
