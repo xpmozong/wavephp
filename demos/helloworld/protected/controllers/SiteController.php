@@ -18,8 +18,8 @@ class SiteController extends Controller
         // 多语言使用，要连数据库，表为w_language，参看enterprise数据库
         // 按规定填入数据
         // 使用方式
-        I18n::$lang = 'vi-vn';
-        echo I18n::get('平台管理');
+        // I18n::$lang = 'vi-vn';
+        // echo I18n::get('平台管理');
         // smarty模板使用方式
         // {%I18n var=平台管理%}
 
@@ -41,8 +41,12 @@ class SiteController extends Controller
 
         // $User = new User();
         // echo "User model 加载成功！";
+        $TestModel = new TestModel();
+        $list = $TestModel->getList();
+        echo "<pre>";
+        print_r($list);die;
 
-        $this->username = 'Ellen';
+        // $this->username = 'Ellen';
         // 然后查看 templates/site/index.html 文件
         // 输出 {%$username%}
 

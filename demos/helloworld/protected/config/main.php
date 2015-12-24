@@ -24,6 +24,7 @@ $config = array(
     ),
     
     'debuger'               => false,       // 显示debug信息
+    'crash_show_sql'        => true,
     
     'database'              => array(
         'driver'            => 'mysql',
