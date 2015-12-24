@@ -206,7 +206,7 @@ $a 就是 aaa， $b 就是 bbb
     /**
      * 测试模型
      */
-    class TestModel
+    class TestModel extends Model
     {
         protected function init() {
             $this->_tableName = $this->getTablePrefix().'articles';
@@ -221,6 +221,12 @@ $a 就是 aaa， $b 就是 bbb
                             ->limit(0, 2)
                             ->group('aid')
                             ->order('aid')
+                            ->getAll();
+
+            $array = $this  ->select('*')
+                            ->like($like)
+                            ->group('aid')
+                            ->having(array('aid > '=>1))
                             ->getAll();
 
             $where = array('aid'=>2);
