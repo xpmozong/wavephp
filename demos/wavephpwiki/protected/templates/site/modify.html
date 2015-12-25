@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8" />
         <title>Wavephp框架wiki - 编辑</title>
-        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/style.css" />
-        <link rel="stylesheet" href="{%$app->request->baseUrl%}/resouce/css/editormd.css" />
+        <link rel="stylesheet" href="{%$baseUrl%}/resouce/css/style.css" />
+        <link rel="stylesheet" href="{%$baseUrl%}/resouce/css/editormd.css" />
         <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
     </head>
     <body>
         <div id="layout">
-            <form method="post" action="{%$app->homeUrl%}site/modified">
+            <form method="post" action="{%$homeUrl%}site/modified">
                 <div id="test-editormd" style="margin-top:20px;">
                     <textarea style="display:none;">{%$fileContent%}</textarea>
                 </div>
@@ -22,14 +22,14 @@
                 </div>               
             </form>
         </div>        
-        <script src="{%$app->request->baseUrl%}/resouce/js/jquery.min.js"></script>
-        <script src="{%$app->request->baseUrl%}/resouce/js/editormd.js"></script>   
+        <script src="{%$baseUrl%}/resouce/js/jquery.min.js"></script>
+        <script src="{%$baseUrl%}/resouce/js/editormd.js"></script>   
         <script type="text/javascript">
             $(function() {
                 // var testEditor = editormd("test-editormd", {
                 //     width  : "90%",
                 //     height : 640,
-                //     path   : "{%$app->request->baseUrl%}/resouce/lib/",
+                //     path   : "{%$baseUrl%}/resouce/lib/",
                 //     saveHTMLToTextarea : true,
                 //     codeFold : true,
                 //     searchReplace : true,
@@ -50,7 +50,7 @@
                 var testEditor = editormd("test-editormd", {
                     width  : "90%",
                     height : 640,
-                    path   : "{%$app->request->baseUrl%}/resouce/lib/",
+                    path   : "{%$baseUrl%}/resouce/lib/",
                     saveHTMLToTextarea : true
                 });
                 //testEditor.getMarkdown();       // 获取 Markdown 源码

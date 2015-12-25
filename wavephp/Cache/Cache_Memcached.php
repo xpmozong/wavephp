@@ -20,55 +20,76 @@
  * @author          许萍
  *
  */
-class Cache_Memcache implements Cache_Interface {
+class Cache_Memcache implements Cache_Interface 
+{
 
     public $hosts = array();
     public $pconnect = true;
     public $lifetime = 3600;
-    public $connection;
+    protected $cacheArray = array();
+    protected $cache_name = null;
 
-    public function __construct(array $options) {
+    public function __construct($came = 'memcached') 
+    {
+        $this->cache_name = $came;
+        $this->init();
+    }
+
+    public function init() 
+    {
         if (extension_loaded('memcached') == false ) {
             exit('extension memcached not found!');
         }
-        $this->hosts = $options;
-        $this->connection = new Memcached();
-        $this->connection->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
+        $this->hosts = Wave::app()->config[$this->cache_name];
+        $this->cacheArray[$this->cache_name] = new Memcached();
+
+        $this->cacheArray[$this->cache_name]->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
         $i = 1;
         foreach ($this->hosts as $key => $value) {
             if ($i == 1) {
-                if (!$this->connection->connect($value['host'], $value['port'])) {
+                if (!$this->cacheArray[$this->cache_name]->connect($value['host'], $value['port'])) {
                     echo 'memcahced server '.$value['host'].':'.$value['port'].' connection faild.<br>';
                 }
             } else {
-                $this->connection->addServer($value['host'], $value['port']);
+                $this->cacheArray[$this->cache_name]->addServer($value['host'], $value['port']);
             }
             $i++;
         }
     }
 
-    public function set($key, $value, $lifetime = 3600) {
+    public function getMemcached()
+    {
+        return $this->cacheArray[$this->cache_name];
+    }
+
+    public function set($key, $value, $lifetime = 3600) 
+    {
         $lifetime = $lifetime >= 0 ? $lifetime : $this->lifetime;
-        return $this->connection->set($key, $value, false, $lifetime);
+        return $this->getMemcached()->set($key, $value, false, $lifetime);
     }
 
-    public function get($key) {
-        return $this->connection->get($key);
+    public function get($key) 
+    {
+        return $this->getMemcached()->get($key);
     }
 
-    public function increment($key, $step = 1) {
+    public function increment($key, $step = 1) 
+    {
         if ($this->get($key)) {
-            return $this->connection->increment($key, $step);
+            return $this->getMemcached()->increment($key, $step);
         } else {
             return $this->set($key, 1);
         }
     }
 
-    public function decrement($key, $step = 1) {
-        return $this->connection->decrement($key, $step);
+    public function decrement($key, $step = 1) 
+    {
+        return $this->getMemcached()->decrement($key, $step);
     }
 
-    public function delete($key) {
-        return $this->connection->delete($key);
+    public function delete($key) 
+    {
+        return $this->getMemcached()->delete($key);
     }
 }
+?>

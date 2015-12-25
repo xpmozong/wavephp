@@ -8,13 +8,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{%$app->homeUrl%}">Wavephp框架</a>
+            <a class="navbar-brand" href="{%$homeUrl%}">Wavephp框架</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 {%foreach from=$categorys item="cate" key="a" %}
                     <li {%if $cid==$cate.id%}class="active"{%/if%}>
-                        <a href="{%$app->homeUrl%}site?cid={%$cate.id%}">
+                        <a href="{%$homeUrl%}site?cid={%$cate.id%}">
                         {%$cate.name%}
                         </a>
                     </li>
@@ -22,11 +22,11 @@
             </ul>
             {%if $isLogin%}
             <form class="navbar-form navbar-right">
-                <a href="{%$app->homeUrl%}site/add" class="btn btn-info">添加</a>
-                <a href="{%$app->homeUrl%}site/logout" class="btn btn-warning">退出</a>
+                <a href="{%$homeUrl%}site/add" class="btn btn-info">添加</a>
+                <a href="{%$homeUrl%}site/logout" class="btn btn-warning">退出</a>
             </form>
             {%else%}
-            <form class="navbar-form navbar-right" method="POST" action="{%$app->homeUrl%}site/loging">
+            <form class="navbar-form navbar-right" method="POST" action="{%$homeUrl%}site/loging">
                 <div class="form-group">
                     <input type="text" placeholder="邮箱" class="form-control" name="user_login">
                 </div>
@@ -45,7 +45,7 @@
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
             <div class="list-group">
                 {%foreach from=$blogList item="blog" key="a" %}
-                <a href="{%$app->homeUrl%}site?cid={%$blog.category[0].id%}&blogId={%$blog.blogId%}" class="list-group-item {%if $blogId==$blog.blogId%}active{%/if%}">
+                <a href="{%$homeUrl%}site?cid={%$blog.category[0].id%}&blogId={%$blog.blogId%}" class="list-group-item {%if $blogId==$blog.blogId%}active{%/if%}">
                     {%$blog.title%}
                 </a>
                 {%/foreach%}
@@ -60,8 +60,8 @@
                     </p>
                     {%if $isLogin%}
                     <p class="post-meta">
-                        <a href="{%$app->homeUrl%}site/modify?blogId={%$nowblog.blogId%}" class="btn btn-xs btn-success">编辑</a> | 
-                        <a href="{%$app->homeUrl%}site/delete?blogId={%$nowblog.blogId%}" onclick="return confirm('请确认是否删除')"  class="btn btn-xs btn-danger">删除</a>
+                        <a href="{%$homeUrl%}site/modify?blogId={%$nowblog.blogId%}" class="btn btn-xs btn-success">编辑</a> | 
+                        <a href="{%$homeUrl%}site/delete?blogId={%$nowblog.blogId%}" onclick="return confirm('请确认是否删除')"  class="btn btn-xs btn-danger">删除</a>
                     </p>
                     {%/if%}
                 </header>
@@ -73,7 +73,7 @@
     </div><!--/row-->
     <hr>
     <footer>
-        <p>&copy; Company 2015</p>
+        <p>&copy; Copyright 2015</p>
     </footer>
 </div><!--/.container-->
 {%include file="layout/footer.html"%}

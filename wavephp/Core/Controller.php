@@ -23,23 +23,31 @@ class Controller
 {
     private $isSmarty       = false;    // 是否用Smarty模板
 
-    public $app;
     public $view;
+    public $hostInfo;           // 当前域名
+    public $pathInfo;           // 除域名外以及index.php
+    public $homeUrl;            // 除域名外的地址
+    public $baseUrl;            // 除域名外的根目录地址
 
     /**
      * 初始化
      */
     public function __construct()
     {
-        $this->app = Wave::app();
-        if (isset($this->app->config['smarty'])) {
-            if (isset($this->app->config['smarty']['is_on'])) {
-                $this->isSmarty = $this->app->config['smarty']['is_on'];
+        $app = Wave::app();
+        if (isset($app->config['smarty'])) {
+            if (isset($app->config['smarty']['is_on'])) {
+                $this->isSmarty = $app->config['smarty']['is_on'];
             }
         }
         if ($this->isSmarty) {
             $this->view = $this->initView();
         }
+
+        $this->hostInfo = $app->request->hostInfo;
+        $this->pathInfo = $app->request->pathInfo;
+        $this->homeUrl = $app->homeUrl;
+        $this->baseUrl = $app->request->baseUrl;
     }
 
     /**
@@ -126,17 +134,15 @@ class Controller
      * @return string
      *
      */
-    public function verifyCode($num = 4, $width = 130, $height = 50)
+    public function verifyCode($num = 4, $width = 130, $height = 50, $timeout = 600)
     {
-        require $this->app->frameworkPath.
-                'Library/Captcha/VerifyCode.class.php';
+        require Wave::app()->frameworkPath.'Library/Captcha/VerifyCode.class.php';
         $VerifyCode = new VerifyCode();
         $VerifyCode->codelen = $num;
         $VerifyCode->width = $width;
         $VerifyCode->height = $height;
         $VerifyCode->doimg();
-        $this->app->session->setState('verifycode', 
-                            $VerifyCode->getCode(), 600);
+        Wave::app()->session->setState('verifycode', $VerifyCode->getCode(), $timeout);
     }
 
     /**
@@ -213,9 +219,10 @@ class Controller
      */
     public function debuger() 
     {
+        $config = Wave::app()->config;
         if ($this->isSmarty) {
-            $this->debuger = $this->app->config['debuger'];
-            if ($this->app->config['debuger']) {
+            $this->debuger = $config['debuger'];
+            if ($config['debuger']) {
                 if(!isset($_SESSION)) {
                     @session_start(); 
                 }
@@ -226,7 +233,7 @@ class Controller
                 $this->memuse = (memory_get_usage() - MEMORY_USAGE_START) / 1024;
             }
         }else{
-            if ($this->app->config['debuger']) {
+            if ($config['debuger']) {
                 if(!isset($_SESSION)) {
                     session_start(); 
                 }

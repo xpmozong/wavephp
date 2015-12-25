@@ -21,6 +21,7 @@
  */
 class Base
 {
+    public static $instance;
     private static $frameworkPath;      // 框架路径
     private static $projectPath;        // 项目路径
     private static $projectName;        // 项目名称
@@ -33,39 +34,34 @@ class Base
     private static $config;             // 配置项目
     private static $defaultControl;     // 默认控制层
     
+    public static function getInstance()
+    {
+        if(self::$instance == null){
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
 
     /**
      * 初始化
      */
-    public function __construct($config = null)
+    public function init($config = null)
     {
-        if(empty(self::$config)) {
-            if(!empty($config)) {
-                if (!isset($config['debuger'])) {
-                    $config['debuger'] = false;
-                }
-                self::$config = $config;
+        if(!empty($config)) {
+            if (!isset($config['debuger'])) {
+                $config['debuger'] = false;
             }
+            self::$config = $config;
         }
 
-        if(empty(self::$projectName)) {
-            self::$projectName = !empty($config['projectName']) 
-            ? $config['projectName'] : 'protected';
-        }
+        self::$projectName = !empty($config['projectName']) ? $config['projectName'] : 'protected';
 
-        if(empty(self::$modelName)) {
-            self::$modelName = !empty($config['modelName']) 
-            ? $config['modelName'] : 'protected';
-        }
+        self::$modelName = !empty($config['modelName']) ? $config['modelName'] : 'protected';
 
-        if(empty(self::$import)){
-            self::$import = !empty($config['import']) ? $config['import'] : '';
-        }
+        self::$import = !empty($config['import']) ? $config['import'] : '';
 
-        if(empty(self::$defaultControl)) {
-            self::$defaultControl = !empty($config['defaultController']) 
+        self::$defaultControl = !empty($config['defaultController']) 
             ? $config['defaultController'] : 'site';
-        }
 
         $this->loadBase();
     }
@@ -81,45 +77,29 @@ class Base
         $scriptName = implode('/', $scriptArr);
         unset($scriptArr);
 
-        if(empty(self::$projectPath)) {
-            self::$projectPath = $_SERVER['DOCUMENT_ROOT'].$scriptName.'/';
-        }
+        self::$projectPath = $_SERVER['DOCUMENT_ROOT'].$scriptName.'/';
 
-        if(empty(self::$frameworkPath)) {
-            self::$frameworkPath = dirname(__FILE__).'/';
-        }
+        self::$frameworkPath = dirname(__FILE__).'/';
 
-        if(empty(self::$hostInfo)) {
-            self::$hostInfo = 
+        self::$hostInfo = 
             isset($_SERVER['HTTP_HOST']) 
             ? strtolower($_SERVER['HTTP_HOST']) : '';
-        }
 
         if ($enterFile == 'index.php') {
-            if(empty(self::$pathInfo)) {
-                $pathUrl = str_replace($scriptName, '', $_SERVER['REQUEST_URI']);
-                self::$pathInfo = str_replace($enterFile, '', $pathUrl);
-            }
-            if(empty(self::$homeUrl)) {
-                self::$homeUrl = $scriptName.'/';
-            }
+            $pathUrl = str_replace($scriptName, '', $_SERVER['REQUEST_URI']);
+            self::$pathInfo = str_replace($enterFile, '', $pathUrl);
+            self::$homeUrl = $scriptName.'/';
         }else{
-            if(empty(self::$pathInfo)) {
-                self::$pathInfo = 
+            self::$pathInfo = 
                 isset($_SERVER['PATH_INFO']) 
                 ? strtolower($_SERVER['PATH_INFO']) : '/site/index';
-            }
 
-            if(empty(self::$homeUrl)) {
-                self::$homeUrl = 
+            self::$homeUrl = 
                 isset($_SERVER['SCRIPT_NAME']) 
                 ? strtolower($_SERVER['SCRIPT_NAME']).'/' : '/';
-            }
         }
 
-        if(empty(self::$baseUrl)) {
-            self::$baseUrl = $scriptName;
-        }
+        self::$baseUrl = $scriptName;
     }
 
     /**

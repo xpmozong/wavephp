@@ -26,12 +26,12 @@ class Request
     const SCHEME_HTTPS = 'https';
     private $_baseUrl;
     public static $instance;
-    
-    private function __construct(){
 
-    }
-
-    public static function getInstance(){
+    /**
+     * 单例
+     */
+    public static function getInstance()
+    {
         if(self::$instance == null){
             self::$instance = new self;
         }
@@ -86,12 +86,14 @@ class Request
         switch (true) {
             case isset($this->_params[$key]):
                 return $this->_params[$key];
-            case isset($_GET[$key]):
-                return $_GET[$key];
-            case isset($_POST[$key]):
-                return $_POST[$key];
-            case isset($_COOKIE[$key]):
-                return $_COOKIE[$key];
+            // case isset($_GET[$key]):
+            //     return $_GET[$key];
+            // case isset($_POST[$key]):
+            //     return $_POST[$key];
+            // case isset($_COOKIE[$key]):
+            //     return $_COOKIE[$key];
+            case isset($_REQUEST[$key]):
+                return $_REQUEST[$key];
             case ($key == 'REQUEST_URI'):
                 return $this->getRequestUri();
             case ($key == 'PATH_INFO'):
@@ -105,11 +107,87 @@ class Request
         }
     }
 
+    /**
+     * 获得参数int型
+     *
+     * @param string $key
+     * @return int
+     *
+     */
+    public function getInt($key)
+    {
+        if (isset($_REQUEST[$key])) {
+            return (int)$_REQUEST[$key];
+        }else{
+            return 0;
+        }
+    }
+
+    /**
+     * 获得参数string型
+     *
+     * @param string $key
+     * @return string
+     *
+     */
+    public function getString($key)
+    {
+        if (isset($_REQUEST[$key])) {
+            return $_REQUEST[$key];
+        }else{
+            return '';
+        }
+    }
+
+    /**
+     * 获得参数 加魔术引用
+     *
+     * @param string $key
+     * @return string
+     *
+     */
+    public function getAddslashes($key)
+    {
+        if (isset($_REQUEST[$key])) {
+            return addslashes($_REQUEST[$key]);
+        }else{
+            return '';
+        }
+    }
+
+    /**
+     *获得参数 加转义
+     *
+     * @param string $key
+     * @return string
+     *
+     */
+    public function getHtmlspecialchars($key)
+    {
+        if (isset($_REQUEST[$key])) {
+            return htmlspecialchars($_REQUEST[$key]);
+        }else{
+            return '';
+        }
+    }
+
+    /**
+     * 获得请求方法
+     *
+     * @return string
+     *
+     */
     public function getMethod()
     {
         return $this->getServer('REQUEST_METHOD');
     }
 
+    /**
+     * 是否POST提交
+     *
+     * @return bool
+     *
+     */
     public function isPost()
     {
         if( $this->getMethod() == 'POST' ){
@@ -118,6 +196,12 @@ class Request
         return false;
     }
 
+    /**
+     * 是否GET提交
+     *
+     * @return bool
+     *
+     */
     public function isGet()
     {
         if( $this->getMethod() == 'GET' ){
@@ -126,15 +210,20 @@ class Request
         return false;
     }
 
+    /**
+     * 是否Ajax提交
+     *
+     * @return bool
+     *
+     */
     public function isAjax()
     {
         return ($this->getHeader('X_REQUESTED_WITH') == 'XMLHttpRequest');
     }
 
-    function getHostName(){
-
-    }
-
+    /**
+     * 获得服务器信息
+     */
     public function getServer($key = null, $default = null)
     {
         if (null === $key) {
@@ -144,6 +233,9 @@ class Request
         return (isset($_SERVER[$key])) ? $_SERVER[$key] : $default;
     }
 
+    /**
+     * 获得头信息
+     */
     public function getHeader($header)
     {
         // Try to get it from the $_SERVER array first
@@ -170,6 +262,9 @@ class Request
         return false;
     }
 
+    /**
+     * 获得全局变量
+     */
     public function getEnv($key = null, $default = null)
     {
         if (null === $key) {
@@ -179,6 +274,9 @@ class Request
         return (isset($_ENV[$key])) ? $_ENV[$key] : $default;
     }
 
+    /**
+     * 获得cookie值
+     */
     public function getCookie($key = null, $default = null)
     {
         if (null === $key) {
@@ -188,6 +286,12 @@ class Request
         return (isset($_COOKIE[$key])) ? $_COOKIE[$key] : $default;
     }
 
+    /**
+     * 获得请求URI
+     *
+     * @return string
+     *
+     */
     public function getRequestUri()
     {
          $current_uri = '';
@@ -214,7 +318,12 @@ class Request
         return $current_uri;
     }
 
-    // 获取客户端IP
+    /**
+     * 获取客户端IP
+     *
+     * @return string
+     * 
+     */
     public static function getClientIp()
     {
          if( isset($_SERVER) ){
@@ -238,148 +347,28 @@ class Request
                 $realip = getenv("REMOTE_ADDR");
             }
         }
+
         return addslashes($realip);
     }
 
-    // 获取主域名
-    public function getDomain()
-    {
-        $host = $this->getServer('HTTP_HOST');
-        $topDomain = 'local|com\.cn|com|edu|gov|int|mil|net|org|biz|';
-        $topDomain .= 'info|pro|name|museum|coop|aero|xxx|idv|mobi|cc|me';
-        $matchstr = "[^\.]+\.(?:(" . $topDomain . ")|\w{2}|((" . $topDomain . ")\.\w{2}))$";
-        if(preg_match("/". $matchstr . "/ies", $host, $matchs)){
-            $domain = $matchs['0'];
-        }else{
-            $domain = $host;
-        }
-        return $domain;
-    }
-
+    /**
+     * 获得请求类型
+     *
+     * @return http or https
+     *
+     */
     public function getScheme()
     {
         return ($this->getServer('HTTPS') == 'on') ? 
                 self::SCHEME_HTTPS : self::SCHEME_HTTP;
     }
 
-    // 获取域名
-    public function getHttpHost()
-    {
-        $host = $this->getServer('HTTP_HOST');
-        if (!empty($host)) {
-            return $host;
-        }
-
-        $scheme = $this->getScheme();
-        $name   = $this->getServer('SERVER_NAME');
-        $port   = $this->getServer('SERVER_PORT');
-
-        if(null === $name) {
-            return '';
-        } elseif (($scheme == self::SCHEME_HTTP && $port == 80) || 
-            ($scheme == self::SCHEME_HTTPS && $port == 443)) {
-            return $name;
-        } else {
-            return $name . ':' . $port;
-        }
-    }
-
-    public function setBaseUrl($baseUrl = null)
-    {
-        if ((null !== $baseUrl) && !is_string($baseUrl)) {
-            return $this;
-        }
-
-        if ($baseUrl === null) {
-            $filename = (isset($_SERVER['SCRIPT_FILENAME'])) ? 
-                        basename($_SERVER['SCRIPT_FILENAME']) : '';
-            if (isset($_SERVER['SCRIPT_NAME']) && 
-                basename($_SERVER['SCRIPT_NAME']) === $filename) {
-                $baseUrl = $_SERVER['SCRIPT_NAME'];
-            } elseif (isset($_SERVER['PHP_SELF']) && 
-                basename($_SERVER['PHP_SELF']) === $filename) {
-                $baseUrl = $_SERVER['PHP_SELF'];
-            } elseif (isset($_SERVER['ORIG_SCRIPT_NAME']) 
-                && basename($_SERVER['ORIG_SCRIPT_NAME']) === $filename) {
-                // 1and1 shared hosting compatibility
-                $baseUrl = $_SERVER['ORIG_SCRIPT_NAME'];
-            } else {
-                // Backtrack up the script_filename to find the portion matching
-                // php_self
-                $path    = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
-                $file    = isset($_SERVER['SCRIPT_FILENAME']) ? 
-                            $_SERVER['SCRIPT_FILENAME'] : '';
-                $segs    = explode('/', trim($file, '/'));
-                $segs    = array_reverse($segs);
-                $index   = 0;
-                $last    = count($segs);
-                $baseUrl = '';
-                do {
-                    $seg     = $segs[$index];
-                    $baseUrl = '/' . $seg . $baseUrl;
-                    ++$index;
-                } while (($last > $index) 
-                    && (false !== ($pos = strpos($path, $baseUrl))) 
-                    && (0 != $pos));
-            }
-
-            // Does the baseUrl have anything in common with the request_uri?
-            $requestUri = $this->getRequestUri();
-
-            if (0 === strpos($requestUri, $baseUrl)) {
-                // full $baseUrl matches
-                $this->_baseUrl = $baseUrl;
-                return $this;
-            }
-
-            if (0 === strpos($requestUri, dirname($baseUrl))) {
-                // directory portion of $baseUrl matches
-                $this->_baseUrl = rtrim(dirname($baseUrl), '/');
-                return $this;
-            }
-
-            $truncatedRequestUri = $requestUri;
-            if (($pos = strpos($requestUri, '?')) !== false) {
-                $truncatedRequestUri = substr($requestUri, 0, $pos);
-            }
-
-            $basename = basename($baseUrl);
-            if (empty($basename) || !strpos($truncatedRequestUri, $basename)) {
-                // no match whatsoever; set it blank
-                $this->_baseUrl = '';
-                return $this;
-            }
-
-            // If using mod_rewrite or ISAPI_Rewrite strip the script filename
-            // out of baseUrl. $pos !== 0 makes sure it is not matching a value
-            // from PATH_INFO or QUERY_STRING
-            if ((strlen($requestUri) >= strlen($baseUrl))
-                && ((false !== ($pos = strpos($requestUri, $baseUrl))) && ($pos !== 0)))
-            {
-                $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
-            }
-        }
-
-        $this->_baseUrl = rtrim($baseUrl, '/');
-        return $this;
-    }
-
-    // 获取URL根路径
-    public function getBaseUrl($raw = false)
-    {
-        if (null === $this->_baseUrl) {
-            $module = Application::getInstance()->getModuleName();
-            $baseUrl = $this->getScheme().'://'.$this->getHttpHost().Request::URI_DELIMITER;
-            if($module != 'default'){
-                 $baseUrl .= $module . Request::URI_DELIMITER;
-            }
-            $this->setBaseUrl($baseUrl);
-        }
-
-        return $raw ? rawurlencode($this->_baseUrl) : $this->_baseUrl;
-    }
-
-    // 获取当前URL链接
+    /**
+     * 获取当前URL链接
+     *
+     * @return string
+     *
+     */
     public function getCurrentUrl($raw = true)
     {
         $current_url = sprintf('http%s://%s%s',
@@ -388,37 +377,6 @@ class Request
             (isset($_SERVER['REQUEST_URI']) ? 
                 $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF']));
         return $raw ? rawurlencode($current_url) : $current_url;
-    }
-
-    public function getReferer($filter = true, $default = '/')
-    {
-        if ($filter && !empty($_GET['referer'])) {
-            $info = parse_url($_GET['referer']);
-            if (!isset($info['host'])) {
-                return $_GET['referer'];
-            } else if (preg_match('/(.)*'.$this->getDomain().'$/is', $info['host'])) {
-                return $_GET['referer'];
-            } else {
-                return $default;
-            }
-        }
-        return !empty($_GET['referer']) ? rawurldecode($_GET['referer']) : $default;
-    }
-
-    /**
-     * 比较2个数字是否相等
-     * @param unknown_type $str
-     * @param unknown_type $str2  要比较的数字
-     * @return number
-     */
-    public function getIsEqual($str,$str2){
-        $str  = isset($str)  ? trim($str) : 0;
-        $str2 = isset($str2) ? $str2 : 0;
-
-        if($str == $str2){
-            return 100;
-        }
-        return 0;
     }
 
 }

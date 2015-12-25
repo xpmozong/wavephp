@@ -27,12 +27,13 @@ class Session_Redis
     protected $sess_id;
     protected $cache;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $option = Wave::app()->config['session'];
         $this->lifeTime = $option['timeout'];
 
         if (isset($option['redis'])) {
-            $this->cache = new Cache_Redis($option['redis']);
+            $this->cache = new Cache_Redis('session_redis');
         }else{
             $this->cache = Wave::app()->redis;
         }
@@ -90,16 +91,19 @@ class Session_Redis
         session_destroy();
     }
 
-    function open($savePath, $sessName) {
+    function open($savePath, $sessName) 
+    {
         return true; 
     }
 
-    function close() { 
+    function close() 
+    { 
         $this->gc(ini_get('session.gc_maxlifetime')); 
         return true; 
     }
 
-    function read($sessID) {
+    function read($sessID) 
+    {
         $this->sess_id = $sessID;
         $sessData = $this->cache->get($this->sess_id);
         if (!empty($sessData)) {
@@ -109,22 +113,23 @@ class Session_Redis
         }
     }
 
-    function write($sessID, $sessData) {
+    function write($sessID, $sessData) 
+    {
         $this->cache->set($this->sess_id, $sessData, $this->lifeTime);
         return true;
     }
 
-    function destroy($sessID) { 
+    function destroy($sessID) 
+    { 
         // delete session-data
         $this->cache->delete($this->sess_id);
         return true;
     } 
 
-    function gc($sessMaxLifeTime) {
+    function gc($sessMaxLifeTime) 
+    {
         // delete old sessions
         return true;
-    } 
-
+    }
 }
-
 ?>

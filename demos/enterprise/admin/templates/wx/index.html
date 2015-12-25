@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">公众账号管理
-                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$app->homeUrl%}wx/modify/0'">
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$homeUrl%}wx/modify/0'">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 绑定公众号
                 </button>
             </h3>
@@ -25,7 +25,7 @@
                         <td>{%$value.gh_name%}<br>{%$value.gh_id%}</td>
                         <td>{%$value.gh_type%}</td>
                         <td>
-                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$app->homeUrl%}wx/modify/{%$value.gid%}'">修改</button>
+                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$homeUrl%}wx/modify/{%$value.gid%}'">修改</button>
                         </td>
                     </tr>
                     {%/foreach%}

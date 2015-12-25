@@ -41,13 +41,14 @@ class Wave
      * 初始化
      */
     public function __construct($configfile = null)
-    {  
+    {
         require dirname(__FILE__).'/Base.php';
         if(file_exists($configfile)) {
             require $configfile;
             $this->config = $config;
         }
-        $this->Base = new Base($this->config);
+        $this->Base = Base::getInstance();
+        $this->Base->init($this->config);
         $this->Base->requireFrameworkFile('Cache/Cache_Interface');
         $this->Base->requireFrameworkFile('Core/WaveLoader');
         spl_autoload_register(array('WaveLoader', 'loader'));
@@ -75,8 +76,7 @@ class Wave
     {
         if(empty(self::$app->memcache)){
             if(!empty(self::$app->config['memcache'])){
-                $memcache = self::$app->config['memcache'];
-                self::$app->memcache = new Cache_Memcache($memcache);
+                self::$app->memcache = new Cache_Memcache();
             }
         }
     }
@@ -88,8 +88,7 @@ class Wave
     {
         if(empty(self::$app->memcached)){
             if(!empty(self::$app->config['memcached'])){
-                $memcached = self::$app->config['memcached'];
-                self::$app->memcached = new Cache_Memcache($memcached);
+                self::$app->memcached = new Cache_Memcached();
             }
         }
     }
@@ -101,8 +100,7 @@ class Wave
     {
         if(empty(self::$app->redis)){
             if(!empty(self::$app->config['redis'])){
-                $redis = self::$app->config['redis'];
-                self::$app->redis = new Cache_Redis($redis);
+                self::$app->redis = new Cache_Redis();
             }
         }
     }

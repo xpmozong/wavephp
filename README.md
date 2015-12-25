@@ -165,9 +165,9 @@
 			echo Wave::app()->request->baseUrl;
 			
 			// 关闭自动加载
-			spl_autoload_unregister(array('WaveBase','loader'));
+			spl_autoload_unregister(array('WaveLoader','loader'));
 			// 开启自动加载
-			spl_autoload_register(array('WaveBase','loader'));
+			spl_autoload_register(array('WaveLoader','loader'));
 			
 			$User = new User();
 			echo "User model 加载成功！";

@@ -47,13 +47,13 @@ var getData = function(url) {
 }
 
 $(document).ready(function(){
-    url = '{%$app->homeUrl%}logs/jsonlist';
+    url = '{%$homeUrl%}logs/jsonlist';
     getData(url);
 });
 
 var searchData = function() {
     var cid = $("#cid").val();
-    url = '{%$app->homeUrl%}logs/jsonlist';
+    url = '{%$homeUrl%}logs/jsonlist';
     getData(url);
 }
 </script>

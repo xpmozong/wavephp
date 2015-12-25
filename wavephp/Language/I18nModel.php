@@ -22,7 +22,8 @@
  */
 class I18nModel extends Model
 {
-    protected function init() {
+    protected function init() 
+    {
         $this->_tableName = 'w_language';
     }
 
@@ -94,7 +95,5 @@ class I18nModel extends Model
 
         return $i18n;
     }
-
 }
-
 ?>

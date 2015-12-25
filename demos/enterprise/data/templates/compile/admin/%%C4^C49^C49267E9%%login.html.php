@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.25-dev, created on 2015-12-11 17:58:28
+<?php /* Smarty version 2.6.25-dev, created on 2015-12-25 18:06:44
          compiled from site/login.html */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "layout/header.html", 'smarty_include_vars' => array()));
@@ -27,7 +27,7 @@ var checkForm = function(){
 登录</h3>
             </div>
             <div class="panel-body">
-                <form method="post" class="form-signin" role="form" id="login-form" action="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <form method="post" class="form-signin" role="form" id="login-form" action="<?php echo $this->_tpl_vars['homeUrl']; ?>
 site/loging" onsubmit="return checkForm()">
                     <div class="form-group" id="login-form">
                         <label for="user_login">邮箱</label>

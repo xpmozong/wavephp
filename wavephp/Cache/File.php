@@ -29,7 +29,8 @@ class File
      * @param string mod     文件打开模式
      * @return void
      */
-    public static function write($file, $contents, $mod = 'w') {
+    public static function write($file, $contents, $mod = 'w') 
+    {
         $fp = fopen($file, $mod);
         flock($fp, LOCK_EX);
         fwrite($fp, $contents);
@@ -43,7 +44,8 @@ class File
      * @param int    mod 目录权限
      * @return bool
      */
-    public static function mkdirs($dir, $mod = 0755) {
+    public static function mkdirs($dir, $mod = 0755) 
+    {
         if (!is_dir($dir)) {
             self::mkdirs(dirname($dir), $mod);
             return mkdir($dir, $mod);
@@ -55,7 +57,8 @@ class File
      * @param string file 文件路径
      * @return bool/string
      */
-    public static function read($file) {
+    public static function read($file) 
+    {
         return @file_get_contents($file);
     }
     
@@ -65,7 +68,8 @@ class File
      * @param string filename 文件名称
      * @return void
      */
-    public static function download($file, $filename = '') {
+    public static function download($file, $filename = '') 
+    {
         if (!is_file($file)) {
             exit('the '.$file.' is not found.');
         }
@@ -93,7 +97,8 @@ class File
     /**
      * 获取附件类型
      */
-    public static function getType($type) {
+    public static function getType($type) 
+    {
         if (is_numeric($type)) {
             $typeid = $type;
         } else {
@@ -117,7 +122,8 @@ class File
     /**
      * 友好格式显示文件大小
      */
-    public static function getSize($filesize) {
+    public static function getSize($filesize) 
+    {
         if (is_file($filesize)) {
             $filesize = filesize($filesize);
         }
@@ -133,3 +139,4 @@ class File
         return $filesize;
     }
 }
+?>

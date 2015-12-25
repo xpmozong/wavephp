@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.25-dev, created on 2015-12-11 18:01:53
+<?php /* Smarty version 2.6.25-dev, created on 2015-12-25 18:07:32
          compiled from layout/footer.html */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "layout/debuger.html", 'smarty_include_vars' => array()));

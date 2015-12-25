@@ -61,5 +61,4 @@ class WaveCommon
         return $response;
     }
 }
-
 ?>

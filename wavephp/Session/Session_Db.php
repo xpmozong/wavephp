@@ -26,7 +26,8 @@ class Session_Db extends Model
     protected $lifeTime     = 86400;    // 生存周期
     protected $sess_id;
 
-    protected function init() {
+    protected function init() 
+    {
         $option = Wave::app()->config['session'];
         $this->lifeTime = $option['timeout'];
         $this->_tableName = 'w_sessions';
@@ -84,7 +85,8 @@ class Session_Db extends Model
         session_destroy();
     }
 
-    function open($savePath, $sessName) {
+    function open($savePath, $sessName) 
+    {
         $tables = $this->queryAll('show tables');
         $tablesList = array();
         $dbName = Wave::app()->config['database']['master']['dbname'];
@@ -105,12 +107,14 @@ class Session_Db extends Model
         return true; 
     }
 
-    function close() { 
+    function close() 
+    { 
         $this->gc(ini_get('session.gc_maxlifetime')); 
         return true; 
     }
 
-    function read($sessID) {
+    function read($sessID) 
+    {
         $this->sess_id = $sessID;
         $where = array('session_id'=>$sessID, 'session_expires>'=> time());
         $row = $this->where($where)
@@ -122,7 +126,8 @@ class Session_Db extends Model
         }
    }
 
-   function write($sessID, $sessData) {
+   function write($sessID, $sessData) 
+   {
         // new session-expire-time 
         $newExp = time() + $this->lifeTime; 
         // is a session with this id in the database? 
@@ -143,18 +148,18 @@ class Session_Db extends Model
         }
    }
 
-    function destroy($sessID) { 
+    function destroy($sessID) 
+    { 
         // delete session-data 
         $where = array('session_id'=>$sessID);
         return $this->delete($where);
     } 
 
-    function gc($sessMaxLifeTime) {
+    function gc($sessMaxLifeTime) 
+    {
         $where = array('session_expires<'=>time());
         // delete old sessions
         return $this->delete($where);
-    } 
-
+    }
 }
-
 ?>

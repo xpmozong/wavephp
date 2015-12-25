@@ -41,10 +41,10 @@ class SiteController extends Controller
 
         // $User = new User();
         // echo "User model 加载成功！";
-        $TestModel = new TestModel();
-        $list = $TestModel->getList();
-        echo "<pre>";
-        print_r($list);die;
+        // $TestModel = new TestModel();
+        // $list = $TestModel->getList();
+        // echo "<pre>";
+        // print_r($list);die;
 
         // $this->username = 'Ellen';
         // 然后查看 templates/site/index.html 文件

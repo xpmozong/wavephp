@@ -154,7 +154,5 @@ class Route
     {
         return strtolower(str_replace('action', '', $this->actionName));
     }
-
 }
-
 ?>

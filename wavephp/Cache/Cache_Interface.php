@@ -47,5 +47,4 @@ interface Cache_Interface
      */
     public function decrement($id, $step = 1);
 }
-
 ?>

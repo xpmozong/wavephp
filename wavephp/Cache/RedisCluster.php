@@ -19,7 +19,8 @@
  * @author          许萍
  *
  */
-class RedisCluster {
+class RedisCluster 
+{
   
     // 是否使用 M/S 的读写集群方案
     private $_iSUSECluster = false;
@@ -38,7 +39,8 @@ class RedisCluster {
      *
      * @param boolean $isUseCluster 是否采用 M/S 方案
      */
-    public function __construct($isUseCluster = false){
+    public function __construct($isUseCluster = false)
+    {
         $this->_isUseCluster = $isUseCluster;
     }
   
@@ -49,7 +51,8 @@ class RedisCluster {
      * @param boolean $isMaster 当前添加的服务器是否为 Master 服务器
      * @return boolean
      */
-    public function connect($config, $isMaster = true){
+    public function connect($config, $isMaster = true)
+    {
         // default port
         if(!isset($config['port'])){
             $config['port'] = 6379;
@@ -76,7 +79,8 @@ class RedisCluster {
      * @return boolean
      *
      */
-    public function close($flag = 2){
+    public function close($flag = 2)
+    {
         switch($flag){
             // 关闭 Master
             case 0:
@@ -108,7 +112,8 @@ class RedisCluster {
      * true:负载均衡随机返回一个Slave选择 false:返回所有的Slave选择
      * @return redis object
      */
-    public function getRedis($isMaster = true, $slaveOne = true){
+    public function getRedis($isMaster = true, $slaveOne = true)
+    {
         // 只返回 Master
         if($isMaster){
             return $this->_linkHandle['master'];
@@ -124,7 +129,8 @@ class RedisCluster {
      * @param string $value 缓存值
      * @param int $expire 过期时间， 0:表示无过期时间
      */
-    public function set($key, $value, $expire = 0){
+    public function set($key, $value, $expire = 0)
+    {
         // 永不超时
         if($expire == 0){
             $ret = $this->getRedis()->set($key, $value);
@@ -141,93 +147,10 @@ class RedisCluster {
      * @param string $key 缓存KEY,支持一次取多个 $key = array('key1','key2')
      * @return string || boolean  失败返回 false, 成功返回字符串
      */
-    public function get($key){
+    public function get($key)
+    {
         // 是否一次取多个值
         $func = is_array($key) ? 'mGet' : 'get';
-        // 没有使用M/S
-        if(!$this->_isUseCluster){
-            return $this->getRedis()->{$func}($key);
-        }
-        
-        // 使用了 M/S
-        return $this->_getSlaveRedis()->{$func}($key);
-    }
-
-    /**
-     * 插入一个值到列表中,如果列表不存在,新建一个列表
-     * @param string $key
-     * @param string $value
-     */
-    public function lpush($key, $value){
-        $ret = $this->getRedis()->lPush($key, $value);
-        
-        return $ret;
-    }
-
-    /**
-     * 删除列表的第一个值并返回它
-     * @param string $key
-     */
-    public function lpop($key){
-        $func = 'lPop';
-
-        // 没有使用M/S
-        if(!$this->_isUseCluster){
-            return $this->getRedis()->{$func}($key);
-        }
-        
-        // 使用了 M/S
-        return $this->_getSlaveRedis()->{$func}($key);
-    }
-
-    /**
-     * 插入一个值到列表中,如果列表不存在,新建一个列表
-     * @param string $key
-     * @param string $value
-     */
-    public function rpush($key, $value){
-        $ret = $this->getRedis()->rPush($key, $value);
-        
-        return $ret;
-    }
-
-    /**
-     * 删除并返回列表的最后一个值
-     * @param string $key
-     */
-    public function rpop($key){
-        $func = 'rPop';
-
-        // 没有使用M/S
-        if(!$this->_isUseCluster){
-            return $this->getRedis()->{$func}($key);
-        }
-        
-        // 使用了 M/S
-        return $this->_getSlaveRedis()->{$func}($key);
-    }
-
-    /**
-     * 从列表中返回指定位置的值
-     */
-    public function lget($key, $index = 0){
-        $func = 'lGet';
-
-        // 没有使用M/S
-        if(!$this->_isUseCluster){
-            return $this->getRedis()->{$func}($key, $index);
-        }
-        
-        // 使用了 M/S
-        return $this->_getSlaveRedis()->{$func}($key, $index);
-    }
-
-    /**
-     * 获得列表的长度
-     */
-    public function llen($key){
-        $func = 'lLen';
-
         // 没有使用M/S
         if(!$this->_isUseCluster){
             return $this->getRedis()->{$func}($key);
@@ -244,7 +167,8 @@ class RedisCluster {
      * @param string $value 缓存值
      * @return boolean
      */
-    public function setnx($key, $value){
+    public function setnx($key, $value)
+    {
         return $this->getRedis()->setnx($key, $value);
     }
   
@@ -254,9 +178,100 @@ class RedisCluster {
      * @param string || array $key 缓存KEY，支持单个健:"key1" 或多个健:array('key1','key2')
      * @return int 删除的健的数量
      */
-    public function delete($key){
+    public function delete($key)
+    {
         // $key => "key1" || array('key1','key2')
         return $this->getRedis()->delete($key);
+    }
+
+    /**
+     * 插入一个值到列表中,如果列表不存在,新建一个列表
+     * @param string $key
+     * @param string $value
+     */
+    public function lpush($key, $value)
+    {
+        $ret = $this->getRedis()->lPush($key, $value);
+        
+        return $ret;
+    }
+
+    /**
+     * 删除列表的第一个值并返回它
+     * @param string $key
+     */
+    public function lpop($key)
+    {
+        $func = 'lPop';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
+    }
+
+    /**
+     * 插入一个值到列表中,如果列表不存在,新建一个列表
+     * @param string $key
+     * @param string $value
+     */
+    public function rpush($key, $value)
+    {
+        $ret = $this->getRedis()->rPush($key, $value);
+        
+        return $ret;
+    }
+
+    /**
+     * 删除并返回列表的最后一个值
+     * @param string $key
+     */
+    public function rpop($key)
+    {
+        $func = 'rPop';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
+    }
+
+    /**
+     * 从列表中返回指定位置的值
+     */
+    public function lget($key, $index = 0)
+    {
+        $func = 'lGet';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key, $index);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key, $index);
+    }
+
+    /**
+     * 获得列表的长度
+     */
+    public function llen($key)
+    {
+        $func = 'lLen';
+
+        // 没有使用M/S
+        if(!$this->_isUseCluster){
+            return $this->getRedis()->{$func}($key);
+        }
+        
+        // 使用了 M/S
+        return $this->_getSlaveRedis()->{$func}($key);
     }
   
     /**
@@ -266,7 +281,8 @@ class RedisCluster {
      * @param int $default 操作时的默认值
      * @return int　操作后的值
      */
-    public function incr($key, $default = 1){
+    public function incr($key, $default = 1)
+    {
         if($default == 1){
             return $this->getRedis()->incr($key);
         }else{
@@ -281,7 +297,8 @@ class RedisCluster {
      * @param int $default 操作时的默认值
      * @return int　操作后的值
      */
-    public function decr($key, $default = 1){
+    public function decr($key, $default = 1)
+    {
         if($default == 1){
             return $this->getRedis()->decr($key);
         }else{
@@ -294,7 +311,8 @@ class RedisCluster {
      *
      * @return boolean
      */
-    public function clear(){
+    public function clear()
+    {
         return $this->getRedis()->flushDB();
     }
 
@@ -304,7 +322,8 @@ class RedisCluster {
      * @param $hash string 哈希表名
      * @param $data array 要写入的数据 array('key'=>'value')
      */
-    public function hashSet($hash, $key, $data) {
+    public function hashSet($hash, $key, $data) 
+    {
         $return = null;
         if (is_array($data) && !empty($data)) {
             $return = $this->getRedis()->hSet($hash, $key, $data);
@@ -319,7 +338,8 @@ class RedisCluster {
      * @param $key mixed 表中要存储的key名 默认为null 返回所有key>value
      * @param $type int 要获取的数据类型 0:返回所有key 1:返回所有value 2:返回所有key->value
      */
-    public function hashGet($hash, $key = array(), $type = 0) {
+    public function hashGet($hash, $key = array(), $type = 0) 
+    {
         $return = null;
         if ($key) {
             if (is_array($key) && !empty($key))
@@ -350,7 +370,8 @@ class RedisCluster {
      * 获取hash表中元素个数
      * @param $hash string 哈希表名
      */
-    public function hashLen($hash) {
+    public function hashLen($hash) 
+    {
         $return = null;
 
         $return = $this->getRedis()->hLen($hash);
@@ -363,7 +384,8 @@ class RedisCluster {
      * @param $hash string 哈希表名
      * @param $key mixed 表中存储的key名
      */
-    public function hashDel($hash, $key) {
+    public function hashDel($hash, $key) 
+    {
         $return = null;
 
         $return = $this->getRedis()->hDel($hash, $key);
@@ -376,7 +398,8 @@ class RedisCluster {
      * @param $hash string 哈希表名
      * @param $key mixed 表中存储的key名
      */
-    public function hashExists($hash, $key) {
+    public function hashExists($hash, $key) 
+    {
         $return = null;
 
         $return = $this->getRedis()->hExists($hash, $key);
@@ -391,7 +414,8 @@ class RedisCluster {
      *
      * @return redis object
      */
-    private function _getSlaveRedis(){
+    private function _getSlaveRedis()
+    {
         // 就一台 Slave 机直接返回
         if($this->_sn <= 1){
             return $this->_linkHandle['slave'][0];

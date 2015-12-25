@@ -64,3 +64,4 @@ if (!function_exists('__')) {
         return empty($values) ? $string : strtr($string, $values);
     }
 }
+?>

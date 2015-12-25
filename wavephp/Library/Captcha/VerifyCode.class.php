@@ -154,6 +154,5 @@ class VerifyCode
     {
         return strtolower($this->code);
     }
-
 }
 ?>

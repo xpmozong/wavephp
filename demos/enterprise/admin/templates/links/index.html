@@ -3,9 +3,9 @@
 // 删除
 var mdelete = function(id){
     if(window.confirm('确定删除？')){
-        $.getJSON("{%$app->homeUrl%}links/delete/"+id, function(data){
+        $.getJSON("{%$homeUrl%}links/delete/"+id, function(data){
             if(data.success == true){
-                window.location.href = "{%$app->homeUrl%}links";
+                window.location.href = "{%$homeUrl%}links";
             }else{
                 alert(data.msg);
             }
@@ -18,7 +18,7 @@ var mdelete = function(id){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">友情链接列表
-                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$app->homeUrl%}links/modify/0'">
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$homeUrl%}links/modify/0'">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加链接
                 </button>
             </h3>
@@ -40,7 +40,7 @@ var mdelete = function(id){
                         <td>{%$value.title%}</td>
                         <td>{%$value.url%}</td>
                         <td>
-                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$app->homeUrl%}links/modify/{%$value.lid%}'">修改</button>
+                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$homeUrl%}links/modify/{%$value.lid%}'">修改</button>
                             |
                             <button type="button" class="btn btn-danger btn-xs" onclick="mdelete({%$value.lid%})">删除</button>
                         </td>

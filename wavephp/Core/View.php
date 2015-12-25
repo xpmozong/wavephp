@@ -71,7 +71,8 @@ class View
      * @param array options
      * @return View
      */
-    public function setOptions(array $options){
+    public function setOptions(array $options)
+    {
         foreach($options as $param => $value){
             $this->engin->$param = $value;
         }
@@ -89,7 +90,8 @@ class View
      * @return string
      *
      */
-    private function getDefaultScript(){
+    private function getDefaultScript()
+    {
         $classname = Wave::getClassName();
         $actionname = Wave::getActionName();
 
@@ -98,7 +100,8 @@ class View
 
     public function display($resource_name = '', 
                             $cache_id = null, 
-                            $compile_id = null){
+                            $compile_id = null)
+    {
         echo $this->fetch($resource_name, $cache_id, $compile_id, true);
     }
 
@@ -121,7 +124,8 @@ class View
                                     $display);
     }
 
-    public function assign($name, $val = null){
+    public function assign($name, $val = null)
+    {
         if(empty($name)){
             return false;
         }
@@ -130,13 +134,14 @@ class View
         return $this;
     }
 
-    public function __set($name, $val){
+    public function __set($name, $val)
+    {
         $this->$name = $val;
     }
 
-    public function __get($name){
+    public function __get($name)
+    {
         return $this->$name;
     }
 }
-
 ?>

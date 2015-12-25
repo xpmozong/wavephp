@@ -1,15 +1,15 @@
 {%include file="layout/header.html"%}
-<script type="text/javascript" src="{%$app->request->baseUrl%}/resouce/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="{%$app->request->baseUrl%}/resouce/ckfinder/ckfinder.js"></script>
+<script type="text/javascript" src="{%$baseUrl%}/resouce/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="{%$baseUrl%}/resouce/ckfinder/ckfinder.js"></script>
 <script type="text/javascript">
 $(function(){
     CKEDITOR.replace( 'content', {
         uiColor : '#9AB8F3',
         language: 'zh-cn',
         height: 300,
-        filebrowserUploadUrl : "{%$app->homeUrl%}articles/upload?type=files",
-        filebrowserImageUploadUrl : "{%$app->homeUrl%}articles/upload?type=images",
-        filebrowserFlashUploadUrl : "{%$app->homeUrl%}articles/upload?type=flashs"
+        filebrowserUploadUrl : "{%$homeUrl%}articles/upload?type=files",
+        filebrowserImageUploadUrl : "{%$homeUrl%}articles/upload?type=images",
+        filebrowserFlashUploadUrl : "{%$homeUrl%}articles/upload?type=flashs"
     });
 })
 
@@ -25,7 +25,7 @@ var checkForm = function(){
 }
 </script>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <form id="form-modify" class="form-horizontal" action="{%$app->homeUrl%}articles/modified" method="POST" onsubmit="return checkForm()" enctype="multipart/form-data">
+    <form id="form-modify" class="form-horizontal" action="{%$homeUrl%}articles/modified" method="POST" onsubmit="return checkForm()" enctype="multipart/form-data">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">

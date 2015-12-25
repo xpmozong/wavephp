@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.25-dev, created on 2015-12-11 17:58:25
+<?php /* Smarty version 2.6.25-dev, created on 2015-12-25 18:06:25
          compiled from site/index.html */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "layout/header.html", 'smarty_include_vars' => array()));
@@ -14,7 +14,7 @@ unset($_smarty_tpl_vars);
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="<?php echo $this->_tpl_vars['app']->request->baseUrl; ?>
+            <img src="<?php echo $this->_tpl_vars['baseUrl']; ?>
 /resouce/img1.jpg" alt="First slide">
             <div class="container">
                 <div class="carousel-caption">
@@ -25,7 +25,7 @@ unset($_smarty_tpl_vars);
             </div>
         </div>
         <div class="item">
-            <img src="<?php echo $this->_tpl_vars['app']->request->baseUrl; ?>
+            <img src="<?php echo $this->_tpl_vars['baseUrl']; ?>
 /resouce/img2.jpg" alt="Second slide">
             <div class="container">
                 <div class="carousel-caption">
@@ -36,7 +36,7 @@ unset($_smarty_tpl_vars);
             </div>
         </div>
         <div class="item">
-            <img src="<?php echo $this->_tpl_vars['app']->request->baseUrl; ?>
+            <img src="<?php echo $this->_tpl_vars['baseUrl']; ?>
 /resouce/img3.jpg" alt="Third slide">
             <div class="container">
                 <div class="carousel-caption">
@@ -63,17 +63,17 @@ unset($_smarty_tpl_vars);
                 <h3 class="panel-title">服务项目</h3>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/6">桌面服务</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/7">网络服务</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/8">系统服务</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/9">办公设备服务</a></li class="list-group-item">
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/10">数据安全</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 service/index/11">IT设备迁移</a></li>
             </ul>
         </div>
@@ -84,15 +84,15 @@ service/index/11">IT设备迁移</a></li>
                 <h3 class="panel-title">服务模式</h3>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 pattern/index/12">紧急服务</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 pattern/index/13">例行巡检</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 pattern/index/14">场地驻场</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 pattern/index/15">远程服务</a></li>
-                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['app']->homeUrl; ?>
+                <li class="list-group-item"><a href="<?php echo $this->_tpl_vars['homeUrl']; ?>
 pattern/index/16">咨询服务</a></li>
             </ul>
         </div>

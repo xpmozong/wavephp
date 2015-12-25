@@ -3,9 +3,9 @@
 // 删除
 var mdelete = function(id){
     if(window.confirm('确定删除？')){
-        $.getJSON("{%$app->homeUrl%}users/delete/"+id, function(data){
+        $.getJSON("{%$homeUrl%}users/delete/"+id, function(data){
             if(data.success == true){
-                window.location.href = "{%$app->homeUrl%}users"
+                window.location.href = "{%$homeUrl%}users"
             }else{
                 alert(data.msg);
             }
@@ -17,7 +17,7 @@ var mdelete = function(id){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">用户列表
-                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$app->homeUrl%}users/modify/0'">
+                <button type="button" class="btn btn-success btn-xs pull-right" onclick="javascript:location.href='{%$homeUrl%}users/modify/0'">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加用户
                 </button>
             </h3>
@@ -45,7 +45,7 @@ var mdelete = function(id){
                         <td>{%$value.add_date%}</td>
                         <td>{%$value.last_login_date%}</td>
                         <td>
-                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$app->homeUrl%}users/modify/{%$value.userid%}'">修改</button>
+                            <button type="button" class="btn btn-info btn-xs" onclick="javascript:location.href='{%$homeUrl%}users/modify/{%$value.userid%}'">修改</button>
                             |
                             <button type="button" class="btn btn-danger btn-xs" onclick="mdelete({%$value.userid%})">删除</button>
                         </td>

@@ -540,7 +540,7 @@ class Model
             $sql .= $this->getDb()->limit($this->_offset, $this->_limit);
         }
 
-        // echo $sql."<br>";
+        //echo $sql."<br>";
 
         $this->resetSelect();
 

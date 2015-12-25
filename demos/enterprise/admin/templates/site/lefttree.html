@@ -16,7 +16,7 @@ $(function(){
         <ul class="nav nav-sidebar list-group">
             {%foreach from=$value.list item="v" key="k" %}
                 <li class="list-group-item">
-                    <a href="{%$app->homeUrl%}{%$v.permission_url%}" target="right_frame">
+                    <a href="{%$homeUrl%}{%$v.permission_url%}" target="right_frame">
                         {%$v.permission_name%}
                     </a>
                 </li>

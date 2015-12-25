@@ -3,13 +3,13 @@
     <div class="col-sm-2 blog-sidebar">
         <ul class="nav nav-sidebar list-group">
             <li class="list-group-item <?php if($data['sid'] == 1) echo 'active';?>">
-                <a href="{%$app->homeUrl%}about/index/1">公司简介</a>
+                <a href="{%$homeUrl%}about/index/1">公司简介</a>
             </li>
             <li class="list-group-item <?php if($data['sid'] == 2) echo 'active';?>">
-                <a href="{%$app->homeUrl%}about/index/2">加入我们</a>
+                <a href="{%$homeUrl%}about/index/2">加入我们</a>
             </li>
             <li class="list-group-item <?php if($data['sid'] == 3) echo 'active';?>">
-                <a href="{%$app->homeUrl%}about/index/3">联系我们</a>
+                <a href="{%$homeUrl%}about/index/3">联系我们</a>
             </li>
         </ul>
     </div>
@@ -17,7 +17,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 您当前位置：
-                <a href="{%$app->homeUrl%}">首页</a> &gt;
+                <a href="{%$homeUrl%}">首页</a> &gt;
                 关于我们 &gt;
                 {%$data.title%}
             </div>
