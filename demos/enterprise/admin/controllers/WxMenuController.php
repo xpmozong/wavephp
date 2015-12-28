@@ -47,7 +47,7 @@ class WxmenuController extends CommonController
      */
     public function actionModified()
     {
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $id = (int)$data['mid'];
         unset($data['mid']);
         $GhMenu = new GhMenu();

@@ -19,8 +19,7 @@ class WxController extends Controller
      */
     public function actionIndex()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_GET);
+        $data = WaveCommon::getFilter($_GET);
         $GhManage = new GhManage();
         $WxModel = new WxModel();
         $array = $GhManage->getOne('*', array('gh_key'=>$data['key']));

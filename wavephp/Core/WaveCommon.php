@@ -60,5 +60,87 @@ class WaveCommon
 
         return $response;
     }
+
+    /**
+     * 获得日期
+     * @return string 日期
+     */
+    public static function getDate()
+    {
+        return date('Y-m-d H:i:s');
+    }
+
+    /**
+     * 获得年月
+     * @return string 日期
+     */
+    public static function getYearMonth()
+    {
+        return date('Ym');
+    }
+
+    /**
+     * 获得图片格式数组
+     * @return array
+     */
+    public static function getImageTypes()
+    {
+        return array(
+                    'image/jpeg','image/jpg',
+                    'image/gif','image/png',
+                    'image/bmp','image/pjepg'
+                );
+    }
+
+    /**
+     * 获得完整url地址
+     */
+    public function getCompleteUrl()
+    {
+        $baseUrl = Wave::app()->request->baseUrl;
+        $hostInfo = Wave::app()->request->hostInfo;
+        
+        return 'http://'.$hostInfo.$baseUrl;
+    }
+
+    /**
+     * 过滤
+     * @param array $data   需过滤的数组
+     * @return array        过滤数组
+     */
+    public static function getFilter($data)
+    {
+        foreach ($data as $key => $value) {
+            if(!empty($value)){
+                if(is_array($value)){
+                    foreach ($value as $k => $v) {
+                        if (is_array($v)) {
+                            $data[$key][$k] = $this->getFilter($v);
+                        }else{
+                            $data[$key][$k] = addslashes($v);
+                        }
+                    }
+                }else{
+                    $data[$key] = addslashes($value);
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * 输出结果
+     * @param bool $status      状态
+     * @param string $msg       信息
+     */
+    public static function exportResult($status, $msg)
+    {
+        $json_array = array();
+        $json_array['success'] = $status;
+        $json_array['msg'] = $msg;
+        echo json_encode($json_array);
+        unset($json_array);die;
+    }
 }
 ?>

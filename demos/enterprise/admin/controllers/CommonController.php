@@ -9,8 +9,7 @@ class CommonController extends Controller
     public function __construct()
     {
         parent::__construct();
-
-        $this->Common = new Common();
+        
         $this->Log = new Log();
         $this->userinfo = Wave::app()->session->getState('userinfo');
         if(empty($this->userinfo)){

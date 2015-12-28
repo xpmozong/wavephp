@@ -15,7 +15,7 @@ class UsersController extends CommonController
      */
     public function actionIndex()
     {
-        $data = $this->Common->getFilter($_GET);
+        $data = WaveCommon::getFilter($_GET);
         $this->page = isset($data['page']) ? (int)$data['page'] : 1;
         $pagesize = 12;
         $start = ($this->page - 1) * $pagesize;
@@ -26,7 +26,8 @@ class UsersController extends CommonController
         if(empty($data['page'])){
             $url .= '?page=1';
         }
-        $this->pagebar = $this->Common->getPageBar($url, $count, $pagesize, $this->page);
+        $Common = new Common();
+        $this->pagebar = $Common->getPageBar($url, $count, $pagesize, $this->page);
     }
 
     /**
@@ -44,7 +45,7 @@ class UsersController extends CommonController
      */
     public function actionModified()
     {
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $userid = (int)$data['userid'];
         unset($data['userid']);
         $Users = new Users();
@@ -85,10 +86,9 @@ class UsersController extends CommonController
      */
     public function actionUpload()
     {
-        $Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $Common->getCompleteUrl();
-        $imgTypeArr = $Common->getImageTypes();
+        $url = WaveCommon::getCompleteUrl();
+        $imgTypeArr = WaveCommon::getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
@@ -97,7 +97,7 @@ class UsersController extends CommonController
             $projectPath = Wave::app()->projectPath;
             $uploadPath = $projectPath.'data/uploadfile/substance';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $Common->getYearMonth();
+            $ym = WaveCommon::getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
@@ -125,7 +125,7 @@ class UsersController extends CommonController
         $Users = new Users();
         $Users->delete(array('userid'=>$id));
         $this->Log->saveLogs('删除用户', 1, array('userid'=>$id));
-        $this->Common->exportResult(true, '成功！');
+        WaveCommon::exportResult(true, '成功！');
     }
 }
 

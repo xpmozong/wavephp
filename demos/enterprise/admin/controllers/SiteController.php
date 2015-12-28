@@ -42,8 +42,7 @@ class SiteController extends Controller
      */
     public function actionLoging()
     {
-        $Common = new Common();
-        $data = $Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $Users = new Users();
         $array = $Users->getOne('*', array('email'=>$data['user_login']));
         $Log = new Log();

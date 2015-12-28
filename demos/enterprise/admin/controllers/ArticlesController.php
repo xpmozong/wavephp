@@ -71,14 +71,14 @@ class ArticlesController extends CommonController
      */
     public function actionModified()
     {
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $aid = (int)$data['aid'];
         $article = $data['aritcle'];
         $content = $data['a_content'];
         $Articles = new Articles();
         $ArticlesContent = new ArticlesContent();
         if ($aid == 0) {
-            $article['add_date'] = $this->Common->getDate();
+            $article['add_date'] = WaveCommon::getDate();
             $content['aid'] = $Articles->insert($article);
             $ArticlesContent->insert($content);
             $article['aid'] = $content['aid'];
@@ -102,10 +102,9 @@ class ArticlesController extends CommonController
      */
     public function actionUpload()
     {
-        $Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $Common->getCompleteUrl();
-        $imgTypeArr = $Common->getImageTypes();
+        $url = WaveCommon::getCompleteUrl();
+        $imgTypeArr = WaveCommon::getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
@@ -114,7 +113,7 @@ class ArticlesController extends CommonController
             $projectPath = Wave::app()->projectPath;
             $uploadPath = $projectPath.'data/uploadfile/articles';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $Common->getYearMonth();
+            $ym = WaveCommon::getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
@@ -144,7 +143,7 @@ class ArticlesController extends CommonController
         $Articles->delete($where);
         $ArticlesContent = new ArticlesContent();
         $ArticlesContent->delete($where);
-        $this->Common->exportResult(true, '成功！');
+        WaveCommon::exportResult(true, '成功！');
     }
 }
 

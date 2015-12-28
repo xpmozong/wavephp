@@ -55,24 +55,24 @@ class SiteController extends CommonController
 
     public function actionLoging()
     {
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         if(empty($data['user_login']))
-            $this->Common->exportResult(false, '请输入用户名！');
+            WaveCommon::exportResult(false, '请输入用户名！');
 
         if(empty($data['user_pass']))
-            $this->Common->exportResult(false, '请输入密码！');
+            WaveCommon::exportResult(false, '请输入密码！');
         
         $Users = new Users();
         $array = $Users->getOne('*', array('email'=>$data['user_login']));
         if(!empty($array)){
             if ($array['password'] == md5($data['user_pass'])) {
                 Wave::app()->session->setState('userinfo', $array);
-                $this->Common->exportResult(true, '登录成功！');
+                WaveCommon::exportResult(true, '登录成功！');
             }else{
-                $this->Common->exportResult(false, '用户名或密码错误！');
+                WaveCommon::exportResult(false, '用户名或密码错误！');
             }
         }else{
-            $this->Common->exportResult(false, '用户名或密码错误！');
+            WaveCommon::exportResult(false, '用户名或密码错误！');
         }
     }
 
@@ -84,19 +84,19 @@ class SiteController extends CommonController
     public function actionRegisting()
     {
         $Users = new Users();
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         if(empty($data['email']))
-            $this->Common->exportResult(false, '请输入邮箱！');
+            WaveCommon::exportResult(false, '请输入邮箱！');
 
         if(empty($data['password']))
-            $this->Common->exportResult(false, '请输入密码！');
+            WaveCommon::exportResult(false, '请输入密码！');
 
-        $data['add_date'] = $this->Common->getDate();
+        $data['add_date'] = WaveCommon::getDate();
         $data['password'] = md5($data['password']);
         if ($Users->insert($data)) {
-            $this->Common->exportResult(true, '注册成功！');
+            WaveCommon::exportResult(true, '注册成功！');
         }else{
-            $this->Common->exportResult(false, '注册失败！');
+            WaveCommon::exportResult(false, '注册失败！');
         }
     }
 

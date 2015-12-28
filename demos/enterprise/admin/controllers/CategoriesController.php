@@ -35,7 +35,7 @@ class CategoriesController extends CommonController
     public function actionModified()
     {
         $Category = new Category();
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $cid = (int)$data['cid'];
         unset($data['cid']);
         if ($cid == 0) {
@@ -55,7 +55,7 @@ class CategoriesController extends CommonController
         $id = (int)$id;
         $Category = new Category();
         $Category->delete(array('cid'=>$id));
-        $this->Common->exportResult(true, '成功！');
+        WaveCommon::exportResult(true, '成功！');
     }
 
 }

@@ -15,7 +15,7 @@ class SubstanceController extends CommonController
      */
     public function actionIndex()
     {
-        $data = $this->Common->getFilter($_GET);
+        $data = WaveCommon::getFilter($_GET);
         $this->page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagesize = 15;
         $start = ($this->page - 1) * $pagesize;
@@ -26,7 +26,7 @@ class SubstanceController extends CommonController
         if(empty($data['page'])){
             $url .= '?page=1';
         }
-        $this->pagebar = $this->Common->getPageBar($url, $count, $pagesize, $this->page);
+        $this->pagebar = WaveCommon::getPageBar($url, $count, $pagesize, $this->page);
     }
 
     /**
@@ -45,7 +45,7 @@ class SubstanceController extends CommonController
     public function actionModified()
     {
         $Substance = new Substance();
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $sid = (int)$data['sid'];
         unset($data['sid']);
         if ($sid == 0) {
@@ -62,10 +62,9 @@ class SubstanceController extends CommonController
      */
     public function actionUpload()
     {
-        $this->Common = new Common();
         $fn = $_GET['CKEditorFuncNum'];
-        $url = $this->Common->getCompleteUrl();
-        $imgTypeArr = $this->Common->getImageTypes();
+        $url = WaveCommon::getCompleteUrl();
+        $imgTypeArr = WaveCommon::getImageTypes();
         if(!in_array($_FILES['upload']['type'], $imgTypeArr)){
             echo '<script type="text/javascript">
                 window.parent.CKEDITOR.tools.callFunction("'.$fn.'","","图片格式错误！");
@@ -74,7 +73,7 @@ class SubstanceController extends CommonController
             $projectPath = Wave::app()->projectPath;
             $uploadPath = $projectPath.'data/uploadfile/substance';
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
-            $ym = $this->Common->getYearMonth();
+            $ym = WaveCommon::getYearMonth();
             $uploadPath .= '/'.$ym;
             if(!is_dir($uploadPath)) mkdir($uploadPath, 0777);
 
@@ -103,7 +102,7 @@ class SubstanceController extends CommonController
         $Substance = new Substance();
         $Substance->delete(array('sid'=>$id));
 
-        $this->Common->exportResult(true, '成功！');
+        WaveCommon::exportResult(true, '成功！');
     }
 }
 

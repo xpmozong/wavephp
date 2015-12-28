@@ -25,7 +25,7 @@ class MemberController extends CommonController
     public function actionSetpwd()
     {
         $Users = new Users();
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         if (empty($data['pwd']) || 
             empty($data['newpwd']) || 
             empty($data['confirmpwd'])) {

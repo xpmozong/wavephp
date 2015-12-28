@@ -35,7 +35,7 @@ class LinksController extends CommonController
     public function actionModified()
     {
         $Links = new Links();
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $id = (int)$data['lid'];
         unset($data['lid']);
         if ($id == 0) {
@@ -55,7 +55,7 @@ class LinksController extends CommonController
         $id = (int)$id;
         $Links = new Links();
         $Links->delete(array('lid'=>$id));
-        $this->Common->exportResult(true, '成功！');
+        WaveCommon::exportResult(true, '成功！');
     }
 
 }

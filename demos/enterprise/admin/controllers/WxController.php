@@ -55,7 +55,7 @@ class WxController extends CommonController
      */
     public function actionModified()
     {
-        $data = $this->Common->getFilter($_POST);
+        $data = WaveCommon::getFilter($_POST);
         $id = (int)$data['gid'];
         unset($data['gid']);
 

@@ -15,7 +15,7 @@ class NewsController extends CommonController
      */
     public function actionIndex($cid)
     {
-        $this->data = $this->Common->getFilter($_GET);
+        $this->data = WaveCommon::getFilter($_GET);
         $this->cid = (int)$cid;
         $where = array();
         $this->category = array();
@@ -41,7 +41,8 @@ class NewsController extends CommonController
         if(empty($data['page'])){
             $url .= '?page=1';
         }
-        $this->pagebar = $this->Common->getPageBar($url, $count, 
+        $Common = new Common();
+        $this->pagebar = $Common->getPageBar($url, $count, 
                         $pagesize, $page);
     }
 
