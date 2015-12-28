@@ -119,8 +119,8 @@ class Controller
         //数组变量转换
         extract($variables, EXTR_SKIP);
 
-        require $this->app->projectPath.
-                $this->app->projectName.'/views/'.
+        require Wave::app()->projectPath.
+                Wave::app()->projectName.'/views/'.
                 $filename.'.php';
     }
 
