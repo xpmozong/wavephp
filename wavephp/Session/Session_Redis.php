@@ -29,10 +29,9 @@ class Session_Redis
 
     public function __construct() 
     {
-        $option = Wave::app()->config['session'];
-        $this->lifeTime = $option['timeout'];
-
-        if (isset($option['redis'])) {
+        $config = Wave::app()->config;
+        $this->lifeTime = $config['session']['timeout'];
+        if (isset($config['session_redis'])) {
             $this->cache = new Cache_Redis('session_redis');
         }else{
             $this->cache = Wave::app()->redis;

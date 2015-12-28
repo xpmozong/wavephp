@@ -29,10 +29,9 @@ class Session_Memcached
 
     public function __construct() 
     {
-        $option = Wave::app()->config['session'];
-        $this->lifeTime = $option['timeout'];
-        
-        if (isset($option['memcached'])) {
+        $config = Wave::app()->config;
+        $this->lifeTime = $config['session']['timeout'];
+        if (isset($config['session_memcached'])) {
             $this->cache = new Cache_Memcached('session_memcached');
         }else{
             $this->cache = Wave::app()->memcached;
