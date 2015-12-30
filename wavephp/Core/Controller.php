@@ -134,7 +134,7 @@ class Controller
      * @return string
      *
      */
-    public function verifyCode($num = 4, $width = 130, $height = 50, $timeout = 600)
+    public function verifyCode($num = 4, $width = 130, $height = 40, $timeout = 600)
     {
         require Wave::app()->frameworkPath.'Library/Captcha/VerifyCode.class.php';
         $VerifyCode = new VerifyCode();

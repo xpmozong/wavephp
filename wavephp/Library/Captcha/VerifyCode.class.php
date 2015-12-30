@@ -83,7 +83,7 @@ class VerifyCode
                                                 mt_rand(0,156));
             imagettftext($this->img,
                         $this->fontsize,
-                        mt_rand(-30,30),
+                        mt_rand(-30,10),
                         $_x*$i+mt_rand(1,5),
                         $this->height / 1.4,
                         $this->fontcolor,
@@ -97,7 +97,7 @@ class VerifyCode
      */
     private function createLine()
     {
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $color = imagecolorallocate($this->img,
                                         mt_rand(0,156),
                                         mt_rand(0,156),
@@ -109,7 +109,7 @@ class VerifyCode
                         mt_rand(0,$this->height),
                         $color);
         }
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $color = imagecolorallocate($this->img,
                                         mt_rand(200,255),
                                         mt_rand(200,255),
