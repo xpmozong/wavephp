@@ -48,7 +48,7 @@ class Cache_Memcache implements Cache_Interface
         foreach ($this->hosts as $key => $value) {
             if ($i == 1) {
                 if (!$this->cacheArray[$this->cache_name]->connect($value['host'], $value['port'])) {
-                    echo 'memcahced server '.$value['host'].':'.$value['port'].' connection faild.<br>';
+                    throw new Exception('memcahced server '.$value['host'].':'.$value['port'].' connection faild.');
                 }
             } else {
                 $this->cacheArray[$this->cache_name]->addServer($value['host'], $value['port']);

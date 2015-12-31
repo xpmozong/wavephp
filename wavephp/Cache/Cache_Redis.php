@@ -43,15 +43,15 @@ class Cache_Redis implements Cache_Interface
                                         'host'=>$this->hosts['master']['host'], 
                                         'port'=>$this->hosts['master']['port']), true);
             if (!$ret1) {
-                echo 'redis server '.$this->hosts['master']['host'].':'.
-                    $this->hosts['master']['port'].' connection faild.<br>';
+                throw new Exception('redis server '.$this->hosts['master']['host'].':'.
+                    $this->hosts['master']['port'].' connection faild.');
             }
             foreach ($this->hosts['slave'] as $key => $value) {
                 $ret = $this->cacheArray[$this->cache_name]->connect(array(
                                             'host'=>$value['host'],
                                             'port'=>$value['port']), false);
                 if (!$ret) {
-                    echo 'redis server '.$value['host'].':'.$value['port'].' connection faild.<br>';
+                    throw new Exception('redis server '.$value['host'].':'.$value['port'].' connection faild.');
                 }
             }
         }else{
@@ -60,7 +60,7 @@ class Cache_Redis implements Cache_Interface
                                         'host'=>$this->hosts['master']['host'], 
                                         'port'=>$this->hosts['master']['port']) );
             if (!$ret) {
-                echo 'redis server '.$value['host'].':'.$value['port'].' connection faild.<br>';
+                throw new Exception('redis server '.$value['host'].':'.$value['port'].' connection faild.');
             }
         }
     }

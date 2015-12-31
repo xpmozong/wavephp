@@ -116,7 +116,7 @@ class View
         $resource_name = str_replace('.html', '', $resource_name).'.html';
         $fileName = $this->engin->template_dir.'/'.$resource_name;
         if (!file_exists($fileName)) {
-            echo 'no have file '.$fileName;die;
+            throw new Exception('no have file '.$fileName);
         }
         return $this->engin->fetch($resource_name, 
                                     $cache_id, 

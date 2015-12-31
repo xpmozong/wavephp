@@ -40,7 +40,7 @@ class Request
 
     public function __set($name, $value)
     {
-        echo 'Setting values in superglobals not allowed<br>';
+        throw new Exception('Setting values in superglobals not allowed');
     }
 
     public function __isset($key)
