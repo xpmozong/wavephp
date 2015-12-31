@@ -126,7 +126,7 @@ class WaveCommon
     public static function exportResult($status, $msg, $data = array())
     {
         $json_array = array();
-        $json_array['success'] = $status;
+        $json_array['error'] = $status;
         $json_array['msg'] = $msg;
         $json_array['data'] = $data;
         echo json_encode($json_array);
