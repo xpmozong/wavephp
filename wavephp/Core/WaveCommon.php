@@ -93,17 +93,6 @@ class WaveCommon
     }
 
     /**
-     * 获得完整url地址
-     */
-    public function getCompleteUrl()
-    {
-        $baseUrl = Wave::app()->request->baseUrl;
-        $hostInfo = Wave::app()->request->hostInfo;
-        
-        return 'http://'.$hostInfo.$baseUrl;
-    }
-
-    /**
      * 过滤
      * @param array $data   需过滤的数组
      * @return array        过滤数组
@@ -134,11 +123,12 @@ class WaveCommon
      * @param bool $status      状态
      * @param string $msg       信息
      */
-    public static function exportResult($status, $msg)
+    public static function exportResult($status, $msg, $data = array())
     {
         $json_array = array();
         $json_array['success'] = $status;
         $json_array['msg'] = $msg;
+        $json_array['data'] = $data;
         echo json_encode($json_array);
         unset($json_array);die;
     }
