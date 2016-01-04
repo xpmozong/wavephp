@@ -38,7 +38,7 @@ class VerifyCode
     public function __construct()
     {
         $path = Wave::app()->frameworkPath;
-        $this->font = $path.'Library/Captcha/font/FetteSteinschrift.ttf';
+        $this->font = $path.'Library/Captcha/font/Algerianbasd.ttf';
     }
 
     /**
@@ -97,7 +97,7 @@ class VerifyCode
      */
     private function createLine()
     {
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $color = imagecolorallocate($this->img,
                                         mt_rand(0,156),
                                         mt_rand(0,156),
@@ -109,7 +109,7 @@ class VerifyCode
                         mt_rand(0,$this->height),
                         $color);
         }
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $color = imagecolorallocate($this->img,
                                         mt_rand(200,255),
                                         mt_rand(200,255),
