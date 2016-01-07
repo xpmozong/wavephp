@@ -87,13 +87,10 @@ class Session_Db extends Model
 
     function open($savePath, $sessName) 
     {
-        $tables = $this->queryAll('show tables');
-        $tablesList = array();
         $dbName = Wave::app()->config['database']['master']['dbname'];
-        foreach ($tables as $key => $value) {
-            $tablesList[] = $value['Tables_in_'.$dbName];
-        }
-        if (!in_array($this->_tableName, $tablesList)) {
+        $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='$dbName' and TABLE_NAME='".$this->_tableName."'";
+        $res = $this->queryOne($sql);
+        if (empty($res['TABLE_NAME'])) {
             $sql = "CREATE TABLE `".$this->_tableName."` (
                 `session_id` varchar(255) CHARACTER 
                 SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
