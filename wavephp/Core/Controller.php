@@ -127,14 +127,16 @@ class Controller
     /**
      * 验证码
      *
+     * @param string $key       验证码key
      * @param int $num          验证码个数
      * @param int $width        验证码宽度
      * @param int $height       验证码高度
+     * @param int $timeout      过期时间
      * 
      * @return string
      *
      */
-    public function verifyCode($key = 'verifycode', $num = 5, $width = 130, $height = 40, $timeout = 600)
+    public function verifyCode($key = 'verifycode', $num = 4, $width = 130, $height = 40, $timeout = 600)
     {
         require Wave::app()->frameworkPath.'Library/Captcha/VerifyCode.class.php';
         $VerifyCode = new VerifyCode();
