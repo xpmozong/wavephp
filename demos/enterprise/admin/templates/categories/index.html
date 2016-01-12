@@ -4,7 +4,7 @@
 var mdelete = function(id){
     if(window.confirm('确定删除？')){
         $.getJSON("{%$homeUrl%}categories/delete/"+id, function(data){
-            if(data.error == true){
+            if(data.code == true){
                 window.location.href = "{%$homeUrl%}categories"
             }else{
                 alert(data.msg);
