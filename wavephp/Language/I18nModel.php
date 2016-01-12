@@ -32,13 +32,10 @@ class I18nModel extends Model
      */
     public function table()
     {
-        $tables = $this->queryAll('show tables');
-        $tablesList = array();
-        $dbName = Wave::app()->config['database']['db']['dbname'];
-        foreach ($tables as $key => $value) {
-            $tablesList[] = $value['Tables_in_'.$dbName];
-        }
-        if (!in_array($this->_tableName, $tablesList)) {
+        $dbName = Wave::app()->config['database']['master']['dbname'];
+        $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='$dbName' and TABLE_NAME='".$this->_tableName."'";
+        $res = $this->queryOne($sql);
+        if (empty($res['TABLE_NAME'])) {
             $sql = "CREATE TABLE `w_language` (
               `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '语言id',
               `lang_code` varchar(50) NOT NULL DEFAULT '' COMMENT '语言编码',
