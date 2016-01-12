@@ -366,6 +366,7 @@ class Request
     /**
      * 获取当前URL链接
      *
+     * @param string $raw 是否转义
      * @return string
      *
      */
