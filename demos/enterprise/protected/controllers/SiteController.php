@@ -40,7 +40,7 @@ class SiteController extends CommonController
      */
     public function actionVerifyCode()
     {
-        echo $this->verifyCode(4);
+        echo $this->verifyCode('login_code');
     }
     
     public function actionLogin()

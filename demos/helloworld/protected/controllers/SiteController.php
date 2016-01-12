@@ -69,7 +69,7 @@ class SiteController extends Controller
      */
     public function actionVerifyCode()
     {
-        echo $this->verifyCode(4);
+        echo $this->verifyCode('login_code');
     }
     
     public function actionLogin()
@@ -85,7 +85,7 @@ class SiteController extends Controller
 
     public function actionExportCode()
     {
-        echo Wave::app()->session->getState('verifycode');die;
+        echo Wave::app()->session->getState('login_code');die;
     }
 
 }
