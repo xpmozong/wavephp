@@ -144,7 +144,7 @@ class Controller
         $VerifyCode->width = $width;
         $VerifyCode->height = $height;
         $VerifyCode->doimg();
-        Wave::app()->session->setState($key, $VerifyCode->getCode(), $timeout);
+        Wave::app()->session->setState($key, $VerifyCode->getCode());
     }
 
     /**

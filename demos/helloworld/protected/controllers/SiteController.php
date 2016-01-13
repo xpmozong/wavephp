@@ -69,7 +69,7 @@ class SiteController extends Controller
      */
     public function actionVerifyCode()
     {
-        echo $this->verifyCode('login_code');
+        echo $this->verifyCode('login_code');die;
     }
     
     public function actionLogin()
