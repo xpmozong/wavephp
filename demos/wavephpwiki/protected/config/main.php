@@ -23,6 +23,17 @@ $config = array(
         'compile_dir'       => 'data/templates/compile/index'
     ),
     'debuger'               => false,       // 显示debug信息
+    'ini_set'               => array(
+        'session.cookie_domain'     => '.37study.com',
+        'memory_limit'              => '256M',
+        'session.cache_expire'      => '',
+        'session.use_cookies'       => 1,
+        'session.auto_start'        => 0,
+        'session.cookie_lifetime'   => 86400,
+        'session.gc_maxlifetime'    => 86400,
+        'display_errors'            => 1,
+        'date.timezone'             => 'Asia/Shanghai'
+    ),
     'session'=>array(
         'driver'            => 'file',
         'timeout'           => 86400
