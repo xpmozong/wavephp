@@ -41,12 +41,15 @@ class Session_File
      * @param string $val       session值
      *
      */
-    public function setState($key, $val)
+    public function setState($key, $val, $expire = 0)
     {
         if(!isset($_SESSION)) {
             session_start(); 
         }
-
+        if ($expire > 0) {
+            $_SESSION[$this->sess_id.$key.'_expire'] = time() + $expire;
+        }
+        
         $_SESSION[$this->sess_id.$key] = $val;
     }
 
@@ -66,7 +69,18 @@ class Session_File
 
         $txt = '';
         if(isset($_SESSION[$this->sess_id.$key])){
-            $txt = $_SESSION[$this->sess_id.$key];
+            if (isset($_SESSION[$this->sess_id.$key.'_expire'])) {
+                $expire = $_SESSION[$this->sess_id.$key.'_expire'];
+                // 如果当前时间大于过期时间 清session
+                if (time() > $expire) {
+                    $_SESSION[$this->sess_id.$key.'_expire'] = 0;
+                    $_SESSION[$this->sess_id.$key] = '';
+                }else{
+                    $txt = $_SESSION[$this->sess_id.$key];
+                }
+            }else{
+                $txt = $_SESSION[$this->sess_id.$key];
+            }
         }
 
         return $txt;
