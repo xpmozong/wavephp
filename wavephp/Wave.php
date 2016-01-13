@@ -60,6 +60,7 @@ class Wave
      */
     public function run()
     {
+        $this->loadIniSet();
         $this->loadMemcache();
         $this->loadMemcached();
         $this->loadRedis();
@@ -67,6 +68,19 @@ class Wave
         self::$Route = new Route();
         self::$Route->route();
         $this->Base->clear();
+    }
+
+    /**
+     * ini_set
+     */
+    public function loadIniSet()
+    {
+        if (!empty(self::$app->config['ini_set'])) {
+            $ini_setArr = self::$app->config['ini_set'];
+            foreach ($ini_setArr as $key => $value) {
+                ini_set($key, $value);
+            }
+        }
     }
 
     /**
