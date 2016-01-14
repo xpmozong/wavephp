@@ -64,9 +64,9 @@
     error_reporting(0);
 
     require dirname(__FILE__).'/../../wavephp/Wave.php';
-    $config = dirname(__FILE__).'/protected/config/main.php';
-    
-    $wave = new Wave($config);
+    $configfile = dirname(__FILE__).'/protected/config/main.php';
+    // 不能起名$config
+    $wave = new Wave($configfile);
     $wave->run();
 
 
@@ -120,7 +120,17 @@
 	            'pconnect'      => false
 	        )
 	    ),
-	    
+	    'ini_set'               => array(
+            'session.cookie_domain'     => '.37study.com',
+            'memory_limit'              => '256M',
+            'session.cache_expire'      => '',
+            'session.use_cookies'       => 1,
+            'session.auto_start'        => 0,
+            'session.cookie_lifetime'   => 86400,
+            'session.gc_maxlifetime'    => 86400,
+            'display_errors'            => 1,
+            'date.timezone'             => 'Asia/Shanghai'
+        ),
 	    'session'=>array(
 	        'driver'            => 'file',
 	        'timeout'           => 86400

@@ -6,9 +6,9 @@ define('ROOT_PATH', dirname(__FILE__));
 
 require ROOT_PATH.'/define.php';
 require ROOT_PATH.'/../../wavephp/Wave.php';
-$config = dirname(__FILE__).'/protected/config/main.php';
+$configfile = dirname(__FILE__).'/protected/config/main.php';
 
-$wave = new Wave($config);
+$wave = new Wave($configfile);
 $wave->run();
 
 ?>
