@@ -20,7 +20,7 @@
  * @author          许萍
  *
  */
-class Cache_Memcache implements Cache_Interface 
+class Cache_Memcached implements Cache_Interface 
 {
 
     public $hosts = array();
