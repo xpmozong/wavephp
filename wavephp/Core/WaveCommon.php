@@ -31,24 +31,24 @@ class WaveCommon
      * @return string or false
      *
      */
-    public static function curl($url = '', $method = "GET", $data = array(), $timeout = 60) 
+    public static function curl($url = '', $method = 'GET', $data = array(), $timeout = 60) 
     {
         $postdata = http_build_query($data, '', '&');
         $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
         if(strtoupper($method) == 'GET' && $data){
             $url .= '?'.$postdata;
         } elseif (strtoupper($method) == 'POST' && $data){
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         } elseif(strtoupper($method) == 'JSON' && $data) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type:application/json'));
-            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
-
+        curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
 
