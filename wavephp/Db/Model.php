@@ -4,9 +4,9 @@
  * 
  * @package         Wavephp
  * @author          许萍
- * @copyright       Copyright (c) 2013
- * @link            https://github.com/xpmozong/wavephp
- * @since           Version 1.0
+ * @copyright       Copyright (c) 2016
+ * @link            https://github.com/xpmozong/wavephp2
+ * @since           Version 2.0
  *
  */
 
@@ -16,6 +16,7 @@
  * 数据模型基类
  *
  * @package         Wavephp
+ * @subpackage      db
  * @author          许萍
  *
  */
@@ -699,8 +700,12 @@ class Model
      * @return bool
      *
      */
-    public function insert($data)
+    public function insert($data, $cache_key = '')
     {
+        if (!empty($cache_key) && is_object($this->cache)){
+            $this->cache->delete($cache_key);
+        }
+
         $tableName = $this->getTableName();
         if($this->getDb()->insertdb($tableName, $data)){
             return $this->getDb()->insertId();
@@ -721,11 +726,12 @@ class Model
      */
     public function update($data, $where, $cache_key = '')
     {
-        $tableName = $this->getTableName();
         if(!isset($where) || !is_array($where) ) exit('参数错误');
         if (!empty($cache_key) && is_object($this->cache)){
             $this->cache->delete($cache_key);
         }
+
+        $tableName = $this->getTableName();
         $this->where($where);
         $conditions = implode(' ', $this->_where);
 
@@ -754,11 +760,12 @@ class Model
      */
     public function delete($where, $cache_key = '')
     {
-        $tableName = $this->getTableName();
         if(!isset($where) || !is_array($where) ) exit('参数错误');
         if (!empty($cache_key) && is_object($this->cache)){
             $this->cache->delete($cache_key);
         }
+
+        $tableName = $this->getTableName();
         $this->where($where);
         $conditions = implode(' ', $this->_where);
         $this->getDb()->delete($tableName, $conditions);
