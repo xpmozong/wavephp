@@ -104,7 +104,7 @@ class WaveCommon
                 if(is_array($value)){
                     foreach ($value as $k => $v) {
                         if (is_array($v)) {
-                            $data[$key][$k] = $this->getFilter($v);
+                            $data[$key][$k] = self::getFilter($v);
                         }else{
                             $data[$key][$k] = addslashes($v);
                         }
