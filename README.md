@@ -376,7 +376,7 @@ session 配置
             expires 24h;
         }
     
-        if ($request_filename !~* (\.xml|\.rar|\.html|\.htm|\.php|\.swf|\.css|\.js|\.gif|\.png|\.jpg|\.jpeg|robots\.txt|index\.php|\.jnlp|\.jar|\.eot|\.woff|\.ttf|\.svg)) {
+        if (!-f $request_filename){
             rewrite ^/(.*)$ /index.php/$1 last;
         }
     
