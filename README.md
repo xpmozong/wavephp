@@ -377,7 +377,9 @@ session 配置
         }
     
         if (!-f $request_filename){
-            rewrite ^/(.*)$ /index.php/$1 last;
+            rewrite ^/([^/]+)$ /index.php/$1 last;
+            rewrite ^/([^/]+)/$ /index.php/$1 last;
+            rewrite ^/([^/]+)/(.*)$ /index.php/$1/$2 last;
         }
     
         location ~ .*\.php {
