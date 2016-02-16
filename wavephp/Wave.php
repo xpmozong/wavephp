@@ -63,7 +63,6 @@ class Wave
     {
         $this->loadIniSet();
         $this->loadMemcache();
-        $this->loadMemcached();
         $this->loadRedis();
         $this->loadSession();
         self::$Route = new Route();
@@ -90,20 +89,14 @@ class Wave
     private function loadMemcache()
     {
         if(empty(self::$app->memcache)){
-            if(!empty(self::$app->config['memcache'])){
-                self::$app->memcache = new Cache_Memcache();
-            }
-        }
-    }
-
-    /**
-     * memcached 连接
-     */
-    private function loadMemcached()
-    {
-        if(empty(self::$app->memcached)){
-            if(!empty(self::$app->config['memcached'])){
-                self::$app->memcached = new Cache_Memcached();
+            if (extension_loaded('memcached')){
+                if(!empty(self::$app->config['memcached'])){
+                    self::$app->memcache = new Cache_Memcached();
+                }
+            }else{
+                if(!empty(self::$app->config['memcache'])){
+                    self::$app->memcache = new Cache_Memcache();
+                }
             }
         }
     }

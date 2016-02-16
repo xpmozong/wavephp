@@ -44,16 +44,14 @@ class Cache_Memcached implements Cache_Interface
         $this->cacheArray[$this->cache_name] = new Memcached();
 
         $this->cacheArray[$this->cache_name]->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
-        $i = 1;
+        $i = 0;
+        $servers = array();
         foreach ($this->hosts as $key => $value) {
-            if ($i == 1) {
-                if (!$this->cacheArray[$this->cache_name]->connect($value['host'], $value['port'])) {
-                    throw new Exception('memcahced server '.$value['host'].':'.$value['port'].' connection faild.');
-                }
-            } else {
-                $this->cacheArray[$this->cache_name]->addServer($value['host'], $value['port']);
-            }
+            $servers[$i] = array($value['host'], $value['port'], $i);
             $i++;
+        }
+        if (!$this->cacheArray[$this->cache_name]->addServers($servers)) {
+            throw new Exception('memcahced server '.json_encode($servers).' connection faild.');
         }
     }
 
@@ -65,7 +63,7 @@ class Cache_Memcached implements Cache_Interface
     public function set($key, $value, $lifetime = 3600) 
     {
         $lifetime = $lifetime >= 0 ? $lifetime : $this->lifetime;
-        return $this->getMemcached()->set($key, $value, false, $lifetime);
+        return $this->getMemcached()->set($key, $value, $lifetime);
     }
 
     public function get($key) 

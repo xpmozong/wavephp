@@ -32,7 +32,11 @@ class Session_Memcache
         $config = Wave::app()->config;
         $this->lifeTime = $config['session']['timeout'];
         if (isset($config['session_memcache'])) {
-            $this->cache = new Cache_Memcache('session_memcache');
+            if (extension_loaded('memcached')){
+                $this->cache = new Cache_Memcached('session_memcached');
+            }else{
+                $this->cache = new Cache_Memcache('session_memcache');
+            }
         }else{
             $this->cache = Wave::app()->memcache;
         }
