@@ -61,7 +61,7 @@ class WaveLoader
             }
         }
 
-        $dirArr = array('Cache', 'Core', 'Db', 'Language', 'Session', 'Web');
+        $dirArr = array('Cache', 'Cookie', 'Core', 'Db', 'Language', 'Session', 'Web');
         $filename = $app->frameworkPath.$class.'.php';
         if(file_exists($filename)){
             require $filename;
