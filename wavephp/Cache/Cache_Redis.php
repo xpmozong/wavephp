@@ -151,7 +151,7 @@ class Cache_Redis implements Cache_Interface
      * @param $hash string 哈希表名
      */
     public function hashLen($hash) {
-        return $this->getRedis()->hLen($hash);
+        return $this->getRedis()->hashLen($hash);
     }
 
     /**
@@ -160,7 +160,7 @@ class Cache_Redis implements Cache_Interface
      * @param $key mixed 表中存储的key名
      */
     public function hashDel($hash, $key) {
-        return $this->getRedis()->hDel($hash, $key);
+        return $this->getRedis()->hashDel($hash, $key);
     }
 
     /**

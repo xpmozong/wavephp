@@ -284,9 +284,19 @@ class RedisCluster
     public function incr($key, $default = 1)
     {
         if($default == 1){
-            return $this->getRedis()->incr($key);
+            $func = 'incr';
+            if(!$this->_isUseCluster){
+                return $this->getRedis()->{$func}($key);
+            }else{
+                return $this->_getSlaveRedis()->{$func}($key);
+            }
         }else{
-            return $this->getRedis()->incrBy($key, $default);
+            $func = 'incrBy';
+            if(!$this->_isUseCluster){
+                return $this->getRedis()->{$func}($key, $default);
+            }else{
+                return $this->_getSlaveRedis()->{$func}($key, $default);
+            }
         }
     }
   
@@ -300,9 +310,19 @@ class RedisCluster
     public function decr($key, $default = 1)
     {
         if($default == 1){
-            return $this->getRedis()->decr($key);
+            $func = 'decr';
+            if(!$this->_isUseCluster){
+                return $this->getRedis()->{$func}($key);
+            }else{
+                return $this->_getSlaveRedis()->{$func}($key);
+            }
         }else{
-            return $this->getRedis()->decrBy($key, $default);
+            $func = 'decrBy';
+            if(!$this->_isUseCluster){
+                return $this->getRedis()->{$func}($key, $default);
+            }else{
+                return $this->_getSlaveRedis()->{$func}($key, $default);
+            }
         }
     }
   
@@ -326,7 +346,12 @@ class RedisCluster
     {
         $return = null;
         if (is_array($data) && !empty($data)) {
-            $return = $this->getRedis()->hSet($hash, $key, $data);
+            $func = 'hSet';
+            if(!$this->_isUseCluster){
+                $return = $this->getRedis()->{$func}($hash, $key, $data);
+            }else{
+                $return = $this->_getSlaveRedis()->{$func}($hash, $key, $data);
+            }
         }
 
         return $return;
@@ -342,20 +367,46 @@ class RedisCluster
     {
         $return = null;
         if ($key) {
-            if (is_array($key) && !empty($key))
-                $return = $this->getRedis()->hMGet($hash, $key);
-            else
-                $return = $this->getRedis()->hGet($hash, $key);
+            if (is_array($key) && !empty($key)){
+                $func = 'hMGet';
+                if(!$this->_isUseCluster){
+                    $return = $this->getRedis()->{$func}($hash, $key);
+                }else{
+                    $return = $this->_getSlaveRedis()->{$func}($hash, $key);
+                }
+            }else{
+                $func = 'hGet';
+                if(!$this->_isUseCluster){
+                    $return = $this->getRedis()->{$func}($hash, $key);
+                }else{
+                    $return = $this->_getSlaveRedis()->{$func}($hash, $key);
+                }
+            }
         } else {
             switch ($type) {
                 case 0:
-                    $return = $this->getRedis()->hKeys($hash);
+                    $func = 'hKeys';
+                    if(!$this->_isUseCluster){
+                        $return = $this->getRedis()->{$func}($hash);
+                    }else{
+                        $return = $this->_getSlaveRedis()->{$func}($hash);
+                    }
                     break;
                 case 1:
-                    $return = $this->getRedis()->hVals($hash);
+                    $func = 'hVals';
+                    if(!$this->_isUseCluster){
+                        $return = $this->getRedis()->{$func}($hash);
+                    }else{
+                        $return = $this->_getSlaveRedis()->{$func}($hash);
+                    }
                     break;
                 case 2:
-                    $return = $this->getRedis()->hGetAll($hash);
+                    $func = 'hGetAll';
+                    if(!$this->_isUseCluster){
+                        $return = $this->getRedis()->{$func}($hash);
+                    }else{
+                        $return = $this->_getSlaveRedis()->{$func}($hash);
+                    }
                     break;
                 default:
                     $return = false;
@@ -374,7 +425,12 @@ class RedisCluster
     {
         $return = null;
 
-        $return = $this->getRedis()->hLen($hash);
+        $func = 'hLen';
+        if(!$this->_isUseCluster){
+            $return = $this->getRedis()->{$func}($hash);
+        }else{
+            $return = $this->_getSlaveRedis()->{$func}($hash);
+        }
 
         return $return;
     }
@@ -388,7 +444,12 @@ class RedisCluster
     {
         $return = null;
 
-        $return = $this->getRedis()->hDel($hash, $key);
+        $func = 'hDel';
+        if(!$this->_isUseCluster){
+            $return = $this->getRedis()->{$func}($hash, $key);
+        }else{
+            $return = $this->_getSlaveRedis()->{$func}($hash, $key);
+        }
 
         return $return;
     }
@@ -402,7 +463,12 @@ class RedisCluster
     {
         $return = null;
 
-        $return = $this->getRedis()->hExists($hash, $key);
+        $func = 'hExists';
+        if(!$this->_isUseCluster){
+            $return = $this->getRedis()->{$func}($hash, $key);
+        }else{
+            $return = $this->_getSlaveRedis()->{$func}($hash, $key);
+        }
 
         return $return;
     }
