@@ -50,10 +50,16 @@ class Mysql extends Db_Abstract
         }
     }
 
+    /**
+     * 数据库选择
+     */
     protected function db_select($tag) {
         return @mysql_select_db($this->config[$tag]['dbname'], $this->conn[$tag]);
     }
 
+    /**
+     * 数据库字符类型选择
+     */
     protected function db_set_charset($tag) {
         return @mysql_query("SET character_set_connection=".$this->config[$tag]['charset'].", character_set_results=".$this->config[$tag]['charset'].", character_set_client=".$this->config[$tag]['charset']."", $this->conn[$tag]);
     }

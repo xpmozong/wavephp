@@ -23,6 +23,14 @@
 abstract class Database {
     public static $db;
 
+    /**
+     * 工厂方法
+     *
+     * @param string $dbname 数据库名称
+     *
+     * @return object $db
+     *
+     */
     public static function factory($dbname = '') {
         $option = Wave::app()->config[$dbname];
         
@@ -32,8 +40,10 @@ abstract class Database {
         }
         
         $class = ucfirst($driver);
-        $db = self::$db[$dbname] = new $class($option);
+        $db = new $class($option);
         
         return $db;
     }
 }
+
+?>

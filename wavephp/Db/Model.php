@@ -47,6 +47,12 @@ class Model
         $this->minit();
     }
 
+    /**
+     * 初始化
+     *
+     * @param string $db 数据库名称
+     *
+     */
     public function minit($db = '') {
         // 表前缀
         $this->dbname = 'database';
@@ -63,6 +69,9 @@ class Model
         $this->init();
     }
 
+    /**
+     * 子模型方法
+     */
     protected function init(){}
 
     /**
@@ -120,9 +129,10 @@ class Model
     /**
      * 取得某个字段的最大值
      *
-     * @access public
      * @param string $field  字段名
-     * @param mixed $where  条件
+     * @param string $alias  别名
+     *
+     * @return $this
      *
      */
     public function max($field, $alias = 'max')
@@ -137,9 +147,10 @@ class Model
     /**
      * 取得某个字段的最小值
      *
-     * @access public
      * @param string $field  字段名
-     * @param mixed $where  条件
+     * @param string $alias  别名
+     *
+     * @return $this
      *
      */
     public function min($field, $alias = 'min')
@@ -154,9 +165,10 @@ class Model
     /**
      * 统计某个字段的平均值
      *
-     * @access public
      * @param string $field  字段名
-     * @param mixed $condition  条件
+     * @param string $alias  别名
+     *
+     * @return $this
      *
      */
     public function avg($field, $alias = 'avg')
@@ -171,10 +183,11 @@ class Model
     /**
      * 统计某个字段的总和
      *
-     * @access public
      * @param string $field  字段名
-     * @param mixed $where  条件
-     * @return integer
+     * @param string $alias  别名
+     *
+     * @return $this
+     *
      */
     public function sum($field, $alias = 'sum')
     {
@@ -210,6 +223,7 @@ class Model
      *
      * @param string $table         表
      * @param string $conditions    条件
+     * @param string $type          连接类型
      *
      * @return $this 
      *
@@ -226,6 +240,8 @@ class Model
     /**
      * 是否过滤重复记录
      *
+     * @param bool $val 是否
+     *
      * @return $this
      *
      */
@@ -239,7 +255,9 @@ class Model
     /**
      * IN
      *
-     * @param string $conditions 条件
+     * @param array $where  条件
+     * @param bool $not     是否not
+     * @param string $type  AND或OR
      *
      * @return $this
      *
@@ -266,7 +284,8 @@ class Model
     /**
      * NOT IN
      *
-     * @param string $conditions 条件
+     * @param array $where 条件
+     * @param string $type  类型
      *
      * @return $this
      *
@@ -279,7 +298,9 @@ class Model
     /**
      * 条件查询
      *
-     * @param string $conditions 条件 
+     * @param array $where      条件
+     * @param string $type      AND或OR
+     * @param string $type2     类型
      *
      * @return $this
      *
@@ -312,7 +333,16 @@ class Model
         return $this;
     }
 
-
+    /**
+     * having
+     *
+     * @param array $where      条件
+     * @param string $type      AND或OR
+     * @param string $type2     类型
+     *
+     * @return $this
+     *
+     */
     public function having($where, $type = 'AND', $type2 = '')
     {
         if (!empty($where) && is_array($where)) {
@@ -341,9 +371,48 @@ class Model
         return $this;
     }
 
-    public function orlike($where, $not = false, $like='all') {
+    /**
+     * 过滤
+     *
+     * @param string $string    过滤内容
+     *
+     * @return string $string
+     *
+     */
+    public function safe_replace($string) 
+    {
+        $string = str_replace('%20','',$string);
+        $string = str_replace('%27','',$string);
+        $string = str_replace('%2527','',$string);
+        $string = str_replace('*','',$string);
+        $string = str_replace('"','"',$string);
+        $string = str_replace("'",'',$string);
+        $string = str_replace('"','',$string);
+        $string = str_replace(';','',$string);
+        $string = str_replace('<','<',$string);
+        $string = str_replace('>','>',$string);
+        $string = str_replace("{",'',$string);
+        $string = str_replace('}','',$string);
+        $string = str_replace('\\','',$string);
+        
+        return $string;
+    }
+
+    /**
+     * orlike
+     *
+     * @param array $where      条件
+     * @param bool $not         是否NOT
+     * @param string $like      相似范围
+     *
+     * @return $this
+     *
+     */
+    public function orlike($where, $not = false, $like = 'all') {
         return $this->like($where, $not, 'OR', $like);
     }
+
+    
 
     /**
      * 模糊查询
@@ -360,21 +429,18 @@ class Model
     {
         if (!empty($where) && is_array($where)) {
             foreach ( $where as $k => $v ) {
-                $prefix = (count($this->_like) == 0) ? '' : $type.' ';
+                $v = $this->safe_replace($v);
+                $prefix = (count($this->_like) == 0) ? '' : ' '.$type.' ';
                 $not = ($not) ? ' NOT' : '';
                 $arr = array();
-                $v = str_replace("+", " ", $v);
-                $values = explode( ' ', $v );
-                foreach ( $values as $value ) {
-                    if ( $like == 'left' ) {
-                        $keyword = "'%{$value}'";
-                    }else if ( $like == 'right' ) {
-                        $keyword = "'{$value}%'";
-                    }else {
-                        $keyword = "'%{$value}%'";
-                    }
-                    $arr[] =  $k . $not.' LIKE '.$keyword;
+                if ( $like == 'left' ) {
+                    $keyword = "'%{$v}'";
+                }else if ( $like == 'right' ) {
+                    $keyword = "'{$v}%'";
+                }else {
+                    $keyword = "'%{$v}%'";
                 }
+                $arr[] =  $k . $not.' LIKE '.$keyword;
                 $this->_like[] = $prefix .'('.  implode(" OR ", $arr) . ') ';
             }
         }
@@ -382,6 +448,16 @@ class Model
         return $this;
     }
 
+    /**
+     * OR INSTR(字段名, 字符串)
+     * 返回字符串在某一个字段的内容中的位置,
+     * 没有找到字符串返回0，否则返回位置（从1开始）
+     *
+     * @param array $where      条件数组
+     *
+     * @return $this
+     *
+     */
     public function orinstr($where) {
         return $this->instr($where, 'OR');
     }
@@ -462,7 +538,8 @@ class Model
     /**
      * 排序
      *
-     * @param string $orderStr  字段排序
+     * @param string $orderStr      字段排序
+     * @param string $direction     排序类型，默认降序，也可RAND随机
      *
      * @return $this
      *
@@ -573,6 +650,9 @@ class Model
 
     /**
      * 重置查询数组 执行
+     *
+     * @param array $vars   需要清空的数组
+     *
      */
     public function resetRun($vars)
     {
@@ -597,7 +677,10 @@ class Model
     /**
      * 根据条件获得全部数据
      *
-     * @param string $sql       sql语句
+     * @param string $field     查询字段
+     * @param array $where      条件
+     * @param string $cache_key 缓存key
+     * @param int $exp          缓存时间
      *
      * @return array 
      *
@@ -631,6 +714,11 @@ class Model
 
     /**
      * 根据sql获得全部数据
+     *
+     * @param string $sql       sql语句
+     *
+     * @return array
+     *
      */
     public function queryAll($sql)
     {
@@ -640,7 +728,10 @@ class Model
     /**
      * 根据条件获得单条数据
      *
-     * @param string $sql       sql语句
+     * @param string $field     查询字段
+     * @param array $where      条件
+     * @param string $cache_key 缓存key
+     * @param int $exp          缓存时间
      *
      * @return array 
      *
@@ -674,6 +765,11 @@ class Model
 
     /**
      * 根据sql获得单条数据
+     *
+     * @param string $sql       sql语句
+     *
+     * @return array
+     *
      */
     public function queryOne($sql)
     {
@@ -682,6 +778,9 @@ class Model
 
     /**
      * 获得表名
+     *
+     * @return string
+     *
      */
     public function getTableName(){
         if (empty($this->_from)) {
@@ -694,8 +793,8 @@ class Model
     /**
      * 插入数据
      *
-     * @param string $tableName     表名
      * @param array $data           数据
+     * @param string $cache_key     缓存key
      *
      * @return bool
      *
@@ -707,7 +806,9 @@ class Model
         }
 
         $tableName = $this->getTableName();
-        if($this->getDb()->insertdb($tableName, $data)){
+        $res = $this->getDb()->insertdb($tableName, $data);
+        $this->resetSelect();
+        if($res){
             return $this->getDb()->insertId();
         }else{
             return false;
@@ -717,9 +818,9 @@ class Model
     /**
      * 更新数据
      *
-     * @param string $tableName     表名
      * @param array $data           数据
-     * @param string $conditions    条件
+     * @param array $where          条件
+     * @param string $cache_key     缓存key
      *
      * @return bool
      *
@@ -755,7 +856,9 @@ class Model
     /**
      * 删除数据
      *
-     * @return bool
+     * @param string $cache_key     缓存key
+     *
+     * @return nums
      *
      */
     public function delete($where, $cache_key = '')
@@ -777,10 +880,11 @@ class Model
     /**
      * 统计满足条件的记录个数
      *
-     * @access public
-     * @param mixed $where  条件
-     * @param string $field  字段名
-     * @return integer
+     * @param string $field     字段名
+     * @param string $alias     别名
+     * @param bool $distinct    是否去重
+     *
+     * @return $this
      *
      */
     public function count($field = '*', $alias = 'count', $distinct = false)
@@ -795,29 +899,41 @@ class Model
 
     /**
      * 统计
+     *
+     * @param string $field         字段名
+     * @param array $where          条件
+     * @param string $cache_key     缓存key
+     * @param int $exp              缓存时间
+     *
+     * @return int                  数量
+     *
      */
-    public function getCount($col = '*', $where = array(), $cache_key = '', $exp = 3600)
+    public function getCount($field = '*', $where = array(), $cache_key = '', $exp = 3600)
     {
         if (!empty($cache_key) && is_object($this->cache)) {
             $res = $this->cache->get($cache_key);
-            if ($res) {
+            if (!empty($res)) {
                 $this->resetSelect();
                 return $res;
             }
         }
         
-        $sql = $this->count($col)->where($where)->compileSelect();
+        $sql = $this->count($field)->where($where)->compileSelect();
         $arr = $this->getDb()->getOne($sql);
         $res = $arr['count'];
         if (!empty($cache_key) && is_object($this->cache)) {
             $this->cache->set($cache_key, $res, $exp);
         }
+        $this->resetSelect();
 
         return $res;
     }
 
     /**
      * 获得表列表
+     *
+     * @return array
+     *
      */
     public function listTables()
     {
@@ -826,6 +942,9 @@ class Model
 
     /**
      * 获得表结构
+     *
+     * @return array
+     *
      */
     public function listColumns($table)
     {
@@ -834,6 +953,9 @@ class Model
 
     /**
      * 清空表
+     *
+     * @return bool
+     *
      */
     public function truncate($table)
     {
